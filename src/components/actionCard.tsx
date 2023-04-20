@@ -10,9 +10,10 @@ type ActionCardTypes = {
 };
 
 const Card = styled.div`
-    padding: 1rem;
+    padding: 2.4rem;
     text-align: left;
-    border-radius: 1rem;
+    background: white;
+    border-radius: 1.2rem;
     box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.1);
 `;
 

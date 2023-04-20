@@ -8,9 +8,14 @@ const MainContentWrapper = styled.div`
     top: 0;
     right: 0;
     height: 100vh;
+    padding: 2rem;
     position: fixed;
-    background: white;
+    background: darkolivegreen;
     width: calc(100vw - 20rem);
+
+    .hide {
+      display: none;
+    }
 `;
 
 export default function Main() {
@@ -27,16 +32,15 @@ export default function Main() {
       ></Sidebar>
       <MainContentWrapper>
         {activeSidebarItem === 0 ? (
-          <h1>Welcome to game, game good!</h1>
+          <h1>Welcome to a most good game!</h1>
         ): null}
 
         {activeSidebarItem === 1 ? (
           <h1>Welcome to the Candy Shop!</h1>
         ): null}
 
-        {activeSidebarItem === 2 ? (
-          <SkillsContainer></SkillsContainer>
-        ): null}
+        <SkillsContainer className={activeSidebarItem === 2 ? '' : 'hide'}></SkillsContainer>
+
       </MainContentWrapper>
     </div>
   )

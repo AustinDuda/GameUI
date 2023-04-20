@@ -8,9 +8,16 @@ const SidebarWapper = styled.div`
     left: 0;
     width: 20rem;
     height: 100vh;
-    padding: 2rem;
     position: fixed;
     background: white;
+    padding: 0.8rem 0;
+`;
+
+const SidebarListItem = styled.li`
+    line-height: 1;
+    cursor: pointer;
+    padding: 1.2rem 2rem;
+    padding-bottom: 1.2rem;
 `;
 
 type SidebarTypes = {
@@ -23,11 +30,11 @@ export const Sidebar = (props: SidebarTypes) => {
             <ul>
                 {sidenavItems.map((item, index): ReactNode => {
                     return (
-                        <li 
+                        <SidebarListItem 
                             id={item}
                             key={item}
                             onClick={() => { props.activeSidebarItemSetter(index) }}
-                        >{item}</li>
+                        >{item}</SidebarListItem>
                     )
                 })}
             </ul>
