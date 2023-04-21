@@ -8,34 +8,54 @@ const SkillsItemList = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
 `;
 
-type SkillsContainerTypes = {
-    className: string,
-};
-
 type SkillDataTypes = {
     name: string;
     xp: number;
 }
+
+type SkillsContainerTypes = {
+    className: string,
+};
 
 export const SkillsContainer = (props: SkillsContainerTypes) => {
 
     const [activeCard, setActiveCard] = useState('');
     const [skillsData, setSkillData] = useState<SkillDataTypes[]>([]);
     
-    const fetchSkillData = async () => {
-        const response = await fetch("/api/skills");
-    
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setSkillData(data.skills);
-    };
-
     useEffect(() => {
+        const fetchSkillData = async () => {
+            const response = await fetch("/api/skills");
+        
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            setSkillData(data.skills);
+        };
         fetchSkillData();
     }, []);
+
+    useEffect(() => {
+        const postSkillData = async () => {
+            if (skillsData.length < 1) return;
+            const response = await fetch("/api/skills", {
+                method: 'POST',
+                body: JSON.stringify(skillsData),
+                headers: {
+                    'Content-type':  'application-json'
+                }
+            });
+        
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            const data = await response.json();
+        };
+
+        postSkillData();
+    }, [skillsData]);
 
     return (
         <div className={props.className}>
@@ -46,7 +66,6 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
                         <ActionCard 
                             index={index}
                             xp={skill.xp}
-                            id={skill.name}
                             key={skill.name}
                             name={skill.name}
                             skillDataGetter={skillsData}
