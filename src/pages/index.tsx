@@ -21,13 +21,10 @@ const MainContentWrapper = styled.div`
 export default function Main() {
   const [activeSidebarItem, setActiveSidebarItem] = useState(0);
 
-  useEffect(() => {
-    console.log(activeSidebarItem)
-  }, [activeSidebarItem])
-
   return (
     <div>
       <Sidebar
+        activeSidebarItemGetter={activeSidebarItem}
         activeSidebarItemSetter={setActiveSidebarItem}
       ></Sidebar>
       <MainContentWrapper>
@@ -39,7 +36,9 @@ export default function Main() {
           <h1>Welcome to the Candy Shop!</h1>
         ): null}
 
-        <SkillsContainer className={activeSidebarItem === 2 ? '' : 'hide'}></SkillsContainer>
+        <SkillsContainer 
+          className={activeSidebarItem === 2 ? '' : 'hide'}
+        ></SkillsContainer>
 
       </MainContentWrapper>
     </div>

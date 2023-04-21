@@ -1,22 +1,6 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import React, { ReactNode } from 'react';
-import { ActionCard } from "@/components/actionCard"
-
-const skills = [
-    {
-        "id": 1,
-        "title": "Woodcutting"
-    },
-    {
-        "id": 2,
-        "title": "Mining"
-    },
-    {
-        "id": 3,
-        "title": "Fishing"
-    }
-];
+import { ActionCard } from "@/components/actionCard";
+import React, { ReactNode, useEffect, useState } from 'react';
 
 const SkillsItemList = styled.div`
     display: grid;
@@ -29,21 +13,37 @@ type SkillsContainerTypes = {
 };
 
 export const SkillsContainer = (props: SkillsContainerTypes) => {
-    const [activeCard, setActiveCard] = useState(-1);
+    const [skillsData, setSkillData] = useState({empty: {xp: 0}});
+    const [activeCard, setActiveCard] = useState('');
+    
+    const fetchSkillData = async () => {
+        const response = await fetch("/api/skills");
+    
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+        setSkillData(data.skills);
+    };
+
+    useEffect(() => {
+        fetchSkillData();
+    }, []);
 
     return (
         <div className={props.className}>
             <h1>Skills</h1>
             <SkillsItemList>
-                
-                {skills.map((skill): ReactNode => {
+                {Object.keys(skillsData).map((key, index): ReactNode => {
                     return (
                         <ActionCard 
-                            id={skill.id}
-                            key={skill.id}
-                            title={skill.title}
-                            isActive={activeCard === skill.id ? true : false}
+                            xp={skillsData[key].xp}
+                            id={key}
+                            key={key}
+                            title={key}
+                            skillDataSetter={setSkillData}
                             activeCardSetter={setActiveCard}
+                            isActive={activeCard === key ? true : false}
                         ></ActionCard>
                     )
                 })}

@@ -1,4 +1,4 @@
-import React, { ReactNode, SetStateAction, useState } from 'react';
+import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const sidenavItems = ['Home', 'Shop', 'Skills'];
@@ -18,22 +18,32 @@ const SidebarListItem = styled.li`
     cursor: pointer;
     padding: 1.2rem 2rem;
     padding-bottom: 1.2rem;
+
+    &.active {
+        color: white;
+        background: darkolivegreen;
+    }
 `;
 
 type SidebarTypes = {
+    activeSidebarItemGetter: number,
     activeSidebarItemSetter: React.Dispatch<SetStateAction<number>>
 };
 
 export const Sidebar = (props: SidebarTypes) => {
+
     return (
         <SidebarWapper>
             <ul>
                 {sidenavItems.map((item, index): ReactNode => {
+                    const isActive = props.activeSidebarItemGetter === index;
+                    
                     return (
                         <SidebarListItem 
                             id={item}
                             key={item}
                             onClick={() => { props.activeSidebarItemSetter(index) }}
+                            className={isActive ? 'active' : ''}
                         >{item}</SidebarListItem>
                     )
                 })}

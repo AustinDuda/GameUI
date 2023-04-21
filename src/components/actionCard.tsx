@@ -1,12 +1,14 @@
 import { CardTimer } from './cardTimer';
 import styled from 'styled-components';
-import React, { useState, useEffect, useRef, useCallback, MouseEventHandler, SetStateAction } from 'react';
+import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 
 type ActionCardTypes = {
-    id: number,
+    id: string,
+    xp: number,
     title: string,
     isActive: boolean,
-    activeCardSetter: React.Dispatch<SetStateAction<number>>
+    skillDataSetter: React.Dispatch<SetStateAction<object>>
+    activeCardSetter: React.Dispatch<SetStateAction<string>>
 };
 
 const Card = styled.div`
@@ -27,30 +29,27 @@ const ActiveIndicator = styled.div`
 `;
 
 export const ActionCard = (props: ActionCardTypes) => {
-    const baseXpToNextLevel = 80;
     const timeToCompleteAction = 4;
-    const [xp, setXp] = useState(0);
-    const toNextLevelModifier = 1.15;
     const [tick, setTick] = useState(0);
     const [level, setLevel] = useState(1);
     const intervalRef = useRef<NodeJS.Timeout>();
 
-    const onClickSetActives = (id: number): void => {
+    const onClickSetActives = (id: string): void => {
         props.isActive
-            ? props.activeCardSetter(-1)
+            ? props.activeCardSetter('')
             : props.activeCardSetter(id);
     }
 
     useEffect(() => {
         if (tick > timeToCompleteAction) {
-            setXp(prevXp => prevXp + 10);
+            props.skillDataSetter(prevState => ({...prevState, [props.id]: {xp: props.xp + 1}}));
             setTick(0);
         }
 
-        if (xp >= (level/0.3)**2.5) {
+        if (props.xp >= (level/0.3)**2.5) {
             setLevel(prevLevel => prevLevel + 1);
         }
-    }, [tick, xp, level])
+    }, [tick, props, level])
 
     useEffect(() => {
         if (props.isActive) {
@@ -69,7 +68,7 @@ export const ActionCard = (props: ActionCardTypes) => {
             {props.isActive ? (
                 <ActiveIndicator></ActiveIndicator>
             ): null}</h3>
-            Current XP: {xp} <br />
+            Current XP: {props.xp} <br />
             Current Level: {level}
             <CardTimer 
                 progress={tick} 
