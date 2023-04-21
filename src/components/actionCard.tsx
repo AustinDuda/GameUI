@@ -2,13 +2,19 @@ import { CardTimer } from './cardTimer';
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 
+type SkillDataTypes = {
+    name: string;
+    xp: number;
+}
+
 type ActionCardTypes = {
-    id: string,
     xp: number,
-    title: string,
+    name: string,
+    index: number,
     isActive: boolean,
-    skillDataSetter: React.Dispatch<SetStateAction<object>>
+    skillDataGetter:  Array<SkillDataTypes>
     activeCardSetter: React.Dispatch<SetStateAction<string>>
+    skillDataSetter: React.Dispatch<SetStateAction<Array<SkillDataTypes>>>
 };
 
 const Card = styled.div`
@@ -42,7 +48,12 @@ export const ActionCard = (props: ActionCardTypes) => {
 
     useEffect(() => {
         if (tick > timeToCompleteAction) {
-            props.skillDataSetter(prevState => ({...prevState, [props.id]: {xp: props.xp + 1}}));
+            const newSkillDataWithUpdatedXp =  props.skillDataGetter.map((object, index) => {
+                if (index === props.index) object.xp = object.xp + 10;
+                return object;
+            });
+
+            props.skillDataSetter(newSkillDataWithUpdatedXp)
             setTick(0);
         }
 
@@ -63,8 +74,8 @@ export const ActionCard = (props: ActionCardTypes) => {
     }, [props.isActive]);
 
     return (
-        <Card onClick={() => onClickSetActives(props.id)}>
-            <h3>{props.title}
+        <Card onClick={() => onClickSetActives(props.name)}>
+            <h3>{props.name}
             {props.isActive ? (
                 <ActiveIndicator></ActiveIndicator>
             ): null}</h3>

@@ -12,9 +12,15 @@ type SkillsContainerTypes = {
     className: string,
 };
 
+type SkillDataTypes = {
+    name: string;
+    xp: number;
+}
+
 export const SkillsContainer = (props: SkillsContainerTypes) => {
-    const [skillsData, setSkillData] = useState({empty: {xp: 0}});
+
     const [activeCard, setActiveCard] = useState('');
+    const [skillsData, setSkillData] = useState<SkillDataTypes[]>([]);
     
     const fetchSkillData = async () => {
         const response = await fetch("/api/skills");
@@ -22,6 +28,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
+
         const data = await response.json();
         setSkillData(data.skills);
     };
@@ -34,16 +41,18 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
         <div className={props.className}>
             <h1>Skills</h1>
             <SkillsItemList>
-                {Object.keys(skillsData).map((key, index): ReactNode => {
+                {skillsData.map((skill, index): ReactNode => {
                     return (
                         <ActionCard 
-                            xp={skillsData[key].xp}
-                            id={key}
-                            key={key}
-                            title={key}
+                            index={index}
+                            xp={skill.xp}
+                            id={skill.name}
+                            key={skill.name}
+                            name={skill.name}
+                            skillDataGetter={skillsData}
                             skillDataSetter={setSkillData}
                             activeCardSetter={setActiveCard}
-                            isActive={activeCard === key ? true : false}
+                            isActive={activeCard === skill.name ? true : false}
                         ></ActionCard>
                     )
                 })}
