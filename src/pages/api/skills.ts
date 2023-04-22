@@ -5,18 +5,31 @@ type Data = {
   skills: object
 }
 
+let skills = [
+  {name:'woodcutting', xp: 1000},
+  {name:'mining', xp: 0},
+  {name:'fishing', xp: 0},
+]
+
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json({ 
-    skills: {
-      woodcutting: {xp: 1000},
-      mining: {xp: 0},
-      fishing: {xp: 0},
+  if (req.method === 'POST') {
+    const newSkillsData = req.body;
+    console.log(newSkillsData[0], newSkillsData.length)
+    if (newSkillsData.length > 0) {
+      console.log('ran')
+      skills = JSON.parse(newSkillsData);
     }
-  })
+    console.log(skills)
+    res.status(201).json(newSkillsData);
+  } else {
+    res.status(200).json({skills})
+  }
 }
+
+
 
 /*
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
