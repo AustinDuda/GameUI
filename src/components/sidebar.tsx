@@ -6,7 +6,7 @@ const sidenavItems = ['Home', 'Shop', 'Skills'];
 const SidebarWapper = styled.div`
     top: 0;
     left: 0;
-    width: 20rem;
+    width: 24rem;
     height: 100vh;
     display: flex;
     position: fixed;
