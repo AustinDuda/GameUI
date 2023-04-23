@@ -8,18 +8,27 @@ import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 const Card = styled.div`
     padding: 2.4rem;
     text-align: left;
-    background: white;
-    border-radius: 1.2rem;
+    background: #202940;
+    border-radius: 0.6rem;
+    font-family: RobotoLight;
     box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.1);
+
+    img {
+        margin-bottom: 1.2rem;
+    }
+`;
+
+const CardTitle = styled.h3`
+    
 `;
 
 const ActiveIndicator = styled.div`
     width: 1.2rem;
     height: 1.2rem;
-    background: green;
     margin-left: 1rem;
     display: inline-block;
     border-radius: 0.6rem;
+    background: linear-gradient(60deg,#288c6c,#4ea752);
 `;
 
 
@@ -93,6 +102,7 @@ export const ActionCard = (props: ActionCardTypes) => {
     /* Renderer */
     return (
         <Card onClick={() => onClickSetActives(props.name)}>
+            <img src='/images/icon-skill-woodcutting.png' height='48' width='48' alt='' />
             <h3>{props.name}
             {props.isActive ? (
                 <ActiveIndicator></ActiveIndicator>

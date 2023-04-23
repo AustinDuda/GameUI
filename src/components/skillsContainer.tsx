@@ -4,8 +4,8 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 const SkillsItemList = styled.div`
     display: grid;
-    column-gap: 1.2rem;
-    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2.4rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 `;
 
 type SkillDataTypes = {

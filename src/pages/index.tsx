@@ -10,7 +10,6 @@ const MainContentWrapper = styled.div`
     height: 100vh;
     padding: 2rem;
     position: fixed;
-    background: darkolivegreen;
     width: calc(100vw - 20rem);
 
     .hide {

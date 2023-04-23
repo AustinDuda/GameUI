@@ -8,7 +8,7 @@ type CardTimerTypes = {
 export const CardTimer = (props: CardTimerTypes) => {
     return (
         <div>
-            {props.progress} / {props.total}
+            Progress: {props.progress} / {props.total}
         </div>
     )
 }
