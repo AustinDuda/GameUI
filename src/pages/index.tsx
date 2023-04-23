@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/sidebar";
+import { ShopContainer } from "@/components/shopContainer";
 import { SkillsContainer } from "@/components/skillsContainer";
 
 
@@ -10,7 +11,7 @@ const MainContentWrapper = styled.div`
     height: 100vh;
     padding: 2rem;
     position: fixed;
-    width: calc(100vw - 20rem);
+    width: calc(100vw - 24rem);
 
     .hide {
       display: none;
@@ -32,7 +33,7 @@ export default function Main() {
         ): null}
 
         {activeSidebarItem === 1 ? (
-          <h1>Welcome to the Candy Shop!</h1>
+          <ShopContainer></ShopContainer>
         ): null}
 
         <SkillsContainer 
