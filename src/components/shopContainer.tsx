@@ -4,6 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 const itemPlaceholder = ['', '', ''];
 
+
 /* Setting styles */
 const Card = styled.div`
     padding: 2.4rem;
