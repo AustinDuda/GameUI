@@ -39,7 +39,6 @@ const GlobalStyle = createGlobalStyle`
     }
 
     p {
-        color: white;
         font-size: 1.4rem;
     }
 

@@ -107,8 +107,8 @@ export const ActionCard = (props: ActionCardTypes) => {
             {props.isActive ? (
                 <ActiveIndicator></ActiveIndicator>
             ): null}</h3>
-            Current XP: {props.xp} <br />
-            Current Level: {level}
+            <p>Current XP: {props.xp}</p>
+            <p>Current Level: {level}</p>
             <CardTimer 
                 progress={tick} 
                 total={timeToCompleteAction}

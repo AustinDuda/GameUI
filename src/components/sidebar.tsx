@@ -8,8 +8,10 @@ const SidebarWapper = styled.div`
     left: 0;
     width: 20rem;
     height: 100vh;
+    display: flex;
     position: fixed;
-    padding: 0.8rem 1.2rem;
+    padding: 0 1.2rem;
+    flex-direction: column;
     background-size: cover;
     background-position: center;
     background-image: url(/images/bg.jpg);
@@ -42,6 +44,32 @@ const SidebarListItem = styled.li`
     }
 `;
 
+const BottomBar = styled.div`
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    background: #1f283e;
+    padding: 0.6rem 1.2rem;
+`;
+
+const TopBar = styled.div`
+    z-indeX: 1;
+    display: flex;
+    padding: 1.2rem;
+    position: relative;
+    align-items: center;
+    margin-bottom: 1.2rem;
+
+    h3 {
+        margin-bottom: 0;
+        margin-left: 1.2rem;
+    }
+    
+`;
+
 type SidebarTypes = {
     activeSidebarItemGetter: number,
     activeSidebarItemSetter: React.Dispatch<SetStateAction<number>>
@@ -51,6 +79,10 @@ export const Sidebar = (props: SidebarTypes) => {
 
     return (
         <SidebarWapper>
+            <TopBar>
+                <img src='/images/logo.png' width={24} height={24} />
+                <h3>UIGame</h3>
+            </TopBar>
             <ul>
                 {sidenavItems.map((item, index): ReactNode => {
                     const isActive = props.activeSidebarItemGetter === index;
@@ -65,6 +97,9 @@ export const Sidebar = (props: SidebarTypes) => {
                     )
                 })}
             </ul>
+            <BottomBar>
+                <span>Version 1.0</span>
+            </BottomBar>
         </SidebarWapper>
     )
 }
