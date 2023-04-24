@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ActionCard } from "@/components/actionCard";
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
 const SkillsItemList = styled.div`
     display: grid;
@@ -13,9 +13,15 @@ type SkillDataTypes = {
     xp: number;
 }
 
+type SnackbarItemTypes = {
+    message: string
+}
+
 type SkillsContainerTypes = {
     className: string,
+    snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>
 };
+
 
 export const SkillsContainer = (props: SkillsContainerTypes) => {
 
@@ -71,6 +77,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
                             skillDataGetter={skillsData}
                             skillDataSetter={setSkillData}
                             activeCardSetter={setActiveCard}
+                            snackbarItemsSetter={props.snackbarItemsSetter}
                             isActive={activeCard === skill.name ? true : false}
                         ></ActionCard>
                     )

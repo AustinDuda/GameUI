@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/sidebar";
+import { Snackbar } from "@/components/snackbar";
 import { ShopContainer } from "@/components/shopContainer";
 import { SkillsContainer } from "@/components/skillsContainer";
 
@@ -18,8 +19,14 @@ const MainContentWrapper = styled.div`
     }
 `;
 
+type SnackbarItemTypes = {
+  message: string
+}
+
+
 export default function Main() {
   const [activeSidebarItem, setActiveSidebarItem] = useState(0);
+  const [activeSnackbarItems, setActiveSnackbarItems] = useState(Array<SnackbarItemTypes>);
 
   return (
     <div>
@@ -37,10 +44,14 @@ export default function Main() {
         ): null}
 
         <SkillsContainer 
+          snackbarItemsSetter={setActiveSnackbarItems}
           className={activeSidebarItem === 2 ? '' : 'hide'}
         ></SkillsContainer>
-
       </MainContentWrapper>
+      <Snackbar 
+        snackbarItemsGetter={activeSnackbarItems}
+        snackbarItemsSetter={setActiveSnackbarItems}
+      ></Snackbar>
     </div>
   )
 }

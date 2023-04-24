@@ -38,6 +38,10 @@ type SkillDataTypes = {
     xp: number;
 }
 
+type SnackbarItemTypes = {
+    message: string
+}
+
 type ActionCardTypes = {
     xp: number,
     name: string,
@@ -46,6 +50,7 @@ type ActionCardTypes = {
     skillDataGetter:  Array<SkillDataTypes>
     activeCardSetter: React.Dispatch<SetStateAction<string>>
     skillDataSetter: React.Dispatch<SetStateAction<Array<SkillDataTypes>>>
+    snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>
 };
 
 
@@ -80,7 +85,8 @@ export const ActionCard = (props: ActionCardTypes) => {
                 return object;
             });
 
-            props.skillDataSetter(newSkillDataWithUpdatedXp)
+            props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved 10xp in ${props.name}`}]))
+            props.skillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
         }
     }, [tick, props])
@@ -91,7 +97,7 @@ export const ActionCard = (props: ActionCardTypes) => {
         if (props.isActive) {
             intervalRef.current = setInterval(() => {
                 setTick(prevTick => prevTick + 1);
-            }, 100)
+            }, 250)
         } else { 
             clearInterval(intervalRef.current);
             setTick(0);
