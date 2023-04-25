@@ -3,14 +3,46 @@ import styled from 'styled-components';
 
 const SelectWrapper = styled.div`
     display: flex;
+    position: relative;
+    margin-bottom: 2.4rem;
     flex-direction: column;
     align-items: flex-start;
+    
 `;
 
-const Selection = styled.button`
+const Selection = styled.button`  
+    width: 100%;
+    display: flex;
+    align-items: center;
     border-radius: 0.3rem;
     padding: 0.4rem 1.2rem;
     border: 0.1rem solid grey;
+
+    span {
+        margin-left: auto;
+
+        &:before {
+            content: '';
+            top: -0.2rem;
+            width: 0.8rem;
+            height: 0.8rem;
+            display: block;
+            position: relative;
+            transform: rotate(-45deg);
+            border-left: grey solid 0.1rem;
+            border-bottom: grey solid 0.1rem;
+        }
+    }
+`;
+
+const OptionsWarpper = styled.div`
+    left: 0;
+    top: 100%;
+    width: 100%;
+    display: flex;
+    background: white;
+    position: absolute;
+    flex-direction: column;
 `;
 
 type ActionTypes = {
@@ -54,17 +86,23 @@ export const Select = (props: SelectTypes) => {
 
     return (
         <SelectWrapper ref={selectRef}>
-            <Selection onClick={() => { setSelectOpen(prevState => !prevState) }}>{selectedValue != '' ? selectedValue : 'Select'}</Selection>
-            {selectOpen ? (
-                props.options.map((option, index) => {
-                    return (
-                        <button 
-                            key={option.name + index}
-                            onClick={() => { handleSelectOption(option.name) }}
-                        >{option.name}</button>
-                    )
-                })
-            ):null}
+            <Selection 
+                onClick={() => { setSelectOpen(prevState => !prevState) }}>
+                {selectedValue != '' ? selectedValue : 'Select'}
+                <span></span>
+            </Selection>
+            <OptionsWarpper>
+                {selectOpen ? (
+                    props.options.map((option, index) => {
+                        return (
+                            <button 
+                                key={option.name + index}
+                                onClick={() => { handleSelectOption(option.name) }}
+                            >{option.name}</button>
+                        )
+                    })
+                ): null}
+            </OptionsWarpper>
         </SelectWrapper>
     )
 }

@@ -30,7 +30,14 @@ const ActiveIndicator = styled.div`
     margin-left: 1rem;
     display: inline-block;
     border-radius: 0.6rem;
-    background: linear-gradient(60deg,#288c6c,#4ea752);
+    background: linear-gradient(60deg, #288c6c, #4ea752);
+`;
+
+const ActiveButton = styled.button`
+    color: white;
+    padding: 0.4rem 1.2rem;
+    font-family: RobotoBold;
+    background: linear-gradient(60deg, #288c6c, #4ea752);
 `;
 
 
@@ -125,7 +132,7 @@ export const SkillCard = (props: ActionCardTypes) => {
                 options={skillData[(props.name).toLowerCase()].actions}
             ></Select>
             
-            <button  onClick={() => onClickSetActives(props.name)}>Activate</button>
+            <ActiveButton onClick={() => onClickSetActives(props.name)}>Activate</ActiveButton>
         </Card>
     )
 }
