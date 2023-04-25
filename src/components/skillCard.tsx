@@ -1,6 +1,7 @@
 /* Imports */
-import { CardTimer } from './cardTimer';
 import styled from 'styled-components';
+import { CardTimer } from './cardTimer';
+import { skillData } from '../../public/config/gameData';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 
 
@@ -55,7 +56,7 @@ type ActionCardTypes = {
 
 
 /* Component */
-export const ActionCard = (props: ActionCardTypes) => {
+export const SkillCard = (props: ActionCardTypes) => {
     const timeToCompleteAction = 4;
     const [tick, setTick] = useState(0);
     const [level, setLevel] = useState(1);
@@ -75,7 +76,6 @@ export const ActionCard = (props: ActionCardTypes) => {
             setLevel(prevLevel => prevLevel + 1);
         }
     }, [level, props])
-
 
     /* Updates skill XP and resets data at parent when the action has finished */
     useEffect(() => {
@@ -98,11 +98,16 @@ export const ActionCard = (props: ActionCardTypes) => {
             intervalRef.current = setInterval(() => {
                 setTick(prevTick => prevTick + 1);
             }, 250)
-        } else { 
+        } else {
             clearInterval(intervalRef.current);
             setTick(0);
         }
     }, [props.isActive]);
+
+    /* */
+    useEffect(() => {
+        console.log(skillData[props.name].actions)
+    }, [])
 
 
     /* Renderer */
