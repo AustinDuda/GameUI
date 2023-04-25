@@ -1,6 +1,7 @@
 /* Imports */
 import styled from 'styled-components';
 import { CardTimer } from './cardTimer';
+import { Select } from './select';
 import { skillData } from '../../public/config/gameData';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 
@@ -61,7 +62,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [tick, setTick] = useState(0);
     const [level, setLevel] = useState(1);
     const intervalRef = useRef<NodeJS.Timeout>();
-
+    const [selectedAction, setSelectedAction] = useState('');
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -69,6 +70,7 @@ export const SkillCard = (props: ActionCardTypes) => {
             ? props.activeCardSetter('')
             : props.activeCardSetter(id);
     }
+
 
     /* Sets visual level based on total XP */
     useEffect(() => {
@@ -104,15 +106,9 @@ export const SkillCard = (props: ActionCardTypes) => {
         }
     }, [props.isActive]);
 
-    /* */
-    useEffect(() => {
-        console.log(skillData[props.name].actions)
-    }, [])
-
-
     /* Renderer */
     return (
-        <Card onClick={() => onClickSetActives(props.name)}>
+        <Card>
             <img src='/images/icon-skill-woodcutting.png' height='48' width='48' alt='' />
             <h3>{props.name}
             {props.isActive ? (
@@ -124,6 +120,20 @@ export const SkillCard = (props: ActionCardTypes) => {
                 progress={tick} 
                 total={timeToCompleteAction}
             ></CardTimer>
+            <Select 
+                selectActionSetter={setSelectedAction}
+                options={skillData[(props.name).toLowerCase()].actions}
+            ></Select>
+            
+            <button  onClick={() => onClickSetActives(props.name)}>Activate</button>
         </Card>
     )
 }
+
+/*<select>
+                {(skillData[(props.name).toLowerCase()].actions).map((data, index: number) => {
+                    return (
+                        <option key={props.name + index}>{data.name}</option>
+                    )
+                })}
+            </select>*/

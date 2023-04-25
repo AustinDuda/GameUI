@@ -1,19 +1,19 @@
-export type ActionTypes = {
+type ActionTypes = {
     xp: number,
     name: string,
     drops: string,
     levelReq: number,
 }
 
-export type SkillDataTypes = {
-    actions: ActionTypes
+type SkillDataTypes = {
+    actions: ActionTypes[]
 }
 
-export type SkillTypes = {
+type SkillTypes = {
     [key: string]: SkillDataTypes
 }
 
-export const skillData = {
+export const skillData: SkillTypes = {
     woodcutting: {
         actions: [
             {name: 'Pine Tree', levelReq: 1, xp: 10, drops: 'Pine Log'},
