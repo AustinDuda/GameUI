@@ -1,7 +1,9 @@
 /* Imports */
-import { CardTimer } from "./cardTimer";
-import styled from "styled-components";
-import React, { useState, useEffect, useRef, SetStateAction } from "react";
+import styled from 'styled-components';
+import { CardTimer } from './cardTimer';
+import { Select } from './select';
+import { skillData } from '../../public/config/gameData';
+import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 
 /* Setting styles */
 const Card = styled.div`
@@ -20,12 +22,19 @@ const Card = styled.div`
 const CardTitle = styled.h3``;
 
 const ActiveIndicator = styled.div`
-  width: 1.2rem;
-  height: 1.2rem;
-  margin-left: 1rem;
-  display: inline-block;
-  border-radius: 0.6rem;
-  background: linear-gradient(60deg, #288c6c, #4ea752);
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-left: 1rem;
+    display: inline-block;
+    border-radius: 0.6rem;
+    background: linear-gradient(60deg, #288c6c, #4ea752);
+`;
+
+const ActiveButton = styled.button`
+    color: white;
+    padding: 0.4rem 1.2rem;
+    font-family: RobotoBold;
+    background: linear-gradient(60deg, #288c6c, #4ea752);
 `;
 
 /* Setting types */
@@ -51,70 +60,86 @@ type ActionCardTypes = {
 
 /* Component */
 export const ActionCard = (props: ActionCardTypes) => {
-  const timeToCompleteAction = 4;
-  const [tick, setTick] = useState(0);
-  const [level, setLevel] = useState(1);
-  const intervalRef = useRef<NodeJS.Timeout>();
 
-  /* onclick toggles or untoggles the active card */
-  const onClickSetActives = (id: string): void => {
-    props.isActive ? props.activeCardSetter("") : props.activeCardSetter(id);
-  };
+    const timeToCompleteAction = 4;
+    const [tick, setTick] = useState(0);
+    const [level, setLevel] = useState(1);
+    const intervalRef = useRef<NodeJS.Timeout>();
+    const [selectedAction, setSelectedAction] = useState('');
 
-  /* Sets visual level based on total XP */
-  useEffect(() => {
-    if (props.xp >= (level / 0.3) ** 2.5) {
-      setLevel((prevLevel) => prevLevel + 1);
+    /* onclick toggles or untoggles the active card */
+    const onClickSetActives = (id: string): void => {
+        props.isActive
+            ? props.activeCardSetter('')
+            : props.activeCardSetter(id);
     }
-  }, [level, props]);
 
-  /* Updates skill XP and resets data at parent when the action has finished */
-  useEffect(() => {
-    if (tick > timeToCompleteAction) {
-      const newSkillDataWithUpdatedXp = props.skillDataGetter.map(
-        (object, index) => {
-          if (index === props.index) object.xp = object.xp + 10;
-          return object;
+
+    /* Sets visual level based on total XP */
+    useEffect(() => {
+        if (props.xp >= (level/0.3)**2.5) {
+            setLevel(prevLevel => prevLevel + 1);
         }
-      );
+    }, [level, props])
 
-      props.snackbarItemsSetter((prevState) => [
-        ...prevState,
-        { message: `You recieved 10xp in ${props.name}` },
-      ]);
-      props.skillDataSetter(newSkillDataWithUpdatedXp);
-      setTick(0);
-    }
-  }, [tick, props]);
+    /* Updates skill XP and resets data at parent when the action has finished */
+    useEffect(() => {
+        if (tick > timeToCompleteAction) {
+            const newSkillDataWithUpdatedXp =  props.skillDataGetter.map((object, index) => {
+                if (index === props.index) object.xp = object.xp + 10;
+                return object;
+            });
 
-  /* Handles the tick feature */
-  useEffect(() => {
-    if (props.isActive) {
-      intervalRef.current = setInterval(() => {
-        setTick((prevTick) => prevTick + 1);
-      }, 250);
-    } else {
-      clearInterval(intervalRef.current);
-      setTick(0);
-    }
-  }, [props.isActive]);
+            props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved 10xp in ${props.name}`}]))
+            props.skillDataSetter(newSkillDataWithUpdatedXp);
+            setTick(0);
+        }
+    }, [tick, props])
 
-  /* Renderer */
-  return (
-    <Card onClick={() => onClickSetActives(props.name)}>
-      <img
-        src={`/images/icon-${props.name}.png`}
-        height="48"
-        width="48"
-        alt=""
-      />
-      <h3>
-        {props.name}
-        {props.isActive ? <ActiveIndicator></ActiveIndicator> : null}
-      </h3>
-      <p>Current XP: {props.xp}</p>
-      <p>Current Level: {level}</p>
-      <CardTimer progress={tick} total={timeToCompleteAction}></CardTimer>
-    </Card>
-  );
+
+    /* Handles the tick feature */
+    useEffect(() => {
+        if (props.isActive) {
+            intervalRef.current = setInterval(() => {
+                setTick(prevTick => prevTick + 1);
+            }, 250)
+        } else {
+            clearInterval(intervalRef.current);
+            setTick(0);
+        }
+    }, [props.isActive]);
+
+    /* Renderer */
+    return (
+        <Card>
+            <img src='/images/icon-skill-woodcutting.png' height='48' width='48' alt='' />
+            <h3>{props.name}
+            {props.isActive ? (
+                <ActiveIndicator></ActiveIndicator>
+            ): null}</h3>
+            <p>Current XP: {props.xp}</p>
+            <p>Current Level: {level}</p>
+            <CardTimer 
+                progress={tick} 
+                total={timeToCompleteAction}
+            ></CardTimer>
+            <Select 
+                selectActionSetter={setSelectedAction}
+                options={skillData[(props.name).toLowerCase()].actions}
+            ></Select>
+            
+            <ActiveButton onClick={() => onClickSetActives(props.name)}>Activate</ActiveButton>
+        </Card>
+    )
+}
+
+/*<select>
+    {(skillData[(props.name).toLowerCase()].actions).map((data, index: number) => {
+        return (
+            <option key={props.name + index}>{data.name}</option>
+        )
+    })}
+</select>*/
+
 };
+
