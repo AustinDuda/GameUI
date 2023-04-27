@@ -64,7 +64,7 @@ type ActionCardTypes = {
 
 
 /* Component */
-export const SkillCard = (props: ActionCardTypes) => {
+export const ActionCard = (props: ActionCardTypes) => {
     const timeToCompleteAction = 4;
     const [tick, setTick] = useState(0);
     const [level, setLevel] = useState(1);
