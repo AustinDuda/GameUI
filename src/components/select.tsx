@@ -13,11 +13,11 @@ const SelectWrapper = styled.div`
 const Selection = styled.button`  
     width: 100%;
     display: flex;
+    background: #1a2035;
     align-items: center;
-    border-radius: 0.3rem;
-    padding: 0.4rem 1.2rem;
-    border: 0.1rem solid grey;
-
+    border-radius: 0.4rem;
+    padding: 0.8rem 1.2rem;
+    
     span {
         margin-left: auto;
 
@@ -86,6 +86,7 @@ export const Select = (props: SelectTypes) => {
 
     return (
         <SelectWrapper ref={selectRef}>
+            <p>Select Action:</p>
             <Selection 
                 onClick={() => { setSelectOpen(prevState => !prevState) }}>
                 {selectedValue != '' ? selectedValue : 'Select'}

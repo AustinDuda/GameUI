@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ActionCard } from "@/components/actionCard";
+import { SkillCard } from "@/components/skillCard";
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
 const SkillsItemList = styled.div`
@@ -69,7 +69,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
             <SkillsItemList>
                 {skillsData.map((skill, index): ReactNode => {
                     return (
-                        <ActionCard 
+                        <SkillCard 
                             index={index}
                             xp={skill.xp}
                             key={skill.name}
@@ -79,7 +79,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
                             activeCardSetter={setActiveCard}
                             snackbarItemsSetter={props.snackbarItemsSetter}
                             isActive={activeCard === skill.name ? true : false}
-                        ></ActionCard>
+                        ></SkillCard>
                     )
                 })}
             </SkillsItemList>
