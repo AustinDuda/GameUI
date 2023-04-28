@@ -40,6 +40,7 @@ const GlobalStyle = createGlobalStyle`
 
     p {
         font-size: 1.4rem;
+        margin-bottom: 0.8rem;
     }
 
     html {

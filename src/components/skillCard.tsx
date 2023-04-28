@@ -7,31 +7,49 @@ import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 
 /* Setting styles */
 const Card = styled.div`
-  padding: 2.4rem;
   text-align: left;
+  margin-top: 3.2rem;
   background: #202940;
   border-radius: 0.6rem;
   font-family: RobotoLight;
+  padding: 0 2.4rem 2.4rem 2.4rem;
   box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.1);
 
   img {
-    margin-bottom: 1.2rem;
+    border-radius: 3.2rem;
+    border: 0.2rem solid white;
+    margin: -3.2rem auto 1.2rem auto;
   }
 `;
 
-const CardTitle = styled.h3``;
+const CardTitle = styled.h3`
+  text-align: center;
+  font-family: RobotoBold;
+`;
 
-const ActiveIndicator = styled.div`
-    width: 1.2rem;
+const CardXpProgressBar = styled.div`
+    width: 100%;
     height: 1.2rem;
-    margin-left: 1rem;
-    display: inline-block;
-    border-radius: 0.6rem;
-    background: linear-gradient(60deg, #288c6c, #4ea752);
+    position: relative;
+    background: #1a2035;
+    border-radius: 0.2rem;
+    margin-bottom: 2.4rem;
+
+    &:before {
+        content: '';
+        top: 0;
+        lefT: 0;
+        width: 7%;
+        height: 100%;
+        position: absolute;
+        border-radius: 0.2rem;
+        background: linear-gradient(60deg,#f5700c,#ff9800);
+    }
 `;
 
 const ActiveButton = styled.button`
     color: white;
+    border-radius: 0.4rem;
     padding: 0.4rem 1.2rem;
     font-family: RobotoBold;
     background: linear-gradient(60deg, #288c6c, #4ea752);
@@ -59,7 +77,7 @@ type ActionCardTypes = {
 };
 
 /* Component */
-export const ActionCard = (props: ActionCardTypes) => {
+export const SkillCard = (props: ActionCardTypes) => {
 
     const timeToCompleteAction = 4;
     const [tick, setTick] = useState(0);
@@ -112,17 +130,20 @@ export const ActionCard = (props: ActionCardTypes) => {
     /* Renderer */
     return (
         <Card>
-            <img src='/images/icon-skill-woodcutting.png' height='48' width='48' alt='' />
-            <h3>{props.name}
-            {props.isActive ? (
-                <ActiveIndicator></ActiveIndicator>
-            ): null}</h3>
+            <img src={`/images/icon-${props.name}.png`} height='64' width='64' alt='' />
+            <CardTitle>{props.name}</CardTitle>
+
+            <CardXpProgressBar></CardXpProgressBar>
+            <p>{props.xp}/1000xp</p>
+
             <p>Current XP: {props.xp}</p>
             <p>Current Level: {level}</p>
+
             <CardTimer 
                 progress={tick} 
                 total={timeToCompleteAction}
             ></CardTimer>
+
             <Select 
                 selectActionSetter={setSelectedAction}
                 options={skillData[(props.name).toLowerCase()].actions}
@@ -133,13 +154,4 @@ export const ActionCard = (props: ActionCardTypes) => {
     )
 }
 
-/*<select>
-    {(skillData[(props.name).toLowerCase()].actions).map((data, index: number) => {
-        return (
-            <option key={props.name + index}>{data.name}</option>
-        )
-    })}
-</select>*/
-
-};
 
