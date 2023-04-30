@@ -1,7 +1,7 @@
 import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 
-const sidenavItems = ["Home", "Shop", "Skills"];
+const sidenavItems = ["Home", "Shop", "Bank", "Skills"];
 
 const SidebarWapper = styled.div`
   top: 0;
