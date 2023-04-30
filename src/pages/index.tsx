@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/sidebar";
 import { Snackbar } from "@/components/snackbar";
 import { ShopContainer } from "@/components/shopContainer";
 import { SkillsContainer } from "@/components/skillsContainer";
+import { BankContainer } from "@/components/bankContainer";
 
 
 const MainContentWrapper = styled.div`
@@ -43,9 +44,13 @@ export default function Main() {
           <ShopContainer></ShopContainer>
         ): null}
 
+        {activeSidebarItem === 2 ? (
+          <BankContainer></BankContainer>
+        ): null}
+
         <SkillsContainer 
           snackbarItemsSetter={setActiveSnackbarItems}
-          className={activeSidebarItem === 2 ? '' : 'hide'}
+          className={activeSidebarItem === 3 ? '' : 'hide'}
         ></SkillsContainer>
       </MainContentWrapper>
       <Snackbar 
