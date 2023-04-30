@@ -40,9 +40,16 @@ const OptionsWarpper = styled.div`
     top: 100%;
     width: 100%;
     display: flex;
+    max-height: 0;
+    overflow: hidden;
     background: white;
     position: absolute;
     flex-direction: column;
+    transition: all 0.25s ease-in-out;
+
+    &.open {
+        max-height: 30rem;
+    }
 `;
 
 type ActionTypes = {
@@ -92,17 +99,15 @@ export const Select = (props: SelectTypes) => {
                 {selectedValue != '' ? selectedValue : 'Select'}
                 <span></span>
             </Selection>
-            <OptionsWarpper>
-                {selectOpen ? (
-                    props.options.map((option, index) => {
-                        return (
-                            <button 
-                                key={option.name + index}
-                                onClick={() => { handleSelectOption(option.name) }}
-                            >{option.name}</button>
-                        )
-                    })
-                ): null}
+            <OptionsWarpper className={selectOpen === true ? 'open' : ''}>
+                {props.options.map((option, index) => {
+                    return (
+                        <button 
+                            key={option.name + index}
+                            onClick={() => { handleSelectOption(option.name) }}
+                        >{option.name}</button>
+                    )
+                })}
             </OptionsWarpper>
         </SelectWrapper>
     )

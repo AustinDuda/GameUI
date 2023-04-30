@@ -25,13 +25,7 @@ const ProgressBar: any = styled.div<{width: number}>`
 `;
 
 export const CardTimer = (props: CardTimerTypes) => {
-    const progressAmount = (props.progress/props.total) * 100;
     return (
-        <>
-            <p>
-                Progress: {props.progress} / {props.total}
-            </p>
-            <ProgressBar width={progressAmount}></ProgressBar>
-        </>
+        <ProgressBar width={(props.progress/props.total) * 100}></ProgressBar>
     )
 }

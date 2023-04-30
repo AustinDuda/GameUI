@@ -24,7 +24,9 @@ export const ShopContainer = () => {
             <ul>
                 {itemPlaceholder.map((items, index): ReactNode => {
                     return (
-                        <ShopCard></ShopCard>
+                        <ShopCard
+                            key={index}
+                        ></ShopCard>
                     )
                 })}
             </ul>
