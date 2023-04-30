@@ -24,7 +24,6 @@ type SkillsContainerTypes = {
 
 
 export const SkillsContainer = (props: SkillsContainerTypes) => {
-
     const [activeCard, setActiveCard] = useState('');
     const [skillsData, setSkillData] = useState<SkillDataTypes[]>([]);
     

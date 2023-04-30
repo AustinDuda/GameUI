@@ -6,9 +6,9 @@ type Data = {
 }
 
 let skills = [
-  {name:'Woodcutting', xp: 1000},
-  {name:'Mining', xp: 0},
-  {name:'Fishing', xp: 0},
+  {name:'woodcutting', xp: 1000},
+  {name:'mining', xp: 0},
+  {name:'fishing', xp: 0},
 ]
 
 export default function handler(

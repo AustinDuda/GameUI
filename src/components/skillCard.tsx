@@ -1,9 +1,10 @@
 /* Imports */
-import styled from 'styled-components';
-import { CardTimer } from './cardTimer';
 import { Select } from './select';
+import styled from 'styled-components';
+import { ProgressBar } from './progressBar';
 import { skillData } from '../../public/config/gameData';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
+
 
 /* Setting styles */
 const Card = styled.div`
@@ -27,26 +28,6 @@ const CardTitle = styled.h3`
   font-family: RobotoBold;
 `;
 
-const CardXpProgressBar = styled.div`
-    width: 100%;
-    height: 1.2rem;
-    position: relative;
-    background: #1a2035;
-    border-radius: 0.2rem;
-    margin-bottom: 2.4rem;
-
-    &:before {
-        content: '';
-        top: 0;
-        lefT: 0;
-        width: 7%;
-        height: 100%;
-        position: absolute;
-        border-radius: 0.2rem;
-        background: linear-gradient(60deg,#f5700c,#ff9800);
-    }
-`;
-
 const ActiveButton = styled.button`
     color: white;
     border-radius: 0.4rem;
@@ -54,6 +35,7 @@ const ActiveButton = styled.button`
     font-family: RobotoBold;
     background: linear-gradient(60deg, #288c6c, #4ea752);
 `;
+
 
 /* Setting types */
 type SkillDataTypes = {
@@ -76,6 +58,7 @@ type ActionCardTypes = {
   snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>;
 };
 
+
 /* Component */
 export const SkillCard = (props: ActionCardTypes) => {
 
@@ -83,7 +66,10 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [tick, setTick] = useState(0);
     const [level, setLevel] = useState(1);
     const intervalRef = useRef<NodeJS.Timeout>();
+    const [xpRemainder, setXpRemainder] = useState(0);
+    const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
+
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -93,12 +79,30 @@ export const SkillCard = (props: ActionCardTypes) => {
     }
 
 
+    /* Calculates current level in a skill from the total amount of xp in a skill */
+    const calculateLevelFromXp = (): void => {
+        let totalXpForLevel = 0;
+
+        for (var i = 1; i <= 99; i++) {
+            const calculateXpForNextLevel = Math.floor(i + 100 * Math.pow(2, i / 7.5));
+            totalXpForLevel += calculateXpForNextLevel;
+
+            if (props.xp < totalXpForLevel) {
+                setLevel(i);
+                setXpRemainder((totalXpForLevel - props.xp))
+
+                if (totalXpForLevel != xpToNextLevel) setXpToNextLevel(calculateXpForNextLevel)
+                break;
+            }
+        }
+    }
+
+
     /* Sets visual level based on total XP */
     useEffect(() => {
-        if (props.xp >= (level/0.3)**2.5) {
-            setLevel(prevLevel => prevLevel + 1);
-        }
-    }, [level, props])
+        calculateLevelFromXp();
+    }, [props.xp])
+
 
     /* Updates skill XP and resets data at parent when the action has finished */
     useEffect(() => {
@@ -112,7 +116,7 @@ export const SkillCard = (props: ActionCardTypes) => {
             props.skillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
         }
-    }, [tick, props])
+    }, [tick, props]);
 
 
     /* Handles the tick feature */
@@ -127,22 +131,26 @@ export const SkillCard = (props: ActionCardTypes) => {
         }
     }, [props.isActive]);
 
+    
     /* Renderer */
     return (
         <Card>
             <img src={`/images/icon-${props.name}.png`} height='64' width='64' alt='' />
             <CardTitle>{props.name}</CardTitle>
-
-            <CardXpProgressBar></CardXpProgressBar>
-            <p>{props.xp}/1000xp</p>
+            <ProgressBar 
+                theme='primary'
+                width={Math.floor(((xpToNextLevel - xpRemainder)/xpToNextLevel) * 100)}
+            ></ProgressBar>
+            <p>{xpToNextLevel - xpRemainder}xp/{xpToNextLevel}xp</p>
 
             <p>Current XP: {props.xp}</p>
-            <p>Current Level: {level}</p>
+            <p>Current Level: {level}/99</p>
+            <p>Xp Remaining: {xpRemainder}</p>
 
-            <CardTimer 
-                progress={tick} 
-                total={timeToCompleteAction}
-            ></CardTimer>
+            <ProgressBar 
+                theme='secondary'
+                width={Math.floor((tick/timeToCompleteAction) * 100)}
+            ></ProgressBar>
 
             <Select 
                 selectActionSetter={setSelectedAction}
