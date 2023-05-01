@@ -58,14 +58,15 @@ const BottomBar = styled.div`
 const TopBar = styled.div`
   z-index: 1;
   display: flex;
-  padding: 1.2rem;
   position: relative;
   align-items: center;
-  margin-bottom: 1.2rem;
+  padding: 2rem 1.2rem;
 
   h3 {
+    font-size: 3rem;
     margin-bottom: 0;
     margin-left: 1.2rem;
+    font-family: Staatliches;
   }
 `;
 
@@ -79,7 +80,7 @@ export const Sidebar = (props: SidebarTypes) => {
     <SidebarWapper>
       <TopBar>
         <img src="/images/logo.png" width={24} height={24} />
-        <h3>UIGame</h3>
+        <h3>Brimthrone</h3>
       </TopBar>
       <ul>
         {sidenavItems.map((item, index): ReactNode => {
