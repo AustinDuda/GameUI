@@ -18,7 +18,7 @@ type SnackbarItemTypes = {
 }
 
 type SkillsContainerTypes = {
-    className: string,
+    className: string;
     snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>
 };
 

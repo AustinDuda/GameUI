@@ -22,6 +22,11 @@ const GlobalStyle = createGlobalStyle`
         src: url(/fonts/Roboto-Bold.woff);
     }
 
+    @font-face {
+        font-family: Staatliches;
+        src: url(/fonts/Staatliches-Regular.woff);
+    }
+
     h1 {
         color: white;
         font-size: 3.2rem;
