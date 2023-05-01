@@ -1,12 +1,13 @@
 /* Imports */
 import styled from 'styled-components';
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import React, { useState, useEffect, useRef, ReactNode, SetStateAction } from 'react';
 
 /* Setting styles */
 const Card = styled.div`
     padding: 2.4rem;
     cursor: pointer;
     text-align: left;
+    user-select: none;
     background: #202940;
     border-radius: 0.6rem;
     font-family: RobotoLight;
@@ -18,13 +19,23 @@ const Card = styled.div`
     }
 `;
 
+type BankCardTypes = {
+    item: number;
+    index: number;
+    swapBankSlotSetter: React.Dispatch<SetStateAction<number>>;
+    selectedBankSlotSetter: React.Dispatch<SetStateAction<number>>;
+}
+
 /* Component */
-export const BankCard = () => {
+export const BankCard = (props: BankCardTypes) => {
 
     /* Renderer */
     return (
-        <Card>
-            <p>0</p>
+        <Card 
+            className='bank-card'
+            onMouseUp={() => { props.swapBankSlotSetter(props.index) }}
+            onMouseDown={() => { props.selectedBankSlotSetter(props.index) }}>
+            <p>{props.item}</p>
         </Card>
     )
 }
