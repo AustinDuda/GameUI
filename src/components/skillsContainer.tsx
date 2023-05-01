@@ -1,13 +1,18 @@
+/* */
 import styled from 'styled-components';
 import { SkillCard } from "@/components/skillCard";
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
+
+/* */
 const SkillsItemList = styled.div`
     display: grid;
     column-gap: 2.4rem;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 `;
 
+
+/* */
 type SkillDataTypes = {
     name: string;
     xp: number;
@@ -23,10 +28,13 @@ type SkillsContainerTypes = {
 };
 
 
+/* */
 export const SkillsContainer = (props: SkillsContainerTypes) => {
     const [activeCard, setActiveCard] = useState('');
     const [skillsData, setSkillData] = useState<SkillDataTypes[]>([]);
-    
+
+
+    /* */
     useEffect(() => {
         const fetchSkillData = async () => {
             const response = await fetch("/api/skills");
@@ -41,6 +49,8 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
         fetchSkillData();
     }, []);
 
+
+    /* */
     useEffect(() => {
         const postSkillData = async () => {
             if (skillsData.length < 1) return;
@@ -62,6 +72,8 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
         postSkillData();
     }, [skillsData]);
 
+
+    /* */
     return (
         <div className={props.className}>
             <h1>Skills</h1>

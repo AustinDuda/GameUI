@@ -2,16 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: RobotoThin;
+  src: url(/fonts/Roboto-Thin.woff);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@font-face {
+  font-family: RobotoLight;
+  src: url(/fonts/Roboto-Light.woff);
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto-Regular.woff);
+}
+
+@font-face {
+  font-family: RobotoBold;
+  src: url(/fonts/Roboto-Bold.woff);
+}
+
+@font-face {
+  font-family: Staatliches;
+  src: url(/fonts/Staatliches-Regular.woff);
 }

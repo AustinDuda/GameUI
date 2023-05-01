@@ -38,6 +38,7 @@ export const BankContainer = () => {
         })
     }
 
+    
     /* */
     useEffect(() => {
         if (selectedBankSlot > -1 
@@ -50,16 +51,31 @@ export const BankContainer = () => {
         setSwapBankSlot(-1);
     }, [swapBankSlot]);
 
+
+    /* */
+    useEffect(() => {
+        if (selectedBankSlot > -1) {
+            console.log('set mouse cursor')
+        } else { 
+            console.log('clear mouse cursor') 
+        };
+    }, [selectedBankSlot])
+
+    
+    /* */
     useEffect(() => {
         window.addEventListener('mouseup',  (e) => { test(e) })
 
-        return window.removeEventListener('mouseup', (e) => { test(e) });
+        return () => {
+            // Save inventory positions here
+            window.removeEventListener('mouseup', (e) => { test(e) });
+        }
     }, []);
+
 
     return (
         <div>
             <h1>Bank</h1>
-
             <BankCardWrapper>
                 {BankSlots.map((item, index): ReactNode => {
                     return (

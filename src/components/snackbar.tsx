@@ -54,13 +54,12 @@ export const Snackbar = (props: SnackbarTypes) => {
 
     /* */
     useEffect(() => {
+        if (props.snackbarItemsGetter.length < 1) return;
+        if (props.snackbarItemsGetter.length > 3) removeLastSnackbarItem();
+
         const timer = setTimeout(() => {
             removeLastSnackbarItem();
         }, 1000);
-
-        if (props.snackbarItemsGetter.length > 3) {
-            removeLastSnackbarItem();
-        }
 
         return () => clearTimeout(timer);
     }, [props]);
