@@ -1,6 +1,9 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+/* */
 import { BankCard } from './bankCard';
 import styled from 'styled-components';
+import { DraggableCursor } from './draggableCursor';
+import React, { ReactNode, useEffect, useState } from 'react';
+
 
 const BankCardWrapper = styled.div`
     display: grid;
@@ -55,9 +58,9 @@ export const BankContainer = () => {
     /* */
     useEffect(() => {
         if (selectedBankSlot > -1) {
-            console.log('set mouse cursor')
+            // set mouse cursor image
         } else { 
-            console.log('clear mouse cursor') 
+            // unset mouse cursor image
         };
     }, [selectedBankSlot])
 
@@ -67,7 +70,6 @@ export const BankContainer = () => {
         window.addEventListener('mouseup',  (e) => { test(e) })
 
         return () => {
-            // Save inventory positions here
             window.removeEventListener('mouseup', (e) => { test(e) });
         }
     }, []);
@@ -84,11 +86,15 @@ export const BankContainer = () => {
                             item={item}
                             index={index}
                             swapBankSlotSetter={setSwapBankSlot}
+                            selectedBankSlotGetter={selectedBankSlot}
                             selectedBankSlotSetter={setSelectedBankSlot}
                         ></BankCard>
                     )
                 })}
             </BankCardWrapper>
+            {selectedBankSlot != -1 ? ( 
+                <DraggableCursor image={''}></DraggableCursor>
+            ): null}
         </div>
     )
 }
