@@ -83,7 +83,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const calculateLevelFromXp = (): void => {
         let totalXpForLevel = 0;
 
-        for (var i = 1; i <= 10; i++) {
+        for (var i = 1; i <= 99; i++) {
             const calculateXpForNextLevel = Math.floor(i + 100 * Math.pow(2, i / 7.5));
             totalXpForLevel += calculateXpForNextLevel;
 

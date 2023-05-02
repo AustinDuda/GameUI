@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import React, { SetStateAction } from 'react';
 
+
 /* Setting styles */
 const Card = styled.div<{isSelected: number, index: number}>`
     display: flex;
@@ -40,6 +41,8 @@ const Card = styled.div<{isSelected: number, index: number}>`
     }
 `;
 
+
+/* */
 type BankCardTypes = {
     item: number;
     index: number;
@@ -47,6 +50,7 @@ type BankCardTypes = {
     swapBankSlotSetter: React.Dispatch<SetStateAction<number>>;
     selectedBankSlotSetter: React.Dispatch<SetStateAction<number>>;
 }
+
 
 /* Component */
 export const BankCard = (props: BankCardTypes) => {
