@@ -79,7 +79,7 @@ export const Sidebar = (props: SidebarTypes) => {
   return (
     <SidebarWapper>
       <TopBar>
-        <img src="/images/logo.png" width={24} height={24} />
+        <img src="/images/logo.png" width={36} height={36} />
         <h3>Brimthrone</h3>
       </TopBar>
       <ul>
