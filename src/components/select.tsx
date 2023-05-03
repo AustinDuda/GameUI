@@ -87,6 +87,7 @@ export const Select = (props: SelectTypes) => {
 
     /* */
     const handleSelectOption = (name: string) => {
+        setSelectOpen(false)
         setSelectedValue(name);
         props.selectActionSetter(name);
     }

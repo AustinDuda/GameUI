@@ -2,8 +2,8 @@
 import { Select } from './select';
 import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
-import { skillData } from '../../public/config/gameData';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
+import { skillData } from '../../public/config/gameData';
 
 
 /* Setting styles */
@@ -38,7 +38,7 @@ const ActiveButton = styled.button`
 
 
 /* Setting types */
-type SkillDataTypes = {
+type PlayerSkillDataTypes = {
   name: string;
   xp: number;
 };
@@ -47,15 +47,21 @@ type SnackbarItemTypes = {
   message: string;
 };
 
+type SkillDataTypes = {
+    actions: Array<any>,
+    items: Array<any>
+}
+
 type ActionCardTypes = {
   xp: number;
   name: string;
   index: number;
   isActive: boolean;
-  skillDataGetter: Array<SkillDataTypes>;
+  skillData: SkillDataTypes;
+  playerSkillDataGetter: Array<PlayerSkillDataTypes>;
   activeCardSetter: React.Dispatch<SetStateAction<string>>;
-  skillDataSetter: React.Dispatch<SetStateAction<Array<SkillDataTypes>>>;
   snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>;
+  playerSkillDataSetter: React.Dispatch<SetStateAction<Array<PlayerSkillDataTypes>>>;
 };
 
 
@@ -97,7 +103,7 @@ export const SkillCard = (props: ActionCardTypes) => {
         }
     }
 
-
+    
     /* Sets visual level based on total XP */
     useEffect(() => {
         calculateLevelFromXp();
@@ -107,13 +113,13 @@ export const SkillCard = (props: ActionCardTypes) => {
     /* Updates skill XP and resets data at parent when the action has finished */
     useEffect(() => {
         if (tick > timeToCompleteAction) {
-            const newSkillDataWithUpdatedXp =  props.skillDataGetter.map((object, index) => {
+            const newSkillDataWithUpdatedXp =  props.playerSkillDataGetter.map((object, index) => {
                 if (index === props.index) object.xp = object.xp + 10;
                 return object;
             });
 
             props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved 10xp in ${props.name}`}]))
-            props.skillDataSetter(newSkillDataWithUpdatedXp);
+            props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
         }
     }, [tick, props]);
@@ -155,7 +161,7 @@ export const SkillCard = (props: ActionCardTypes) => {
 
             <Select 
                 selectActionSetter={setSelectedAction}
-                options={skillData[(props.name).toLowerCase()].actions}
+                options={props.skillData.actions}
             ></Select>
             
             <ActiveButton onClick={() => onClickSetActives(props.name)}>Activate</ActiveButton>
