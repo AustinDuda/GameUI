@@ -3,7 +3,6 @@ import { Select } from './select';
 import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
-import { skillData } from '../../public/config/gameData';
 
 
 /* Setting styles */
@@ -114,11 +113,11 @@ export const SkillCard = (props: ActionCardTypes) => {
     useEffect(() => {
         if (tick > timeToCompleteAction) {
             const newSkillDataWithUpdatedXp =  props.playerSkillDataGetter.map((object, index) => {
-                if (index === props.index) object.xp = object.xp + 10;
+                if (index === props.index) object.xp = object.xp + calculateRecievedXpPerAction();
                 return object;
             });
 
-            props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved 10xp in ${props.name}`}]))
+            props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
             props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
         }
@@ -138,6 +137,14 @@ export const SkillCard = (props: ActionCardTypes) => {
         }
     }, [props.isActive]);
 
+
+    /* Calculates xp to recieve per action complete based on selection */
+    const calculateRecievedXpPerAction = () => {
+        var result = props.skillData.actions.find(x => x.name === selectedAction)
+
+        return result ? result.xp : 10;
+    }
+
     
     /* Renderer */
     return (
@@ -153,6 +160,7 @@ export const SkillCard = (props: ActionCardTypes) => {
             <p>Current XP: {props.xp}</p>
             <p>Current Level: {level}/99</p>
             <p>Xp Remaining: {xpRemainder}</p>
+            <p>Xp Recieved per action: {calculateRecievedXpPerAction()}</p>
 
             <ProgressBar 
                 theme='secondary'
