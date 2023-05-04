@@ -38,7 +38,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
     const { getData } = useApiGet('/api/playerData', 'stats');
     const [playerSkillData, setPlayerSkillData] = useState<PlayerSkillDataTypes[]>([]);
 
-
+    
     /* Fetches player skill data from the playerData API */
     useEffect(() => {
         if (getData === null) return;

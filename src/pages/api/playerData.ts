@@ -13,6 +13,10 @@ let playerData = {
     {name:'woodcutting', xp: 1000},
     {name:'mining', xp: 0},
     {name:'fishing', xp: 0},
+  ],
+  bank: [
+    {name: 'oak-log', quantity: 99},
+    {name: 'iron-ore', quantity: 76}
   ]
 }
 
