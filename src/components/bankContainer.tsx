@@ -1,6 +1,7 @@
 /* */
 import { BankCard } from './bankCard';
 import styled from 'styled-components';
+import useApiGet from '@/hooks/useApiGet';
 import { DraggableCursor } from './draggableCursor';
 import React, { ReactNode, useEffect, useState } from 'react';
 
@@ -14,8 +15,16 @@ const BankCardWrapper = styled.div`
 
 export const BankContainer = () => {
     const [swapBankSlot, setSwapBankSlot] = useState(-1);
+    const { getData } = useApiGet('/api/playerData', 'bank');
     const [selectedBankSlot, setSelectedBankSlot] = useState(-1);
     const [BankSlots, setBankSlots] = useState(Array.from(Array(48).keys()));
+
+    /* Fetches player skill data from the playerData API */
+    useEffect(() => {
+        if (getData === null) return;
+        console.log(getData)
+    }, [getData]);
+
 
     /* */
     const test = (e: Event) => {

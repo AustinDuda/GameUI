@@ -31,12 +31,19 @@ const SidebarWapper = styled.div`
 
 const SidebarListItem = styled.li`
   z-index: 1;
+  display: flex;
   line-height: 1;
   cursor: pointer;
   position: relative;
-  padding: 1.2rem 2rem;
+  align-items: center;
   border-radius: 0.3rem;
   padding-bottom: 1.2rem;
+  padding: 1.2rem 2rem 1.2rem 1.2rem;
+
+  img {
+    width: 2rem;
+    margin-right: 0.8rem;
+  }
 
   &.active {
     color: white;
@@ -95,6 +102,7 @@ export const Sidebar = (props: SidebarTypes) => {
               }}
               className={isActive ? "active" : ""}
             >
+              <img src={`/images/icon-${item}.svg`} />
               {item}
             </SidebarListItem>
           );

@@ -15,7 +15,7 @@ const DraggbleCursorWrapper: any = styled.div`
     height: 2.4rem;
     position: fixed;
     background-size: cover;
-    background-image: url('/images/icon-oak-wood.png');
+    background-image: url('/images/items/icon-item-oak-log.png');
 `;
 
 /* */

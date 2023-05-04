@@ -26,7 +26,7 @@ const Card = styled.div<{isSelected: number, index: number}>`
     };
     background-image: ${props => props.isSelected === props.index 
         ? 'none' 
-        : 'url("/images/icon-oak-wood.png")'
+        : 'url("/images/items/icon-item-oak-log.png")'
     };
 
     &:hover {
