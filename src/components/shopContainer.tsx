@@ -21,6 +21,8 @@ export const ShopContainer = () => {
     return (
         <div>
             <h1>Shop</h1>
+
+            <img src="/images/shop-image.png" />
             <ul>
                 {itemPlaceholder.map((items, index): ReactNode => {
                     return (
