@@ -102,7 +102,7 @@ export const Sidebar = (props: SidebarTypes) => {
               }}
               className={isActive ? "active" : ""}
             >
-              <img src={`/images/icon-${item}.svg`} />
+              <img src={`/images/icon-${(item).toLowerCase()}.svg`} />
               {item}
             </SidebarListItem>
           );
