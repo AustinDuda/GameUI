@@ -1,6 +1,8 @@
 /* Imports */
 import styled from 'styled-components';
-import React, { SetStateAction } from 'react';
+import React, { SetStateAction, useState } from 'react';
+import { DraggableCursor } from './draggableCursor';
+import { MouseTrackerOverlay } from './mouseTrackerOverlay';
 
 
 /* Setting styles */
@@ -11,6 +13,7 @@ const Card = styled.div<{isSelected: number, index: number, image: string}>`
     text-align: left;
     min-height: 8rem;
     user-select: none;
+    position: relative;
     background: #202940;
     background-size: 50%;
     border-radius: 0.6rem;
@@ -32,6 +35,10 @@ const Card = styled.div<{isSelected: number, index: number, image: string}>`
 
     &:hover {
         border-color: grey;
+
+        > div {
+            display: block
+        }
     }
 
     p {
@@ -39,6 +46,10 @@ const Card = styled.div<{isSelected: number, index: number, image: string}>`
         color: white;
         align-self: flex-end;
         font-family: RobotoBold;
+    }
+
+    * {
+        pointer-events: none;
     }
 `;
 
@@ -55,21 +66,29 @@ type BankCardTypes = {
 
 /* Component */
 export const BankCard = (props: BankCardTypes) => {
+    const [showInfo, setShowInfo] = useState(false);
     const quantity = props.item.quantity > 1000 
-    ? Math.floor((props.item.quantity/1000)*10) *.1 + 'k'
-    : props.item.quantity;
-    const bankSlotImage = props.item ? (props.item.name).replace(/\s+/g, '-') : 'blank'
+    ? Math.floor((props.item.quantity/1000)*10) *.1 + 'k' : props.item.quantity;
+    const bankSlotImage = props.item ? (props.item.name).replace(/\s+/g, '-') : 'blank';
+
 
     /* Renderer */
     return (
-        <Card 
-            index={props.index}
-            className='bank-card'
-            image={bankSlotImage}
-            isSelected={props.selectedBankSlotGetter}
-            onMouseUp={() => { props.swapBankSlotSetter(props.index) }}
-            onMouseDown={() => { props.selectedBankSlotSetter(props.index) }}>
-            <p>{props.item ? quantity : ''}</p>
-        </Card>
+        <>
+            <Card 
+                index={props.index}
+                className='bank-card'
+                image={bankSlotImage}
+                isSelected={props.selectedBankSlotGetter}
+                onMouseEnter={() => { setShowInfo(true); }}
+                onMouseLeave={() => { setShowInfo(false);}}
+                onMouseUp={() => { props.swapBankSlotSetter(props.index) }}
+                onMouseDown={() => { props.selectedBankSlotSetter(props.index) }}>
+                <p>{props.item ? quantity : ''}</p>
+            </Card>
+            {showInfo && props.selectedBankSlotGetter != props.index ? ( 
+                <MouseTrackerOverlay name={props.item.name}></MouseTrackerOverlay>
+            ): null}
+        </>
     )
 }

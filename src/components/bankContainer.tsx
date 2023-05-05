@@ -2,6 +2,7 @@
 import { BankCard } from './bankCard';
 import styled from 'styled-components';
 import useApiGet from '@/hooks/useApiGet';
+import { PLAYERDATATYPES } from '@/configs/enums';
 import { DraggableCursor } from './draggableCursor';
 import React, { ReactNode, useEffect, useState } from 'react';
 
@@ -42,8 +43,8 @@ const BankCategoryHeader = styled.div`
 /* Component */
 export const BankContainer = () => {
     const [swapBankSlot, setSwapBankSlot] = useState(-1);
-    const { getData } = useApiGet('/api/playerData', 'bank');
     const [selectedBankSlot, setSelectedBankSlot] = useState(-1);
+    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.bank);
     const [playerBankData, setPlayerBankData] = useState(Array<{name: string, quantity: number}>);
 
 
