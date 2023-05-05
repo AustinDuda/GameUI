@@ -40,7 +40,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
 
     
     /* Fetches player skill data from the playerData API */
-    useEffect(() => {
+    useEffect(() => { 
         if (getData === null) return;
         setPlayerSkillData(getData)
     }, [getData]);
