@@ -4,7 +4,7 @@ import React, { SetStateAction } from 'react';
 
 
 /* Setting styles */
-const Card = styled.div<{isSelected: number, index: number}>`
+const Card = styled.div<{isSelected: number, index: number, image: string}>`
     display: flex;
     padding: 0.8rem;
     cursor: pointer;
@@ -24,9 +24,10 @@ const Card = styled.div<{isSelected: number, index: number}>`
         ? '.5' 
         : '1'
     };
+
     background-image: ${props => props.isSelected === props.index 
         ? 'none' 
-        : 'url("/images/items/icon-item-oak-log.png")'
+        : `url("/images/items/icon-item-${props.image}.png")`
     };
 
     &:hover {
@@ -44,9 +45,9 @@ const Card = styled.div<{isSelected: number, index: number}>`
 
 /* */
 type BankCardTypes = {
-    item: number;
     index: number;
     selectedBankSlotGetter: number;
+    item: {name: string, quantity: number};
     swapBankSlotSetter: React.Dispatch<SetStateAction<number>>;
     selectedBankSlotSetter: React.Dispatch<SetStateAction<number>>;
 }
@@ -54,16 +55,18 @@ type BankCardTypes = {
 
 /* Component */
 export const BankCard = (props: BankCardTypes) => {
+    const bankSlotImage = props.item ? (props.item.name).replace(/\s+/g, '-') : 'blank'
 
     /* Renderer */
     return (
         <Card 
             index={props.index}
             className='bank-card'
+            image={bankSlotImage}
             isSelected={props.selectedBankSlotGetter}
             onMouseUp={() => { props.swapBankSlotSetter(props.index) }}
             onMouseDown={() => { props.selectedBankSlotSetter(props.index) }}>
-            <p>{props.item}</p>
+            <p>{props.item ? props.item.quantity : ''}</p>
         </Card>
     )
 }
