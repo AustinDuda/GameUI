@@ -14,6 +14,30 @@ const BankCardWrapper = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(7rem, 8rem));
 `;
 
+const BankCategoryHeader = styled.div`
+    display: flex;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    align-items: center;
+    background: #202940;
+    border-radius: 0.6rem;
+    box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.1);
+
+    h3 {
+        margin: 0;
+        text-align: left;
+    }
+
+    button {
+        color: white;
+        margin-left: auto;
+        border-radius: 0.4rem;
+        padding: 0.4rem 1.2rem;
+        font-family: RobotoBold;
+        background: linear-gradient(60deg,#f5700c,#ff9800);
+    }
+`;
+
 
 /* Component */
 export const BankContainer = () => {
@@ -83,6 +107,7 @@ export const BankContainer = () => {
     return (
         <div>
             <h1>Bank</h1>
+            <BankCategoryHeader><h3>Tab one</h3><button>sort</button></BankCategoryHeader>
             <BankCardWrapper>
                 {playerBankData?.map((item, index): ReactNode => {
                     return (

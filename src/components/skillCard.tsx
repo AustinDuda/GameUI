@@ -1,7 +1,9 @@
 /* Imports */
 import { Select } from './select';
 import styled from 'styled-components';
+import useApiGet from '@/hooks/useApiGet';
 import { ProgressBar } from './progressBar';
+import useApiPost from '@/hooks/useApiPost';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
 
 
@@ -72,8 +74,10 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [level, setLevel] = useState(1);
     const intervalRef = useRef<NodeJS.Timeout>();
     const [xpRemainder, setXpRemainder] = useState(0);
+    const { postData } = useApiPost('/api/playerData');
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
+    
 
 
     /* onclick toggles or untoggles the active card */
@@ -117,6 +121,8 @@ export const SkillCard = (props: ActionCardTypes) => {
                 return object;
             });
 
+
+            postData({name: 'Pine log', quantity: 1}, 'bank');
             props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
             props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
