@@ -10,6 +10,7 @@ type Data = {
 
 let playerData = {
   equipment: [{}],
+  gold: 10,
   stats: [
     {name:'woodcutting', xp: 1000},
     {name:'mining', xp: 0},

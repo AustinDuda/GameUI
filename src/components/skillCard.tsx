@@ -1,7 +1,6 @@
 /* Imports */
 import { Select } from './select';
 import styled from 'styled-components';
-import useApiGet from '@/hooks/useApiGet';
 import { ProgressBar } from './progressBar';
 import useApiPost from '@/hooks/useApiPost';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
@@ -121,8 +120,7 @@ export const SkillCard = (props: ActionCardTypes) => {
                 return object;
             });
 
-
-            postData({name: 'pine log', quantity: 1}, 'bank');
+            postData({name: 'sardine', quantity: 1}, 'bank');
             props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
             props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);

@@ -1,5 +1,8 @@
-import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
+
 import styled from "styled-components";
+import useApiGet from "@/hooks/useApiGet";
+import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
+import { PLAYERDATATYPES } from "@/configs/enums";
 
 const sidenavItems = ["Home", "Shop", "Bank", "Skills"];
 
@@ -77,12 +80,26 @@ const TopBar = styled.div`
   }
 `;
 
+const CurrencyWrapper = styled.div`
+  display: flex;
+  color: #d48c00;
+  margin-left: auto;
+  align-items: center;
+  font-family: RobotoBold;
+
+  .active & {
+    color: white;
+  }
+`;
+
 type SidebarTypes = {
   activeSidebarItemGetter: number;
   activeSidebarItemSetter: React.Dispatch<SetStateAction<number>>;
 };
 
 export const Sidebar = (props: SidebarTypes) => {
+  const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.gold);
+
   return (
     <SidebarWapper>
       <TopBar>
@@ -92,7 +109,7 @@ export const Sidebar = (props: SidebarTypes) => {
       <ul>
         {sidenavItems.map((item, index): ReactNode => {
           const isActive = props.activeSidebarItemGetter === index;
-
+          const showGold = item === 'Shop' ?  getData : false;
           return (
             <SidebarListItem
               id={item}
@@ -103,7 +120,8 @@ export const Sidebar = (props: SidebarTypes) => {
               className={isActive ? "active" : ""}
             >
               <img src={`/images/icon-${(item).toLowerCase()}.svg`} />
-              {item}
+              {item} 
+              {showGold ? <CurrencyWrapper><img src="/images/icon-gold-coin.png" width={24} height={24} />{showGold}</CurrencyWrapper> : null}
             </SidebarListItem>
           );
         })}

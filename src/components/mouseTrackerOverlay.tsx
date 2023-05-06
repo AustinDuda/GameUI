@@ -10,6 +10,7 @@ type MouseTrackerOverlayTypes = {
 
 /* */
 const OverlayWrapper: any = styled.div`
+    z-index: 2;
     padding: 2.4rem;
     position: fixed;
     background: #202940;

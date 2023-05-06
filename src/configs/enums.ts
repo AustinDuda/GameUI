@@ -1,6 +1,7 @@
 enum PLAYERDATATYPES {
     bank = 'bank',
-    stats = 'stats'
+    stats = 'stats',
+    gold = 'gold'
 }
   
 export { PLAYERDATATYPES };

@@ -58,6 +58,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
     return (
         <div className={props.className}>
             <h1>Skills</h1>
+            
             <SkillsItemList>
                 {playerSkillData?.map((skill, index): ReactNode => {
                     return (
