@@ -121,7 +121,7 @@ export const SkillCard = (props: ActionCardTypes) => {
                 return object;
             });
 
-            postData(-1, PLAYERDATATYPES.gold);
+            postData(1, PLAYERDATATYPES.gold);
             postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
             props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
             props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
