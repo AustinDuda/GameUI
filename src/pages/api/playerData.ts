@@ -2,15 +2,16 @@
 import { PLAYERDATATYPES } from '@/configs/enums';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-
 type Data = {
-  equipment: Array<object>;
-  stats: Array<object>
+  gold: number;
+  equipment: Array<{}>;
+  stats: Array<{}>;
+  bank: Array<{}>
 }
 
 let playerData = {
-  equipment: [{}],
   gold: 1156,
+  equipment: [{}],
   stats: [
     {name:'woodcutting', xp: 1000},
     {name:'mining', xp: 0},
@@ -21,7 +22,8 @@ let playerData = {
     {name: 'copper ore', quantity: 76},
     {name: 'sardine', quantity: 608},
     {name: 'tin ore', quantity: 16},
-    {name: 'shrimp', quantity: 1600}
+    {name: 'shrimp', quantity: 1600},
+    {name: 'golden key', quantity: 1}
   ]
 }
 
