@@ -5,7 +5,7 @@ const useApiPost = (url: string) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
-  const postData = async (data: object, key: string) => {
+  const postData = async (data: any, key: string) => {
     setIsLoading(true);
     setError(null);
     setData(null);
