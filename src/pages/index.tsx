@@ -6,6 +6,7 @@ import { ShopContainer } from "@/components/shopContainer";
 import { SkillsContainer } from "@/components/skillsContainer";
 import { BankContainer } from "@/components/bankContainer";
 import { HomeContainer } from "@/components/homeContainer";
+import { EventsContainer } from "@/components/EventsContainer";
 
 
 const MainContentWrapper = styled.div`
@@ -53,6 +54,11 @@ export default function Main() {
           snackbarItemsSetter={setActiveSnackbarItems}
           className={activeSidebarItem === 3 ? '' : 'hide'}
         ></SkillsContainer>
+
+        {activeSidebarItem === 4 ? (
+          <EventsContainer></EventsContainer>
+        ): null}
+        
       </MainContentWrapper>
       <Snackbar 
         snackbarItemsGetter={activeSnackbarItems}
