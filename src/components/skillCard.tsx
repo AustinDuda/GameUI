@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
 import useApiPost from '@/hooks/useApiPost';
 import React, { useState, useEffect, useRef, SetStateAction } from 'react';
+import { PLAYERDATATYPES } from '@/configs/enums';
 
 
 /* Setting styles */
@@ -120,7 +121,8 @@ export const SkillCard = (props: ActionCardTypes) => {
                 return object;
             });
 
-            postData({name: 'sardine', quantity: 1}, 'bank');
+            postData(-1, PLAYERDATATYPES.gold);
+            postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
             props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
             props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
