@@ -6,9 +6,9 @@ import styled from 'styled-components';
 /* Setting styles */
 const SnackbarWrapper = styled.div`
     left: 50%;
-    width: 24rem;
     height: 6rem;   
     bottom: 2.4rem;
+    min-width: 28rem;
     position: absolute;
     transform: translateX(-50%);
 `;
@@ -16,9 +16,11 @@ const SnackbarWrapper = styled.div`
 const SnackbarItem = styled.div`
     left: 50%;
     bottom: 0;
-    width: auto;
+    width: 100%;
+    display: flex;
     padding: 1.2rem;
     position: absolute;
+    align-items: center;
     white-space: nowrap;
     background: #1f283e;
     border-radius: 0.3rem;
@@ -29,6 +31,14 @@ const SnackbarItem = styled.div`
     @keyframes slideIn {
         from { transform: translateX(-50%) translateY(50%); }
         to   { transform: translateX(-50%) translateY(-50%); }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    img {
+        margin-right: 0.8rem;
     }
 `;
 
@@ -70,7 +80,7 @@ export const Snackbar = (props: SnackbarTypes) => {
             {props.snackbarItemsGetter.map((item, index): ReactNode => {
                 return (
                     <SnackbarItem key={item.message + index}>
-                        <img />
+                        <img src='/images/icon-notification-xp.png' width={32} height={32} />
                         <p>{item.message}</p>
                     </SnackbarItem>
                 )
