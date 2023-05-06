@@ -43,6 +43,11 @@ export default function handler(
           ? playerData.bank[getItemIndexIfExists].quantity += body.data.quantity
           : playerData.bank = [...playerData.bank, body.data];
         break;
+      case PLAYERDATATYPES.gold: 
+        if (typeof body.data === 'number') {
+          playerData.gold = body.data += playerData.gold;
+        }
+        break;
       default:
         if (body.key in playerData) {
           newPlayerData = {...playerData, [body.key]: body.data};
