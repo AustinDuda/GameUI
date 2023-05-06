@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import useApiPost from '@/hooks/useApiPost';
 import useApiGet from '@/hooks/useApiGet';
+import { PLAYERDATATYPES } from '@/configs/enums';
 import { SkillCard } from "@/components/skillCard";
 import { skillData } from '../../public/config/gameData';
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
@@ -35,7 +36,7 @@ type SkillsContainerTypes = {
 export const SkillsContainer = (props: SkillsContainerTypes) => {
     const [activeCard, setActiveCard] = useState('');
     const { postData } = useApiPost('/api/playerData');
-    const { getData } = useApiGet('/api/playerData', 'stats');
+    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.stats);
     const [playerSkillData, setPlayerSkillData] = useState<PlayerSkillDataTypes[]>([]);
 
     
@@ -49,7 +50,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
     /* Posts player skill data to the playerData API */
     useEffect(() => {
         if (playerSkillData.length < 1) return;
-        postData(playerSkillData, 'stats');
+        postData(playerSkillData, PLAYERDATATYPES.stats);
     }, [playerSkillData]);
 
 

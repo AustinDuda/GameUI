@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { PLAYERDATATYPES } from '@/configs/enums';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 
@@ -32,7 +33,7 @@ export default function handler(
     const body = JSON.parse(req.body);
 
     switch (body.key) {
-      case 'bank': 
+      case PLAYERDATATYPES.bank: 
         const getItemIndexIfExists = playerData.bank.findIndex(item => item.name === body.data.name)
 
         getItemIndexIfExists != -1
