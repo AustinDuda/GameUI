@@ -4,7 +4,7 @@ import useApiGet from "@/hooks/useApiGet";
 import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
 import { PLAYERDATATYPES } from "@/configs/enums";
 
-const sidenavItems = ["Home", "Shop", "Bank", "Skills"];
+const sidenavItems = ["Home", "Shop", "Bank", "Skills", "Events"];
 
 const SidebarWapper = styled.div`
   top: 0;
