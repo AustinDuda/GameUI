@@ -43,15 +43,15 @@ export const EventsContainer = () => {
     /* */
     const openChest = () => {
         if (!getData) return;
-        const getItemIndexIfExists = getData.findIndex(item => item.name === 'golden key');
+        const getItemIndexIfExists = 1;//getData.findIndex(item => item.name === 'golden key');
 
-        if (getItemIndexIfExists != -1) {
+        if (getItemIndexIfExists === 1) {
             setOpened(true);
             console.log('remove item from bank')
         }
     }
 
-    
+
     /* Renderer */
     return (
         <EventsWrapper
