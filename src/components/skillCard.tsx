@@ -79,7 +79,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
 
-    const {customNumber, setCustomNumber} = useContext(CustomContext);
+    const { CustomContextProps, CustomContextTwoProps } = React.useContext(CustomContext);
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -165,7 +165,7 @@ export const SkillCard = (props: ActionCardTypes) => {
             <p>{xpToNextLevel - xpRemainder}xp/{xpToNextLevel}xp</p>
 
 
-            <p onClick={() => {setCustomNumber(customNumber + 7)}}>Text Context: {customNumber}</p>
+            <p onClick={() => {CustomContextProps.setCustomNumber(CustomContextProps.customNumber + 7)}}>Text Context: {CustomContextProps.customNumber}</p>
             <p>Current XP: {props.xp}</p>
             <p>Current Level: {level}/99</p>
             <p>Xp Remaining: {xpRemainder}</p>
