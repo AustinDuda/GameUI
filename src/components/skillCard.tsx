@@ -3,9 +3,10 @@ import { Select } from './select';
 import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
 import useApiPost from '@/hooks/useApiPost';
-import React, { useState, useEffect, useRef, SetStateAction } from 'react';
+import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
 import { PLAYERDATATYPES } from '@/configs/enums';
 
+import { CustomContext } from '@/context/customContext';
 
 /* Setting styles */
 const Card = styled.div`
@@ -77,8 +78,8 @@ export const SkillCard = (props: ActionCardTypes) => {
     const { postData } = useApiPost('/api/playerData');
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
-    
 
+    const {customNumber, setCustomNumber} = useContext(CustomContext);
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -163,6 +164,8 @@ export const SkillCard = (props: ActionCardTypes) => {
             ></ProgressBar>
             <p>{xpToNextLevel - xpRemainder}xp/{xpToNextLevel}xp</p>
 
+
+            <p onClick={() => {setCustomNumber(customNumber + 7)}}>Text Context: {customNumber}</p>
             <p>Current XP: {props.xp}</p>
             <p>Current Level: {level}/99</p>
             <p>Xp Remaining: {xpRemainder}</p>
