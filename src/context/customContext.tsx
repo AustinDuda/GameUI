@@ -5,6 +5,11 @@ interface CustomContextProps {
     setCustomNumber: Dispatch<SetStateAction<number>>
 }
 
+interface CustomContextTwoProps {
+    customNumber: number;
+    setCustomNumber: Dispatch<SetStateAction<number>>
+}
+
 interface CustomContextProviderProps {
     children: ReactNode
 }
