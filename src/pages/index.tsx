@@ -1,5 +1,5 @@
+import { useState } from "react";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/sidebar";
 import { Snackbar } from "@/components/snackbar";
 import { ShopContainer } from "@/components/shopContainer";

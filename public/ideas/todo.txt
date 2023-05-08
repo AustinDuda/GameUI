@@ -1,0 +1,3 @@
+1. Learn about useContext
+2. Set up useContext for gold as example
+3. figure out how to update useContext when api is updated
