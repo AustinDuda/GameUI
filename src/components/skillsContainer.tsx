@@ -1,10 +1,14 @@
-/* */
+/* Imports */
 import styled from 'styled-components';
+import useApiPost from '@/hooks/useApiPost';
+import useApiGet from '@/hooks/useApiGet';
+import { PLAYERDATATYPES } from '@/configs/enums';
 import { SkillCard } from "@/components/skillCard";
+import { skillData } from '../../public/config/gameData';
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
 
-/* */
+/* Setting styles */
 const SkillsItemList = styled.div`
     display: grid;
     column-gap: 2.4rem;
@@ -12,8 +16,8 @@ const SkillsItemList = styled.div`
 `;
 
 
-/* */
-type SkillDataTypes = {
+/* Setting types */
+type PlayerSkillDataTypes = {
     name: string;
     xp: number;
 }
@@ -28,67 +32,46 @@ type SkillsContainerTypes = {
 };
 
 
-/* */
+/* Component */
 export const SkillsContainer = (props: SkillsContainerTypes) => {
     const [activeCard, setActiveCard] = useState('');
-    const [skillsData, setSkillData] = useState<SkillDataTypes[]>([]);
+    const { postData } = useApiPost('/api/playerData');
+    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.stats);
+    const [playerSkillData, setPlayerSkillData] = useState<PlayerSkillDataTypes[]>([]);
 
-
-    /* */
-    useEffect(() => {
-        const fetchSkillData = async () => {
-            const response = await fetch("/api/skills");
-        
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
     
-            const data = await response.json();
-            setSkillData(data.skills);
-        };
-        fetchSkillData();
-    }, []);
+    /* Fetches player skill data from the playerData API */
+    useEffect(() => { 
+        if (getData === null) return;
+        setPlayerSkillData(getData)
+    }, [getData]);
 
 
-    /* */
+    /* Posts player skill data to the playerData API */
     useEffect(() => {
-        const postSkillData = async () => {
-            if (skillsData.length < 1) return;
-            const response = await fetch("/api/skills", {
-                method: 'POST',
-                body: JSON.stringify(skillsData),
-                headers: {
-                    'Content-type':  'application-json'
-                }
-            });
-        
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-    
-            const data = await response.json();
-        };
-
-        postSkillData();
-    }, [skillsData]);
+        if (playerSkillData.length < 1) return;
+        postData(playerSkillData, PLAYERDATATYPES.stats);
+    }, [playerSkillData]);
 
 
-    /* */
+    /* Renderer */
     return (
         <div className={props.className}>
             <h1>Skills</h1>
+            
             <SkillsItemList>
-                {skillsData.map((skill, index): ReactNode => {
+                {playerSkillData?.map((skill, index): ReactNode => {
                     return (
                         <SkillCard 
                             index={index}
                             xp={skill.xp}
                             key={skill.name}
                             name={skill.name}
-                            skillDataGetter={skillsData}
-                            skillDataSetter={setSkillData}
                             activeCardSetter={setActiveCard}
+                            playerSkillDataGetter={playerSkillData}
+                            playerSkillDataSetter={setPlayerSkillData}
                             snackbarItemsSetter={props.snackbarItemsSetter}
+                            skillData={skillData[(skill.name).toLowerCase()]}
                             isActive={activeCard === skill.name ? true : false}
                         ></SkillCard>
                     )

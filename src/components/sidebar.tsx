@@ -1,7 +1,10 @@
-import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
-import styled from "styled-components";
 
-const sidenavItems = ["Home", "Shop", "Bank", "Skills"];
+import styled from "styled-components";
+import useApiGet from "@/hooks/useApiGet";
+import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
+import { PLAYERDATATYPES } from "@/configs/enums";
+
+const sidenavItems = ["Home", "Shop", "Bank", "Skills", "Events"];
 
 const SidebarWapper = styled.div`
   top: 0;
@@ -31,12 +34,19 @@ const SidebarWapper = styled.div`
 
 const SidebarListItem = styled.li`
   z-index: 1;
+  display: flex;
   line-height: 1;
   cursor: pointer;
   position: relative;
-  padding: 1.2rem 2rem;
+  align-items: center;
   border-radius: 0.3rem;
   padding-bottom: 1.2rem;
+  padding: 1.2rem 2rem 1.2rem 1.2rem;
+
+  img {
+    width: 2rem;
+    margin-right: 0.8rem;
+  }
 
   &.active {
     color: white;
@@ -70,22 +80,36 @@ const TopBar = styled.div`
   }
 `;
 
+const CurrencyWrapper = styled.div`
+  display: flex;
+  color: #d48c00;
+  margin-left: auto;
+  align-items: center;
+  font-family: RobotoBold;
+
+  .active & {
+    color: white;
+  }
+`;
+
 type SidebarTypes = {
   activeSidebarItemGetter: number;
   activeSidebarItemSetter: React.Dispatch<SetStateAction<number>>;
 };
 
 export const Sidebar = (props: SidebarTypes) => {
+  const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.gold);
+
   return (
     <SidebarWapper>
       <TopBar>
-        <img src="/images/logo.png" width={24} height={24} />
+        <img src="/images/logo.png" width={36} height={36} />
         <h3>Brimthrone</h3>
       </TopBar>
       <ul>
         {sidenavItems.map((item, index): ReactNode => {
           const isActive = props.activeSidebarItemGetter === index;
-
+          const showGold = item === 'Shop' ?  getData : false;
           return (
             <SidebarListItem
               id={item}
@@ -95,7 +119,9 @@ export const Sidebar = (props: SidebarTypes) => {
               }}
               className={isActive ? "active" : ""}
             >
-              {item}
+              <img src={`/images/icon-${(item).toLowerCase()}.svg`} />
+              {item} 
+              {showGold ? <CurrencyWrapper><img src="/images/icon-gold-coin.png" width={24} height={24} />{showGold}</CurrencyWrapper> : null}
             </SidebarListItem>
           );
         })}

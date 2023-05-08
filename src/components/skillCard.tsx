@@ -2,9 +2,11 @@
 import { Select } from './select';
 import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
-import { skillData } from '../../public/config/gameData';
-import React, { useState, useEffect, useRef, SetStateAction } from 'react';
+import useApiPost from '@/hooks/useApiPost';
+import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
+import { PLAYERDATATYPES } from '@/configs/enums';
 
+import { CustomContext } from '@/context/customContext';
 
 /* Setting styles */
 const Card = styled.div`
@@ -38,7 +40,7 @@ const ActiveButton = styled.button`
 
 
 /* Setting types */
-type SkillDataTypes = {
+type PlayerSkillDataTypes = {
   name: string;
   xp: number;
 };
@@ -47,15 +49,21 @@ type SnackbarItemTypes = {
   message: string;
 };
 
+type SkillDataTypes = {
+    actions: Array<any>,
+    items: Array<any>
+}
+
 type ActionCardTypes = {
   xp: number;
   name: string;
   index: number;
   isActive: boolean;
-  skillDataGetter: Array<SkillDataTypes>;
+  skillData: SkillDataTypes;
+  playerSkillDataGetter: Array<PlayerSkillDataTypes>;
   activeCardSetter: React.Dispatch<SetStateAction<string>>;
-  skillDataSetter: React.Dispatch<SetStateAction<Array<SkillDataTypes>>>;
   snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>;
+  playerSkillDataSetter: React.Dispatch<SetStateAction<Array<PlayerSkillDataTypes>>>;
 };
 
 
@@ -67,9 +75,11 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [level, setLevel] = useState(1);
     const intervalRef = useRef<NodeJS.Timeout>();
     const [xpRemainder, setXpRemainder] = useState(0);
+    const { postData } = useApiPost('/api/playerData');
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
 
+    const {customNumber, setCustomNumber} = useContext(CustomContext);
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -83,7 +93,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const calculateLevelFromXp = (): void => {
         let totalXpForLevel = 0;
 
-        for (var i = 1; i <= 10; i++) {
+        for (var i = 1; i <= 99; i++) {
             const calculateXpForNextLevel = Math.floor(i + 100 * Math.pow(2, i / 7.5));
             totalXpForLevel += calculateXpForNextLevel;
 
@@ -97,7 +107,7 @@ export const SkillCard = (props: ActionCardTypes) => {
         }
     }
 
-
+    
     /* Sets visual level based on total XP */
     useEffect(() => {
         calculateLevelFromXp();
@@ -107,13 +117,15 @@ export const SkillCard = (props: ActionCardTypes) => {
     /* Updates skill XP and resets data at parent when the action has finished */
     useEffect(() => {
         if (tick > timeToCompleteAction) {
-            const newSkillDataWithUpdatedXp =  props.skillDataGetter.map((object, index) => {
-                if (index === props.index) object.xp = object.xp + 10;
+            const newSkillDataWithUpdatedXp =  props.playerSkillDataGetter.map((object, index) => {
+                if (index === props.index) object.xp = object.xp + calculateRecievedXpPerAction();
                 return object;
             });
 
-            props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved 10xp in ${props.name}`}]))
-            props.skillDataSetter(newSkillDataWithUpdatedXp);
+            postData(1, PLAYERDATATYPES.gold);
+            postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
+            props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
+            props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
         }
     }, [tick, props]);
@@ -132,6 +144,14 @@ export const SkillCard = (props: ActionCardTypes) => {
         }
     }, [props.isActive]);
 
+
+    /* Calculates xp to recieve per action complete based on selection */
+    const calculateRecievedXpPerAction = () => {
+        var result = props.skillData.actions.find(x => x.name === selectedAction)
+
+        return result ? result.xp : 10;
+    }
+
     
     /* Renderer */
     return (
@@ -144,9 +164,12 @@ export const SkillCard = (props: ActionCardTypes) => {
             ></ProgressBar>
             <p>{xpToNextLevel - xpRemainder}xp/{xpToNextLevel}xp</p>
 
+
+            <p onClick={() => {setCustomNumber(customNumber + 7)}}>Text Context: {customNumber}</p>
             <p>Current XP: {props.xp}</p>
             <p>Current Level: {level}/99</p>
             <p>Xp Remaining: {xpRemainder}</p>
+            <p>Xp Recieved per action: {calculateRecievedXpPerAction()}</p>
 
             <ProgressBar 
                 theme='secondary'
@@ -155,7 +178,7 @@ export const SkillCard = (props: ActionCardTypes) => {
 
             <Select 
                 selectActionSetter={setSelectedAction}
-                options={skillData[(props.name).toLowerCase()].actions}
+                options={props.skillData.actions}
             ></Select>
             
             <ActiveButton onClick={() => onClickSetActives(props.name)}>Activate</ActiveButton>

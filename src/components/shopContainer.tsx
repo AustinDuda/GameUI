@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ShopCard } from "@/components/shopCard";
 import React, { ReactNode, useEffect, useState } from 'react';
 
-const itemPlaceholder = ['', '', ''];
+const fakeShopData = ['Iron Hatchet', 'Clay Pot', 'Feathers']
 
 
 /* Setting styles */
@@ -16,16 +16,26 @@ const Card = styled.div`
     box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.1);
 `;
 
+const Hero = styled.div`
+    height: 28rem;
+    background-size: cover;
+    background-image: url('/images/shop-image.png');
+`;
+
 export const ShopContainer = () => {
 
     return (
         <div>
-            <h1>Shop</h1>
+            <Hero>
+                <h1>Shop</h1>
+            </Hero>
             <ul>
-                {itemPlaceholder.map((items, index): ReactNode => {
+                {fakeShopData.map((item, index): ReactNode => {
+                    {console.log(item)}
                     return (
                         <ShopCard
                             key={index}
+                            item={item}
                         ></ShopCard>
                     )
                 })}

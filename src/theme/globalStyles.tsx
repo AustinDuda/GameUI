@@ -4,10 +4,20 @@ import { createGlobalStyle } from 'styled-components'
 const GlobalStyle = createGlobalStyle`
     h1 {
         color: white;
-        font-size: 3.2rem;
+        font-size: 4.2rem;
         text-align: center;
+        line-height: 4.8rem;
         margin-bottom: 1.2rem;
-        font-family: RobotoBold;
+        font-family: Staatliches;
+    }
+
+    h2 {
+        color: white;
+        font-size: 3rem;
+        text-align: center;
+        line-height: 3.2rem;
+        margin-bottom: 1.2rem;
+        font-family: Staatliches;
     }
 
     h3 {
