@@ -3,6 +3,8 @@ import styled from "styled-components";
 import useApiGet from "@/hooks/useApiGet";
 import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
 import { PLAYERDATATYPES } from "@/configs/enums";
+import { CustomContext } from '@/context/customContext';
+
 
 const sidenavItems = ["Home", "Shop", "Bank", "Skills", "Events"];
 
@@ -98,7 +100,7 @@ type SidebarTypes = {
 };
 
 export const Sidebar = (props: SidebarTypes) => {
-  const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.gold);
+  const { PlayerGoldContext } = React.useContext(CustomContext);
 
   return (
     <SidebarWapper>
@@ -109,7 +111,7 @@ export const Sidebar = (props: SidebarTypes) => {
       <ul>
         {sidenavItems.map((item, index): ReactNode => {
           const isActive = props.activeSidebarItemGetter === index;
-          const showGold = item === 'Shop' ?  getData : false;
+          const showGold = item === 'Shop' ?  PlayerGoldContext.gold : false;
           return (
             <SidebarListItem
               id={item}
