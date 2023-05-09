@@ -2,7 +2,6 @@
 import React, { ReactNode, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
 
-
 /* Setting styles */
 const SnackbarWrapper = styled.div`
     left: 50%;
@@ -54,6 +53,7 @@ type SnackbarTypes = {
 
 /* Component */
 export const Snackbar = (props: SnackbarTypes) => {
+
 
     /* */
     const removeLastSnackbarItem = () => {
