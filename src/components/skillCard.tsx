@@ -79,7 +79,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
 
-    const {customNumber, setCustomNumber} = useContext(CustomContext);
+    const { PlayerGoldContext } = React.useContext(CustomContext);
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -122,7 +122,7 @@ export const SkillCard = (props: ActionCardTypes) => {
                 return object;
             });
 
-            postData(1, PLAYERDATATYPES.gold);
+            PlayerGoldContext.setGold(PlayerGoldContext.gold + 1);
             postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
             props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
             props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
@@ -164,8 +164,6 @@ export const SkillCard = (props: ActionCardTypes) => {
             ></ProgressBar>
             <p>{xpToNextLevel - xpRemainder}xp/{xpToNextLevel}xp</p>
 
-
-            <p onClick={() => {setCustomNumber(customNumber + 7)}}>Text Context: {customNumber}</p>
             <p>Current XP: {props.xp}</p>
             <p>Current Level: {level}/99</p>
             <p>Xp Remaining: {xpRemainder}</p>

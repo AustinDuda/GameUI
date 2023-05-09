@@ -1,0 +1,11 @@
+using API hooks
+
+/* Imports */
+import useApiGet from "@/hooks/useApiGet";
+import useApiPost from "@/hooks/useApiPost";
+
+/* Getting data/methods and setting as variable */
+const { postData } = useApiPost('/api/playerData');
+const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.bank);
+
+

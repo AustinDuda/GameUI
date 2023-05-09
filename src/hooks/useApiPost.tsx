@@ -33,6 +33,7 @@ const useApiPost = (url: string) => {
     } catch (error: any) {
       setError(error);
     } finally {
+      console.log(key) //maybe handle context update here?
       setIsLoading(false);
     }
   };
