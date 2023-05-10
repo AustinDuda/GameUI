@@ -129,7 +129,7 @@ export const Sidebar = (props: SidebarTypes) => {
         })}
       </ul>
       <BottomBar>
-        <span>Version 1.0</span>
+        <span>Version 1.01.1</span>
       </BottomBar>
     </SidebarWapper>
   );

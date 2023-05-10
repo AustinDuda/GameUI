@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/authContext'
 
-const NavbarComp = () => {
+const Navbar = () => {
   const { user, logout } = useAuth()
   const router = useRouter()
 
@@ -38,4 +38,4 @@ const NavbarComp = () => {
   )
 }
 
-export default NavbarComp
+export default Navbar
