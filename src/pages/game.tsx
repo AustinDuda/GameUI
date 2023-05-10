@@ -18,7 +18,7 @@ const MainContentWrapper = styled.div`
     height: 100vh;
     position: fixed;
     width: calc(100vw - 24rem);
-    padding: 4rem 2rem 2rem 2rem;
+    padding: 6.4rem 2rem 2rem 2rem;
 
     .hide {
       display: none;
