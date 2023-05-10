@@ -44,6 +44,11 @@ const Form = styled.form`
     padding: 0.4rem 0;
     margin-bottom: 2rem;
     border-bottom: 0.1rem solid #8b92a9;
+
+    &:-webkit-autofill {
+      -webkit-text-fill-color: white !important;
+      -webkit-box-shadow: 0 0 0 1000px #1a2035 inset !important;
+    }
   }
 `;
 
