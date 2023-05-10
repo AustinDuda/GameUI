@@ -29,13 +29,20 @@ const LoginWrapper = styled.div`
 
 const Form = styled.form`
   display: flex;
-  padding: 3.2rem;
   position: relative;
   align-items: center;
   border-radius: 0.6rem;
   background: #1a2035;
   flex-direction: column;
+  background-size: cover;
+  background-position: top center;
+  padding: 3.2rem 3.2rem 6.4rem 3.2rem;
+  background-image: url('./images/form-bg.png');
   box-shadow: 0.6rem 0.6rem 1.2rem rgba(0, 0, 0, 0.1);
+
+  img {
+    margin-bottom: 1.6rem;
+  }
 
   input {
     border: none;
@@ -89,6 +96,7 @@ const Login = () => {
     <LoginWrapper>
       
       <Form onSubmit={handleLogin}>
+        <img src="/images/logo.png" width={64} height={64} />
         <h1>Login</h1>
         <FormGroup>
           <label>Email address</label>

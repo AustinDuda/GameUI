@@ -1,10 +1,7 @@
 
 import styled from "styled-components";
-
-import React, { ReactNode, SetStateAction, useEffect, useState } from "react";
-import { PLAYERDATATYPES } from "@/configs/enums";
 import { CustomContext } from '@/context/customContext';
-
+import React, { ReactNode, SetStateAction } from "react";
 
 const sidenavItems = ["Home", "Shop", "Bank", "Skills", "Events"];
 
