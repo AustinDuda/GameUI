@@ -11,6 +11,7 @@ const sidenavItems = ["Home", "Shop", "Bank", "Skills", "Events"];
 const SidebarWapper = styled.div`
   top: 0;
   left: 0;
+  z-index: 100;
   width: 24rem;
   height: 100vh;
   display: flex;
