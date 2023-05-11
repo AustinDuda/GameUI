@@ -6,6 +6,7 @@ import {
   signOut,
 } from 'firebase/auth'
 import { auth } from '@/firebase/config.js'
+import { useRouter } from 'next/router'
 
 const AuthContext = createContext<any>({})
 
@@ -16,6 +17,7 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode
 }) => {
+  const router = useRouter();
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   console.log(user)
@@ -27,7 +29,8 @@ export const AuthContextProvider = ({
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
-        })
+        });
+        router.push('/game');
       } else {
         setUser(null)
       }

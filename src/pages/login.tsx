@@ -73,7 +73,6 @@ const ActiveButton = styled.button`
 `;
 
 const Login = () => {
-  const router = useRouter()
   const { user, login } = useAuth()
   const [data, setData] = useState({
     email: '',
@@ -86,7 +85,6 @@ const Login = () => {
     console.log(user)
     try {
       await login(data.email, data.password)
-      router.push('/game')
     } catch (err) {
       console.log(err)
     }
