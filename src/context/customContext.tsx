@@ -44,13 +44,13 @@ const CustomContext = createContext<ContextProps>({
 
 
 /* Setting children types for context provider */
-interface CustomContextProviderProps {
+interface ContextProviderProps {
     children: ReactNode
 }
 
 
 /* Component */
-const CustomContextProvider = ({children}: CustomContextProviderProps) => {
+const CustomContextProvider = ({children}: ContextProviderProps) => {
     const { postData } = useApiPost('/api/playerData');
     const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.gold);
 
