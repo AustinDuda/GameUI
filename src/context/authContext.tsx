@@ -7,11 +7,11 @@ const AuthContext = createContext<any>({});
 export const useAuth = () => useContext(AuthContext);
 
 /* Setting children types for context provider */
-interface AuthContextProviderProps {
+interface ContextProviderProps {
   children: ReactNode
 }
 
-export const AuthContextProvider = ({ children}: AuthContextProviderProps) => {
+export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   const router = useRouter();
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
