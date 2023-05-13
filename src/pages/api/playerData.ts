@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { PLAYERDATATYPES } from '@/configs/enums';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { collection, getDocs } from 'firebase/firestore'
 
 type Data = {
   gold: number;
