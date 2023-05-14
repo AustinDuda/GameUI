@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { auth } from '@/firebase/config.js';
+import { auth } from '@/firebase/config';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
