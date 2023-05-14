@@ -14,7 +14,7 @@ import { CustomContextProvider } from '@/context/customContext';
 /* Component */
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const noAuthRequired: Array<string> = ['/', '/login', '/signup'];
+  const noAuthRequired: Array<string> = ['/login', '/signup'];
 
   return (
     <AuthContextProvider>

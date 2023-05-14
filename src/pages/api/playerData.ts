@@ -1,6 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { PLAYERDATATYPES } from '@/configs/enums';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import admin from '@/firebase/admin';
+const storage = admin.storage();
+const db = admin.firestore();
 
 type Data = {
   gold: number;
@@ -27,10 +30,25 @@ let playerData = {
   ]
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+
+    try {
+      const getValues = await db
+      .collection("test")
+      .doc("1234")
+      .get()
+      
+  
+      console.log(getValues.data())
+    } catch (error) {
+      console.log(error)
+    }
+    
+
+
   if (req.method === 'POST') {
     let newPlayerData = playerData;
     const body = JSON.parse(req.body);
