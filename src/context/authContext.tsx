@@ -15,7 +15,6 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   const router = useRouter();
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  console.log(user)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

@@ -2,11 +2,8 @@
 import { Select } from './select';
 import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
-import useApiPost from '@/hooks/useApiPost';
+import { CustomContext, CustomContextProvider } from '@/context/customContext';
 import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
-import { PLAYERDATATYPES } from '@/configs/enums';
-
-import { CustomContext } from '@/context/customContext';
 
 /* Setting styles */
 const Card = styled.div`
@@ -69,17 +66,14 @@ type ActionCardTypes = {
 
 /* Component */
 export const SkillCard = (props: ActionCardTypes) => {
-
     const timeToCompleteAction = 4;
     const [tick, setTick] = useState(0);
     const [level, setLevel] = useState(1);
     const intervalRef = useRef<NodeJS.Timeout>();
     const [xpRemainder, setXpRemainder] = useState(0);
-    const { postData } = useApiPost('/api/playerData');
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
-
-    const { PlayerGoldContext } = React.useContext(CustomContext);
+    const { PlayerGoldContext } = useContext(CustomContext);
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -122,10 +116,31 @@ export const SkillCard = (props: ActionCardTypes) => {
                 return object;
             });
 
-            PlayerGoldContext.setGold(PlayerGoldContext.gold + 1);
-            postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
-            props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
-            props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
+            const patchData = async (value: number) => {
+                const stringifiedData = JSON.stringify({data: value});
+
+                try {
+                    const response = await fetch('/api/playerCommonData/gold', {
+                        method: 'PATCH',
+                        body: stringifiedData,
+                        headers: {
+                            'Content-type':  'application-json'
+                        }
+                    });
+
+                    const responseData = await response.json();
+                    PlayerGoldContext.setGold(responseData.gold);
+                } catch (error) {
+                    console.log('Error adding gold')
+                }
+            }
+
+            patchData(1);
+
+            //postData(1, PLAYERDATATYPES.gold);
+            //postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
+            //props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
+            //props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
             setTick(0);
         }
     }, [tick, props]);

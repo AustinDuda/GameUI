@@ -1,9 +1,6 @@
 /* imports */
 import { PLAYERDATATYPES } from "@/configs/enums";
-import useApiGet from "@/hooks/useApiGet";
-import useApiPost from "@/hooks/useApiPost";
 import { createContext, Dispatch, ReactNode, useState, SetStateAction, useContext, useEffect, useRef } from "react";
-
 
 /* Player Gold state */
 interface PlayerGoldContext {
@@ -51,32 +48,28 @@ interface ContextProviderProps {
 
 /* Component */
 const CustomContextProvider = ({children}: ContextProviderProps) => {
-    const { postData } = useApiPost('/api/playerData');
-    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.gold);
-
-    const prevGold = useRef<number>(0);
     const [gold, setGold] = useState<number>(0);
     const [customText, setCustomText] = useState<string>("");
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
     const CustomContextTwoProps: CustomContextTwoProps = { customText, setCustomText };
-    
-    
-    /* */
-    useEffect(() => {
-        if (getData === null) return;
-        prevGold.current = getData;
-        setGold(getData);
-    }, [getData]);
 
-
-    /* */
     useEffect(() => {
-        if (gold != prevGold.current) {
-            postData(gold - prevGold.current, PLAYERDATATYPES.gold);
-            prevGold.current = gold;
+        const getData = async () => {
+            try {
+                const response = await fetch('/api/playerCommonData/gold');
+                const responseData = await response.json();
+
+                setGold(responseData.gold);
+            } catch (error) {
+                console.log('Error adding gold')
+            }
         }
-    }, [gold])
+        getData();
+    }, [])
 
+    useEffect(() => {
+        console.log(gold)
+    }, [gold])
 
     /* Renderer */
     return (

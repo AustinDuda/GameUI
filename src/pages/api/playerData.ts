@@ -1,10 +1,11 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+/* imports */
 import { PLAYERDATATYPES } from '@/configs/enums';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import admin from '@/firebase/admin';
-const storage = admin.storage();
 const db = admin.firestore();
 
+
+/* Setting types */
 type Data = {
   gold: number;
   equipment: Array<{}>;
@@ -12,8 +13,9 @@ type Data = {
   bank: Array<{}>
 }
 
+
+/* temp data */
 let playerData = {
-  gold: 1156,
   equipment: [{}],
   stats: [
     {name:'woodcutting', xp: 1000},
@@ -30,51 +32,45 @@ let playerData = {
   ]
 }
 
+
+/* update Gold */
+const updateGoldValue = async (res: NextApiResponse, body: any) => {
+  let newGoldValue: number = 0;
+  const snapshot: {data: any} = await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').get();
+  
+  try {
+    newGoldValue = snapshot?.data().gold + body.data;
+
+    await db
+      .collection("users")
+      .doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2')
+      .update({
+        gold: newGoldValue,
+      });
+  } catch (error) {
+    console.log(`There was an error when adding gold: ${error}`);
+  }
+
+  res.send({ gold: newGoldValue });
+}
+
+
+/* */
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
-
-    try {
-      const getValues = await db
-      .collection("test")
-      .doc("1234")
-      .get()
-      
-  
-      console.log(getValues.data())
-    } catch (error) {
-      console.log(error)
-    }
-    
-
-
-  if (req.method === 'POST') {
-    let newPlayerData = playerData;
+    if (req.method === 'POST') {
     const body = JSON.parse(req.body);
 
     switch (body.key) {
-      case PLAYERDATATYPES.bank: 
-        const getItemIndexIfExists = playerData.bank.findIndex(item => item.name === body.data.name)
-
-        getItemIndexIfExists != -1
-          ? playerData.bank[getItemIndexIfExists].quantity += body.data.quantity
-          : playerData.bank = [...playerData.bank, body.data];
-        break;
       case PLAYERDATATYPES.gold: 
-        if (typeof body.data === 'number') {
-          playerData.gold = body.data += playerData.gold;
-        }
+        updateGoldValue(res, body);
         break;
       default:
-        if (body.key in playerData) {
-          newPlayerData = {...playerData, [body.key]: body.data};
-          playerData = newPlayerData;
-        }
-        break;
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 
-    res.status(201).json(playerData);
   } else {
     res.status(200).json(playerData)
   }
