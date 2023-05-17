@@ -54,6 +54,7 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
     const CustomContextTwoProps: CustomContextTwoProps = { customText, setCustomText };
 
     useEffect(() => {
+        console.log('ran')
         const getData = async () => {
             try {
                 const response = await fetch('/api/playerCommonData/gold');
@@ -66,10 +67,6 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
         }
         getData();
     }, [])
-
-    useEffect(() => {
-        console.log(gold)
-    }, [gold])
 
     /* Renderer */
     return (

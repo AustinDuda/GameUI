@@ -31,7 +31,7 @@ type SnackbarItemTypes = {
 
 
 export default function Game() {
-  const [activeSidebarItem, setActiveSidebarItem] = useState(3);
+  const [activeSidebarItem, setActiveSidebarItem] = useState(0);
   const [activeSnackbarItems, setActiveSnackbarItems] = useState(Array<SnackbarItemTypes>);
   const { user } = useAuth()
   const router = useRouter()
@@ -82,4 +82,3 @@ export default function Game() {
     </>
   )
 }
-

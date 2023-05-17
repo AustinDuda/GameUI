@@ -4,11 +4,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 
 /* Set varibles */
+const gold: number = 0;
 const db = admin.firestore();
 
 
 /* Update player gold data */
-const handlePatch = async (req: NextApiRequest, res: NextApiResponse) => {
+const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
   let newGoldValue: number = 0;
   const body = JSON.parse(req.body);
   const snapshot: {data: any} = await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').get();
@@ -22,6 +23,7 @@ const handlePatch = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   } catch (error) {
     console.log(`There was an error when adding gold: ${error}`);
+    res.status(500).send({ error: 'Internal Server Error' });
   }
 
   res.send({ gold: newGoldValue });
@@ -30,9 +32,19 @@ const handlePatch = async (req: NextApiRequest, res: NextApiResponse) => {
 
 /* Get player gold value */
 const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
-  const snapshot: {data: any} = await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').get();
+  try {
+    const snapshot: { data: any } = await db
+      .collection("users")
+      .doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2')
+      .get();
 
-  res.send({ gold: snapshot?.data().gold });
+    const currentPlayerGold: number = snapshot?.data().gold;
+
+    res.send({ gold: currentPlayerGold });
+  } catch (error) {
+    console.log(`There was an error when fetching gold: ${error}`);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
 }
 
 
@@ -44,8 +56,8 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     case "GET":
       handleGet(req, res);
       break;
-    case "PATCH":
-      handlePatch(req, res);
+    case "POST":
+      handlePost(req, res);
       break;
     default:
       res.setHeader("Allow", ["GET"]);

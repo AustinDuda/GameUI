@@ -1,8 +1,6 @@
 
 /* Imports */
-import React from 'react';
 import '@/styles/globals.css';
-
 import { useRouter } from 'next/router';
 import type { AppProps } from 'next/app';
 import Navbar from '@/components/navigation';
@@ -20,9 +18,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <AuthContextProvider>
       <GlobalStyle></GlobalStyle>
       <Navbar></Navbar>
-      {noAuthRequired.includes(router.pathname) ? (
-        <Component {...pageProps} />
-      ) : (
+        {noAuthRequired.includes(router.pathname) ? (
+          <Component {...pageProps} />
+        ) : (
         <>
           <CustomContextProvider>
             <Component {...pageProps} />

@@ -18,19 +18,17 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        setUser(false); 
-        return;
+      if (user) {
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        });
+        router.push('/game')
+      } else {
+        setUser(null)
       }
-
-      setUser({
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-      });
-
-      router.push('/game');
-      setLoading(false);
+      setLoading(false)
     })
 
     return () => unsubscribe()
@@ -48,6 +46,10 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
     setUser(null)
     await signOut(auth)
   }
+
+  useEffect(() => {
+    console.log(user)
+  }, [])
 
   return (
     <AuthContext.Provider value={{ user, login, signup, logout }}>

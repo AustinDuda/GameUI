@@ -116,7 +116,7 @@ export const SkillCard = (props: ActionCardTypes) => {
                 return object;
             });
 
-            const patchData = async (value: number) => {
+            /*const patchData = async (value: number) => {
                 const stringifiedData = JSON.stringify({data: value});
 
                 try {
@@ -135,7 +135,9 @@ export const SkillCard = (props: ActionCardTypes) => {
                 }
             }
 
-            patchData(1);
+            patchData(1);*/
+
+            PlayerGoldContext.setGold(PlayerGoldContext. gold + 1);
 
             //postData(1, PLAYERDATATYPES.gold);
             //postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
