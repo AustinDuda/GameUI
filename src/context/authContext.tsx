@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import { auth } from '@/firebase/config';
+
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onIdTokenChanged } from 'firebase/auth';
 
 const AuthContext = createContext<any>({});
 export const useAuth = () => useContext(AuthContext);
@@ -13,17 +14,36 @@ interface ContextProviderProps {
 
 export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) =>  {
       if (user) {
+        await user.getIdToken();
         setUser({
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
         });
+
+        const checkIfUserDataExists = async () => {
+            try {
+                const response = await fetch('/api/userCreation', { 
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ id: user.uid }) 
+                });
+
+                await response.json();
+            } catch (error) {
+                console.log('Error cehcking for player')
+            }
+        }
+        checkIfUserDataExists();
+
         router.push('/game')
       } else {
         setUser(null)
@@ -32,7 +52,7 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
     })
 
     return () => unsubscribe()
-  }, [])
+  }, []);
 
   const signup = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password)
@@ -46,10 +66,6 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
     setUser(null)
     await signOut(auth)
   }
-
-  useEffect(() => {
-    console.log(user)
-  }, [])
 
   return (
     <AuthContext.Provider value={{ user, login, signup, logout }}>

@@ -2,7 +2,7 @@
 import { Select } from './select';
 import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
-import { CustomContext, CustomContextProvider } from '@/context/customContext';
+import { CustomContext } from '@/context/customContext';
 import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
 
 /* Setting styles */
@@ -115,29 +115,6 @@ export const SkillCard = (props: ActionCardTypes) => {
                 if (index === props.index) object.xp = object.xp + calculateRecievedXpPerAction();
                 return object;
             });
-
-            /*const patchData = async (value: number) => {
-                const stringifiedData = JSON.stringify({data: value});
-
-                try {
-                    const response = await fetch('/api/playerCommonData/gold', {
-                        method: 'PATCH',
-                        body: stringifiedData,
-                        headers: {
-                            'Content-type':  'application-json'
-                        }
-                    });
-
-                    const responseData = await response.json();
-                    PlayerGoldContext.setGold(responseData.gold);
-                } catch (error) {
-                    console.log('Error adding gold')
-                }
-            }
-
-            patchData(1);*/
-
-            PlayerGoldContext.setGold(PlayerGoldContext. gold + 1);
 
             //postData(1, PLAYERDATATYPES.gold);
             //postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);

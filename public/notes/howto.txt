@@ -8,7 +8,8 @@ const { postData } = useApiPost('/api/playerData');
 const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.bank);
 
 
-
+const snapshot2 = await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').collection('bank').get()
+console.log(snapshot2.docs.map(doc => doc.data()))
 
 
 

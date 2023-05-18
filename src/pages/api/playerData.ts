@@ -33,28 +33,6 @@ let playerData = {
 }
 
 
-/* update Gold */
-const updateGoldValue = async (res: NextApiResponse, body: any) => {
-  let newGoldValue: number = 0;
-  const snapshot: {data: any} = await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').get();
-  
-  try {
-    newGoldValue = snapshot?.data().gold + body.data;
-
-    await db
-      .collection("users")
-      .doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2')
-      .update({
-        gold: newGoldValue,
-      });
-  } catch (error) {
-    console.log(`There was an error when adding gold: ${error}`);
-  }
-
-  res.send({ gold: newGoldValue });
-}
-
-
 /* */
 export default async function handler(
   req: NextApiRequest,
@@ -65,7 +43,7 @@ export default async function handler(
 
     switch (body.key) {
       case PLAYERDATATYPES.gold: 
-        updateGoldValue(res, body);
+        //updateGoldValue(res, body);
         break;
       default:
         res.status(405).end(`Method ${req.method} Not Allowed`);

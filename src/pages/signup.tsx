@@ -72,7 +72,6 @@ const ActiveButton = styled.button`
 
 const Signup = () => {
   const { user, signup } = useAuth()
-  console.log(user)
   const [data, setData] = useState({
     email: '',
     password: '',

@@ -1,6 +1,6 @@
 /* imports */
-import { PLAYERDATATYPES } from "@/configs/enums";
-import { createContext, Dispatch, ReactNode, useState, SetStateAction, useContext, useEffect, useRef } from "react";
+import { createContext, Dispatch, ReactNode, useState, SetStateAction, useEffect } from "react";
+
 
 /* Player Gold state */
 interface PlayerGoldContext {
@@ -54,7 +54,6 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
     const CustomContextTwoProps: CustomContextTwoProps = { customText, setCustomText };
 
     useEffect(() => {
-        console.log('ran')
         const getData = async () => {
             try {
                 const response = await fetch('/api/playerCommonData/gold');
@@ -62,7 +61,7 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
 
                 setGold(responseData.gold);
             } catch (error) {
-                console.log('Error adding gold')
+                console.log('Error adding gold');
             }
         }
         getData();
