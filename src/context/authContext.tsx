@@ -27,7 +27,7 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
           displayName: user.displayName,
         });
 
-        const checkIfUserDataExists = async () => {
+        /*const checkIfUserDataExists = async () => {
             try {
                 const response = await fetch('/api/userCreation', { 
                   method: "POST",
@@ -42,7 +42,7 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
                 console.log('Error cehcking for player')
             }
         }
-        checkIfUserDataExists();
+        checkIfUserDataExists();*/
 
         router.push('/game')
       } else {

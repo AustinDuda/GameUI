@@ -37,7 +37,7 @@ export const EventsContainer = () => {
 
         if (opened) {
             const patchData = async (value: number) => {
-                const stringifiedData = JSON.stringify({data: value});
+                const stringifiedData = JSON.stringify({data: value, uid: user.uid});
     
                 try {
                     const response = await fetch('/api/playerCommonData/gold', {
@@ -54,7 +54,7 @@ export const EventsContainer = () => {
                     console.log('Error adding gold')
                 }
             }
-    
+            
             patchData(1);
         }
 

@@ -11,14 +11,14 @@ const db = admin.firestore();
 const handlePatch = async (req: NextApiRequest, res: NextApiResponse) => {
   let newGoldValue: number = 0;
   const body = JSON.parse(req.body);
-  const snapshot: {data: any} = await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').get();
+  const snapshot: {data: any} = await db.collection("users").doc(body.uid).get();
 
   try {
     const currentPlayerGold: number = snapshot?.data().gold;
     newGoldValue = currentPlayerGold + body.data;
 
     if (!isNaN(newGoldValue)) {
-      await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').update({
+      await db.collection("users").doc(body.uid).update({
         gold: newGoldValue,
       });
   
@@ -32,7 +32,7 @@ const handlePatch = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
 /* Get player gold value */
-const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
+export const getGold = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const snapshot: { data: any } = await db.collection("users").doc('1D8WV2tMq1MQ7wylIEAsHZYGpKv2').get();
     const currentPlayerGold: number = snapshot?.data().gold;
@@ -51,7 +51,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (method) {
     case "GET":
-      handleGet(req, res);
+      getGold(req, res);
       break;
     case "PATCH":
       handlePatch(req, res);

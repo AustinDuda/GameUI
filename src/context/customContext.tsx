@@ -1,4 +1,5 @@
 /* imports */
+import { useAuth } from "@/context/authContext";
 import { createContext, Dispatch, ReactNode, useState, SetStateAction, useEffect } from "react";
 
 
@@ -48,23 +49,33 @@ interface ContextProviderProps {
 
 /* Component */
 const CustomContextProvider = ({children}: ContextProviderProps) => {
+    const { user } = useAuth();
     const [gold, setGold] = useState<number>(0);
     const [customText, setCustomText] = useState<string>("");
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
     const CustomContextTwoProps: CustomContextTwoProps = { customText, setCustomText };
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const response = await fetch('/api/playerCommonData/gold');
-                const responseData = await response.json();
+        const patchData = async (value: number) => {
+            const stringifiedData = JSON.stringify({data: value, uid: user.uid});
 
-                setGold(responseData.gold);
+            try {
+                const response = await fetch('/api/playerCommonData/gold', {
+                    method: 'PATCH',
+                    body: stringifiedData,
+                    headers: {
+                        'Content-type':  'application-json'
+                    }
+                });
+
+                const responseData = await response.json();
+                PlayerGoldContext.setGold(responseData.gold);
             } catch (error) {
-                console.log('Error adding gold');
+                console.log('Error adding gold')
             }
         }
-        getData();
+
+        patchData(0);
     }, [])
 
     /* Renderer */
