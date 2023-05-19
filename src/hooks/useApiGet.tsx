@@ -19,6 +19,7 @@ const useApiGet = (url: string, key: string) => {
         }
 
         const responseData = await response.json();
+
         setGetData(responseData[key]);
       } catch (error: any) {
         setError(error.message);

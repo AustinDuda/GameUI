@@ -109,7 +109,8 @@ export const Sidebar = (props: SidebarTypes) => {
       <ul>
         {sidenavItems.map((item, index): ReactNode => {
           const isActive = props.activeSidebarItemGetter === index;
-          const showGold = item === 'Shop' ?  PlayerGoldContext.gold : false;
+          const quantity = PlayerGoldContext.gold > 1000 ? Math.floor((PlayerGoldContext.gold/100)*.1) + 'k' : PlayerGoldContext.gold;
+          const showGold = item === 'Shop' ?  quantity : null;
           return (
             <SidebarListItem
               id={item}
@@ -121,7 +122,7 @@ export const Sidebar = (props: SidebarTypes) => {
             >
               <img src={`/images/icon-${(item).toLowerCase()}.svg`} />
               {item} 
-              {showGold ? <CurrencyWrapper><img src="/images/icon-gold-coin.png" width={24} height={24} />{showGold}</CurrencyWrapper> : null}
+              {showGold != null ? <CurrencyWrapper><img src="/images/icon-gold-coin.png" width={24} height={24} />{showGold}</CurrencyWrapper> : null}
             </SidebarListItem>
           );
         })}

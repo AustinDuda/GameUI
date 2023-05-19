@@ -72,7 +72,6 @@ const ActiveButton = styled.button`
 
 const Signup = () => {
   const { user, signup } = useAuth()
-  console.log(user)
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -82,12 +81,10 @@ const Signup = () => {
     e.preventDefault()
 
     try {
-      await signup(data.email, data.password)
+      await signup(data.email, data.password);
     } catch (err) {
       console.log(err)
     }
-
-    console.log(data)
   }
 
   return (

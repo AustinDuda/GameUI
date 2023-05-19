@@ -1,8 +1,8 @@
 /* Imports */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useApiGet from '@/hooks/useApiGet';
-import { PLAYERDATATYPES } from '@/configs/enums';
+import { useAuth } from "@/context/authContext";
+import { CustomContext } from '@/context/customContext';
 
 
 /* Setting styles */
@@ -24,31 +24,47 @@ const EventsWrapper = styled.div`
 
 /* Component */
 export const EventsContainer = () => {
+    const { user } = useAuth()
     const [opened, setOpened] = useState(false);
-    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.bank);
+    const { PlayerGoldContext } = useContext(CustomContext);
 
     
     /* */
     useEffect(() => {
-        if (!getData) return;
         const timer = setTimeout(() => {
             setOpened(false);
         }, 1000);
 
-        return () => clearTimeout(timer);
+        if (opened) {
+            const patchData = async (value: number) => {
+                const stringifiedData = JSON.stringify({data: value, uid: user.uid});
+    
+                try {
+                    const response = await fetch('/api/playerCommonData/gold', {
+                        method: 'PATCH',
+                        body: stringifiedData,
+                        headers: {
+                            'Content-type':  'application-json'
+                        }
+                    });
+    
+                    const responseData = await response.json();
+                    PlayerGoldContext.setGold(responseData.gold);
+                } catch (error) {
+                    console.log('Error adding gold')
+                }
+            }
+            
+            patchData(1);
+        }
 
+        return () => clearTimeout(timer);
     }, [opened])
 
 
     /* */
     const openChest = () => {
-        if (!getData) return;
-        const getItemIndexIfExists = 1;//getData.findIndex(item => item.name === 'golden key');
-
-        if (getItemIndexIfExists === 1) {
-            setOpened(true);
-            console.log('remove item from bank')
-        }
+        setOpened(true);
     }
 
 

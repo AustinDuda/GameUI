@@ -1,21 +1,19 @@
-import { PLAYERDATATYPES } from '@/configs/enums';
-import { CustomContext } from '@/context/customContext';
 import { useContext, useState } from 'react';
+import { CustomContext } from '@/context/customContext';
 
-const useApiPost = (url: string) => {
+const useApiPatch = (url: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
   const { PlayerGoldContext } = useContext(CustomContext);
 
-  const postData = async (data: any, key: string) => {
+  const postData = async (data: any) => {
     setIsLoading(true);
     setError(null);
     setData(null);
 
     const stringifiedData = JSON.stringify({
-        key: key,
         data: data
     });
 
@@ -33,16 +31,6 @@ const useApiPost = (url: string) => {
       }
 
       const responseData = await response.json();
-
-      switch (key) {
-        case PLAYERDATATYPES.gold:
-          PlayerGoldContext.setGold(responseData.gold);
-          console.log('new gold amount is: ' + responseData.gold)
-          break;
-        default:
-          console.log('no key')
-      }
-
       setData(responseData);
     } catch (error: any) {
       setError(error);
@@ -52,4 +40,4 @@ const useApiPost = (url: string) => {
   return { postData, data, error, isLoading};
 };
 
-export default useApiPost;
+export default useApiPatch;

@@ -68,7 +68,7 @@ type BankCardTypes = {
 export const BankCard = (props: BankCardTypes) => {
     const [showInfo, setShowInfo] = useState(false);
     const quantity = props.item.quantity > 1000 
-    ? Math.floor((props.item.quantity/1000)*10) *.1 + 'k' : props.item.quantity;
+    ? Math.floor((props.item.quantity/100)*.1) + 'k' : props.item.quantity;
     const bankSlotImage = props.item ? (props.item.name).replace(/\s+/g, '-') : 'blank';
 
 
