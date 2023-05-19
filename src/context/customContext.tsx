@@ -1,8 +1,6 @@
 /* imports */
-import { PLAYERDATATYPES } from "@/configs/enums";
-import useApiGet from "@/hooks/useApiGet";
-import useApiPost from "@/hooks/useApiPost";
-import { createContext, Dispatch, ReactNode, useState, SetStateAction, useContext, useEffect, useRef } from "react";
+import { useAuth } from "@/context/authContext";
+import { createContext, Dispatch, ReactNode, useState, SetStateAction, useEffect } from "react";
 
 
 /* Player Gold state */
@@ -51,32 +49,34 @@ interface ContextProviderProps {
 
 /* Component */
 const CustomContextProvider = ({children}: ContextProviderProps) => {
-    const { postData } = useApiPost('/api/playerData');
-    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.gold);
-
-    const prevGold = useRef<number>(0);
+    const { user } = useAuth();
     const [gold, setGold] = useState<number>(0);
     const [customText, setCustomText] = useState<string>("");
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
     const CustomContextTwoProps: CustomContextTwoProps = { customText, setCustomText };
-    
-    
-    /* */
-    useEffect(() => {
-        if (getData === null) return;
-        prevGold.current = getData;
-        setGold(getData);
-    }, [getData]);
 
-
-    /* */
     useEffect(() => {
-        if (gold != prevGold.current) {
-            postData(gold - prevGold.current, PLAYERDATATYPES.gold);
-            prevGold.current = gold;
+        const patchData = async (value: number) => {
+            const stringifiedData = JSON.stringify({data: value, uid: user.uid});
+
+            try {
+                const response = await fetch('/api/playerCommonData/gold', {
+                    method: 'PATCH',
+                    body: stringifiedData,
+                    headers: {
+                        'Content-type':  'application-json'
+                    }
+                });
+
+                const responseData = await response.json();
+                PlayerGoldContext.setGold(responseData.gold);
+            } catch (error) {
+                console.log('Error adding gold')
+            }
         }
-    }, [gold])
 
+        patchData(0);
+    }, [])
 
     /* Renderer */
     return (

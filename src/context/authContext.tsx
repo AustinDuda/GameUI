@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import { auth } from '@/firebase/config';
+
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onIdTokenChanged } from 'firebase/auth';
 
 const AuthContext = createContext<any>({});
 export const useAuth = () => useContext(AuthContext);
@@ -13,36 +14,68 @@ interface ContextProviderProps {
 
 export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  console.log(user)
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        setUser(false); 
-        return;
+    /*const unsubscribe = onAuthStateChanged(auth, async (user) =>  {
+      if (user) {
+        await user.getIdToken();
+
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        });
+      } else {
+        setUser(null)
       }
+      setLoading(false)
+    })*/
 
-      setUser({
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-      });
+    //return () => unsubscribe()
+  }, []);
 
-      router.push('/game');
-      setLoading(false);
+  const signup =  (email: string, password: string) => {
+    return createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
+      const user = userCredential.user;
+
+      try {
+          const response = await fetch('/api/userCreation', { 
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: user.uid }) 
+          });
+
+          await response.json();
+          router.push('/login');
+      } catch (error) {
+          console.log('Error checking for player')
+      }
     })
-
-    return () => unsubscribe()
-  }, [])
-
-  const signup = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password)
+    .catch((error) => {
+      console.error("Error signing up:", error);
+    });
   }
 
   const login = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password)
+    return signInWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
+      const user = userCredential.user;
+
+      try {
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        });
+        
+        router.push('/game');
+      } catch (error) {
+        console.log('Error while trying to login')
+      }
+    })
   }
 
   const logout = async () => {

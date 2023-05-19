@@ -1,3 +1,5 @@
-Learn about useContext
-Set up useContext for gold as example
-figure out how to update useContext when api is updated
+check if user has id
+check if user exists in db
+if false, add user (data too?)
+if true, if so get data
+latest, post data
