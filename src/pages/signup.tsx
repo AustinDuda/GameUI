@@ -81,7 +81,7 @@ const Signup = () => {
     e.preventDefault()
 
     try {
-      await signup(data.email, data.password)
+      await signup(data.email, data.password);
     } catch (err) {
       console.log(err)
     }
