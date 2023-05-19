@@ -19,8 +19,7 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
 
   useEffect(() => {
 
-      setLoading(false)
-
+      setLoading(false);
   }, []);
 
   const signup =  (email: string, password: string) => {
@@ -28,7 +27,7 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
       const user = userCredential.user;
 
       try {
-          const response = await fetch('/api/userCreation', { 
+          const response = await fetch('/api/userCreation', {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -60,7 +59,7 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
         
         router.push('/game');
       } catch (error) {
-        console.log('Error while trying to login')
+        console.log('Error while trying to login: ', error);
       }
     })
   }
