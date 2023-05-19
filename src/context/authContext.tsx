@@ -18,22 +18,9 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    /*const unsubscribe = onAuthStateChanged(auth, async (user) =>  {
-      if (user) {
-        await user.getIdToken();
 
-        setUser({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-        });
-      } else {
-        setUser(null)
-      }
       setLoading(false)
-    })*/
 
-    //return () => unsubscribe()
   }, []);
 
   const signup =  (email: string, password: string) => {
