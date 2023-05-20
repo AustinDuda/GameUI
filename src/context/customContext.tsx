@@ -57,6 +57,7 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
 
     useEffect(() => {
         const patchData = async (value: number) => {
+            if (!user) return;
             const stringifiedData = JSON.stringify({data: value, uid: user.uid});
 
             try {

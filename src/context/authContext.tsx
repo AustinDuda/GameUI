@@ -18,9 +18,21 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const refreshUserCreds = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        })
+      } else {
+        setUser(null)
+      }
+      setLoading(false)
+    })
 
-      setLoading(false);
-  }, []);
+    return () => refreshUserCreds()
+  }, [])
 
   const signup =  (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
@@ -56,7 +68,7 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
           email: user.email,
           displayName: user.displayName,
         });
-        
+
         router.push('/game');
       } catch (error) {
         console.log('Error while trying to login: ', error);
