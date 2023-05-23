@@ -20,6 +20,8 @@ const chestLoot = {
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(req.body);
 
+  realtimeDb.ref()
+
   firestore.collection('users').get().then((snapshot) => {
     console.log(snapshot)
   }).catch((error) => {

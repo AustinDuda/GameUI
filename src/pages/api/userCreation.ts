@@ -1,10 +1,10 @@
 /* Imports */
-import admin from '@/firebase/admin';
+import{ firestore } from '@/firebase/admin';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 /* Set Varibles */
-const db = admin.firestore();
+const db = firestore
 
 
 /* Check if user exists */
