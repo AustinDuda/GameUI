@@ -1,6 +1,5 @@
 /* imports */
 import { firestore, realtimeDb } from '@/firebase/admin';
-import { FieldValue } from "firebase-admin/firestore";
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 
@@ -20,13 +19,18 @@ const chestLoot = {
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(req.body);
 
-  realtimeDb.ref()
+  const realtimeDataRef = realtimeDb.ref(`users/${body.uid}`);
+    realtimeDataRef.once('value', (snapshot) => {
+    const realtimeData = snapshot.val();
+    console.log(realtimeData.gold)
+  });
 
-  firestore.collection('users').get().then((snapshot) => {
+
+  /*firestore.collection('users').get().then((snapshot) => {
     console.log(snapshot)
   }).catch((error) => {
     console.error('Firestore error:', error);
-  });
+  });*/
 
   /*
   const userRef = await db.collection("users").doc(body.uid);
