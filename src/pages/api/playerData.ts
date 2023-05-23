@@ -1,8 +1,8 @@
 /* imports */
 import { PLAYERDATATYPES } from '@/configs/enums';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import admin from '@/firebase/admin';
-const db = admin.firestore();
+import { firestore } from '@/firebase/admin';
+const db = firestore;
 
 
 /* Setting types */
