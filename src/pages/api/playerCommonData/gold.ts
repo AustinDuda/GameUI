@@ -1,10 +1,10 @@
 /* imports */
-import admin from '@/firebase/admin';
+import { firestore } from '@/firebase/admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 
 /* Set varibles */
-const db = admin.firestore();
+const db = firestore
 
 
 /* Update player gold data */

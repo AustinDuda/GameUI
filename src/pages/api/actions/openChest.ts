@@ -1,11 +1,11 @@
 /* imports */
-import admin from '@/firebase/admin';
+import { firestore, realtimeDb } from '@/firebase/admin';
 import { FieldValue } from "firebase-admin/firestore";
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 
 /* Set varibles */
-const db = admin.firestore();
+const db = firestore;
 
 
 const chestLoot = {
@@ -19,13 +19,15 @@ const chestLoot = {
 /* Update player gold data */
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(req.body);
-  const userRef = await db.collection("users").doc(body.uid);
-  /*const snapshotBank = await userRef.collection('bank').get();
-  const bankItems = snapshotBank.docs.map(item => {
-    const newItem = { [item.id]: item.data() }
-    return newItem;
-  });*/
 
+  firestore.collection('users').get().then((snapshot) => {
+    console.log(snapshot)
+  }).catch((error) => {
+    console.error('Firestore error:', error);
+  });
+
+  /*
+  const userRef = await db.collection("users").doc(body.uid);
   const snapshotBankItem = await userRef.collection('bank').doc(chestLoot.goldenChest.keyId).get();
 
   if (snapshotBankItem.data()) {
@@ -45,7 +47,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const newContextGoldValue = (await userRef.get()).data()?.gold + chestLoot.goldenChest.gold;
     return {gold: newContextGoldValue}
-  }
+  }*/
   
   return { gold: null }
 }
