@@ -75,13 +75,14 @@ const Signup = () => {
   const [data, setData] = useState({
     email: '',
     password: '',
+    displayName: ''
   })
 
   const handleSignup = async (e: any) => {
     e.preventDefault()
 
     try {
-      await signup(data.email, data.password);
+      await signup(data.displayName, data.email, data.password);
     } catch (err) {
       console.log(err)
     }
@@ -93,6 +94,21 @@ const Signup = () => {
       <Form onSubmit={handleSignup}>
         <img src="/images/logo.png" width={64} height={64} />
         <h1>Signup</h1>
+        <FormGroup>
+          <label>Display name</label>
+          <input
+            onChange={(e: any) =>
+              setData({
+                ...data,
+                displayName: e.target.value,
+              })
+            }
+            value={data.displayName}
+            required
+            type="input"
+          />
+        </FormGroup>
+
         <FormGroup>
           <label>Email address</label>
           <input

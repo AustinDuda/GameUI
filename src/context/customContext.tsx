@@ -68,9 +68,10 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
                         'Content-type':  'application-json'
                     }
                 });
-
+                
                 const responseData = await response.json();
-                PlayerGoldContext.setGold(responseData.gold);
+                if (!isNaN(responseData.gold)) PlayerGoldContext.setGold(responseData.gold);
+                
             } catch (error) {
                 console.log('Error adding gold')
             }

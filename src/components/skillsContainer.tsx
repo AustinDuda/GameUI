@@ -32,27 +32,16 @@ type SkillsContainerTypes = {
 };
 
 
+const stats = [
+    {name:'woodcutting', xp: 1000},
+    {name:'mining', xp: 0},
+    {name:'fishing', xp: 0},
+  ]
+
 /* Component */
 export const SkillsContainer = (props: SkillsContainerTypes) => {
     const [activeCard, setActiveCard] = useState('');
-    const { postData } = useApiPost('/api/playerData');
-    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.stats);
-    const [playerSkillData, setPlayerSkillData] = useState<PlayerSkillDataTypes[]>([]);
-
-    
-    /* Fetches player skill data from the playerData API */
-    useEffect(() => { 
-        if (getData === null) return;
-        setPlayerSkillData(getData)
-    }, [getData]);
-
-
-    /* Posts player skill data to the playerData API */
-    useEffect(() => {
-        if (playerSkillData.length < 1) return;
-        postData(playerSkillData, PLAYERDATATYPES.stats);
-    }, [playerSkillData]);
-
+    const [playerSkillData, setPlayerSkillData] = useState(stats);
 
     /* Renderer */
     return (

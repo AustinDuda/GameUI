@@ -3,10 +3,6 @@ import { firestore, realtimeDb } from '@/firebase/admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 
-/* Set varibles */
-const db = firestore;
-
-
 const chestLoot = {
     goldenChest: {
         gold: 10,
@@ -18,12 +14,26 @@ const chestLoot = {
 /* Update player gold data */
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(req.body);
+  const goldToAdd = parseInt(body.gold);
 
-  const realtimeDataRef = realtimeDb.ref(`users/${body.uid}`);
-    realtimeDataRef.once('value', (snapshot) => {
-    const realtimeData = snapshot.val();
-    console.log(realtimeData.gold)
-  });
+  try {
+    let newGoldValue = 0;
+    const userRef = realtimeDb.ref(`users/${body.uid}/gold`);
+
+    if (typeof goldToAdd === 'number') {
+      await userRef.transaction((currentValue) => {
+        newGoldValue = (currentValue || 0) + goldToAdd;
+        return newGoldValue;
+      });
+
+      return { gold: newGoldValue};
+    }
+  } catch (error) {
+    console.log(error)
+    return { gold: null }
+  }
+    
+}
 
 
   /*firestore.collection('users').get().then((snapshot) => {
@@ -54,9 +64,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     const newContextGoldValue = (await userRef.get()).data()?.gold + chestLoot.goldenChest.gold;
     return {gold: newContextGoldValue}
   }*/
-  
-  return { gold: null }
-}
+
 
 
 /* Handle methods */

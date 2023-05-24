@@ -44,13 +44,13 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ id: user.uid }) 
+            body: JSON.stringify({ uid: user.uid }) 
           });
 
           await response.json();
           router.push('/login');
       } catch (error) {
-          console.log('Error checking for player')
+          console.log('Error checking for player ' + error)
       }
     })
     .catch((error) => {

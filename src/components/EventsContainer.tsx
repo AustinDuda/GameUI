@@ -39,7 +39,7 @@ export const EventsContainer = () => {
 
         if (opened) {
             const patchData = async () => {
-                const stringifiedData = JSON.stringify({uid: user.uid});
+                const stringifiedData = JSON.stringify({uid: user.uid, gold: 10});
 
                 try {
                     const response = await fetch('/api/actions/openChest', {

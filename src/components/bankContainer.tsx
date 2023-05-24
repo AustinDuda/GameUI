@@ -39,21 +39,22 @@ const BankCategoryHeader = styled.div`
     }
 `;
 
+const bank = [
+    {name: 'oak log', quantity: 99},
+    {name: 'copper ore', quantity: 76},
+    {name: 'sardine', quantity: 608},
+    {name: 'tin ore', quantity: 16},
+    {name: 'shrimp', quantity: 1600},
+    {name: 'golden key', quantity: 1}
+];
+
 
 /* Component */
 export const BankContainer = () => {
     const [swapBankSlot, setSwapBankSlot] = useState(-1);
+    const [playerBankData, setPlayerBankData] = useState(bank);
     const [selectedBankSlot, setSelectedBankSlot] = useState(-1);
-    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.bank);
-    const [playerBankData, setPlayerBankData] = useState(Array<{name: string, quantity: number}>);
-
-
-    /* Fetches player skill data from the playerData API */
-    useEffect(() => {
-        if (getData === null) return;
-        setPlayerBankData(getData)
-    }, [getData]);
-
+    
 
     /* Deselects bank slot if user clicks outside bank slots */
     const deselectSelectedBankSlot = (e: Event) => {
