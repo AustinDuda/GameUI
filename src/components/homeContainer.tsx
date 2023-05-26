@@ -1,10 +1,6 @@
 /* Imports */
+import React from 'react';
 import styled from 'styled-components';
-import useApiPost from '@/hooks/useApiPost';
-import useApiGet from '@/hooks/useApiGet';
-import { SkillCard } from "@/components/skillCard";
-import { skillData } from '../../public/config/gameData';
-import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
 
 /* Setting styles */
@@ -60,8 +56,6 @@ const ThreeColumnGrid = styled.div`
 /* Component */
 export const HomeContainer = () => {
 
-
-    
     /* Renderer */
     return (
         <TabWrapper>
