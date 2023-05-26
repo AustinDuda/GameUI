@@ -18,28 +18,39 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
+    const refreshUserCreds = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        })
+      } else {
+        setUser(null)
+      }
       setLoading(false)
+    })
 
-  }, []);
+    return () => refreshUserCreds()
+  }, [])
 
   const signup =  (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
       const user = userCredential.user;
 
       try {
-          const response = await fetch('/api/userCreation', { 
+          const response = await fetch('/api/userCreation', {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ id: user.uid }) 
+            body: JSON.stringify({ uid: user.uid }) 
           });
 
           await response.json();
           router.push('/login');
       } catch (error) {
-          console.log('Error checking for player')
+          console.log('Error checking for player ' + error)
       }
     })
     .catch((error) => {
@@ -57,10 +68,10 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
           email: user.email,
           displayName: user.displayName,
         });
-        
+
         router.push('/game');
       } catch (error) {
-        console.log('Error while trying to login')
+        console.log('Error while trying to login: ', error);
       }
     })
   }

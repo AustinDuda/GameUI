@@ -1,8 +1,7 @@
 /* Imports */
 import { BankCard } from './bankCard';
 import styled from 'styled-components';
-import useApiGet from '@/hooks/useApiGet';
-import { PLAYERDATATYPES } from '@/configs/enums';
+import { CustomContext } from '@/context/customContext';
 import { DraggableCursor } from './draggableCursor';
 import React, { ReactNode, useEffect, useState } from 'react';
 
@@ -39,21 +38,22 @@ const BankCategoryHeader = styled.div`
     }
 `;
 
+const bank = [
+    {name: 'oak log', quantity: 99},
+    {name: 'copper ore', quantity: 76},
+    {name: 'sardine', quantity: 608},
+    {name: 'tin ore', quantity: 16},
+    {name: 'shrimp', quantity: 1600},
+    {name: 'golden key', quantity: 1}
+];
+
 
 /* Component */
 export const BankContainer = () => {
     const [swapBankSlot, setSwapBankSlot] = useState(-1);
+    const [playerBankData, setPlayerBankData] = useState(bank);
     const [selectedBankSlot, setSelectedBankSlot] = useState(-1);
-    const { getData } = useApiGet('/api/playerData', PLAYERDATATYPES.bank);
-    const [playerBankData, setPlayerBankData] = useState(Array<{name: string, quantity: number}>);
-
-
-    /* Fetches player skill data from the playerData API */
-    useEffect(() => {
-        if (getData === null) return;
-        setPlayerBankData(getData)
-    }, [getData]);
-
+    const { PlayerBankContext } = React.useContext(CustomContext);
 
     /* Deselects bank slot if user clicks outside bank slots */
     const deselectSelectedBankSlot = (e: Event) => {
@@ -110,7 +110,7 @@ export const BankContainer = () => {
             <h1>Bank</h1>
             <BankCategoryHeader><h3>Tab one</h3><button>sort</button></BankCategoryHeader>
             <BankCardWrapper>
-                {playerBankData?.map((item, index): ReactNode => {
+                {PlayerBankContext.bank?.map((item, index): ReactNode => { 
                     return (
                         <BankCard
                             key={index}
@@ -122,6 +122,19 @@ export const BankContainer = () => {
                         ></BankCard>
                     )
                 })}
+
+                {/*playerBankData?.map((item, index): ReactNode => {
+                    return (
+                        <BankCard
+                            key={index}
+                            index={index}
+                            item={item}
+                            swapBankSlotSetter={setSwapBankSlot}
+                            selectedBankSlotGetter={selectedBankSlot}
+                            selectedBankSlotSetter={setSelectedBankSlot}
+                        ></BankCard>
+                    )
+                })*/}
             </BankCardWrapper>
             {selectedBankSlot != -1 ? ( 
                 <DraggableCursor image={''}></DraggableCursor>

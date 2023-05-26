@@ -1,21 +1,28 @@
 /* Imports */
-import type { NextApiRequest, NextApiResponse } from 'next'
-import admin from '@/firebase/admin';
-
-
-/* Set Varibles */
-const db = admin.firestore();
+import{ realtimeDb } from '@/firebase/admin';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 /* Check if user exists */
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = req.body;
 
-    const snapshot: { data: any } = await db.collection("users").doc(body.id).get();
+    try {
+        const userRef = realtimeDb.ref(`users/${body.uid}`);
+        const snapshot = await userRef.once('value');
+        const userExists = snapshot.exists();
 
-    if (!snapshot.data()) {
-        await db.collection("users").doc(body.id).set({gold: 99})
-        await db.collection("users").doc(body.id).collection("bank").add({})
+        if (!userExists) {
+            await userRef.set({
+                gold: 99,
+                bank: [],
+            });
+            return { message: 'User created successfully' }
+        } else {
+            return {message: 'User already exists' }
+        }
+    } catch (error) {
+        return {message: error }
     }
 }
 
@@ -29,8 +36,8 @@ export default async function handler(
 
     switch (method) {
         case "POST":
-            handlePost(req, res);
-            res.status(200).send({success: true})
+            const postStatus = handlePost(req, res);
+            res.send(postStatus);
             break;
         default:
             res.setHeader("Allow", ["GET"]);

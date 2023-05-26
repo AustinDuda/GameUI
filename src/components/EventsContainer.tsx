@@ -26,6 +26,7 @@ const EventsWrapper = styled.div`
 export const EventsContainer = () => {
     const { user } = useAuth()
     const [opened, setOpened] = useState(false);
+    const [message, setMessage] = useState('');
     const { PlayerGoldContext } = useContext(CustomContext);
 
     
@@ -33,15 +34,16 @@ export const EventsContainer = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setOpened(false);
+            setMessage('');
         }, 1000);
 
         if (opened) {
-            const patchData = async (value: number) => {
-                const stringifiedData = JSON.stringify({data: value, uid: user.uid});
-    
+            const patchData = async () => {
+                const stringifiedData = JSON.stringify({uid: user.uid, gold: 10});
+
                 try {
-                    const response = await fetch('/api/playerCommonData/gold', {
-                        method: 'PATCH',
+                    const response = await fetch('/api/actions/openChest', {
+                        method: 'POST',
                         body: stringifiedData,
                         headers: {
                             'Content-type':  'application-json'
@@ -49,13 +51,20 @@ export const EventsContainer = () => {
                     });
     
                     const responseData = await response.json();
-                    PlayerGoldContext.setGold(responseData.gold);
+
+                    if (responseData.gold) {
+                        setMessage('You\'ve successfully opened a chest!')
+                        PlayerGoldContext.setGold(responseData.gold);
+                    } else {
+                        setMessage('No key.')
+                    }
+                    
                 } catch (error) {
                     console.log('Error adding gold')
                 }
             }
             
-            patchData(1);
+            patchData();
         }
 
         return () => clearTimeout(timer);
@@ -74,7 +83,7 @@ export const EventsContainer = () => {
             onClick={() => { openChest() }}
         >
             <h1>Events</h1>
-            {opened ? <p>We've opened a chest!</p> : null}
+            {opened ? <p>{ message }</p> : null}
             <img src='/images/chest-closed.png' />
         </EventsWrapper>
     )
