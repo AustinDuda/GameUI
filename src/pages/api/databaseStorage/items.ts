@@ -5,7 +5,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const itemLocalizedDatabase = {
   '0001': {name: "Oak Log"},
-  '0002': {name: "Shrimp"}
+  '0002': {name: "Shrimp"},
+  '0003': {name: "Tin Ore"}
 }
 
 /* Update player gold data */
