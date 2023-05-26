@@ -14,30 +14,34 @@ const initialPlayerGold: PlayerGoldContext = {
     setGold: () => {},
 };
 
-
-/* Empty State */
-interface CustomContextTwoProps {
-    customText: string;
-    setCustomText: Dispatch<SetStateAction<string>>
+/* Player Bank State */
+interface BankItemDataTypes {
+    id: string;
+    quantity: number;
 }
 
-const initialStateTwo: CustomContextTwoProps = {
-    customText: "",
-    setCustomText: () => {},
+interface PlayerBankContext {
+    bank: Array<BankItemDataTypes>;
+    setBank: Dispatch<SetStateAction<Array<BankItemDataTypes>>>
+}
+
+const initialPlayerBank: PlayerBankContext = {
+    bank: [{id: '-1', quantity: -1}],
+    setBank: () => {},
 };
 
 
 /* Setting state prop types */
 type ContextProps = {
     PlayerGoldContext: PlayerGoldContext;
-    CustomContextTwoProps: CustomContextTwoProps;
+    PlayerBankContext: PlayerBankContext;
 };
 
 
 /* Creating context */
 const CustomContext = createContext<ContextProps>({
     PlayerGoldContext: initialPlayerGold,
-    CustomContextTwoProps: initialStateTwo,
+    PlayerBankContext: initialPlayerBank,
 });
 
 
@@ -51,12 +55,14 @@ interface ContextProviderProps {
 const CustomContextProvider = ({children}: ContextProviderProps) => {
     const { user } = useAuth();
     const [gold, setGold] = useState<number>(0);
-    const [customText, setCustomText] = useState<string>("");
+    const [bank, setBank] = useState<Array<BankItemDataTypes>>([{id: '-1', quantity: -1}]);
+
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
-    const CustomContextTwoProps: CustomContextTwoProps = { customText, setCustomText };
+    const PlayerBankContext: PlayerBankContext = { bank, setBank };
 
     useEffect(() => {
         const patchData = async (value: number) => {
+            if (!user) return;
             const stringifiedData = JSON.stringify({data: value, uid: user.uid});
 
             try {
@@ -67,20 +73,43 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
                         'Content-type':  'application-json'
                     }
                 });
-
+                
                 const responseData = await response.json();
-                PlayerGoldContext.setGold(responseData.gold);
+                if (!isNaN(responseData.gold)) PlayerGoldContext.setGold(responseData.gold);
+                
             } catch (error) {
                 console.log('Error adding gold')
             }
         }
 
+        const patchData2 = async () => {
+            if (!user) return;
+            const stringifiedData = JSON.stringify({uid: user.uid});
+
+            try {
+                const response = await fetch('/api/playerCommonData/bank', {
+                    method: 'PATCH',
+                    body: stringifiedData,
+                    headers: {
+                        'Content-type':  'application-json'
+                    }
+                });
+                
+                const responseData = await response.json();
+                if (responseData.bank.length) PlayerBankContext.setBank(responseData.bank);
+
+            } catch (error) {
+                console.log('Error adding bank')
+            }
+        }
+
         patchData(0);
+        //patchData2();
     }, [])
 
     /* Renderer */
     return (
-        <CustomContext.Provider value={{ PlayerGoldContext, CustomContextTwoProps }}>
+        <CustomContext.Provider value={{ PlayerGoldContext, PlayerBankContext }}>
             {children}
         </CustomContext.Provider>
     )

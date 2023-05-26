@@ -8,12 +8,10 @@ const handlePatch = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(req.body);
   
   try {
-    if (body.data == 0) {
       const snapshot = await realtimeDb.ref(`users/${body.uid}`).once('value');
-      const currentPlayerGold = snapshot.val().gold;
-      
-      return { gold: currentPlayerGold};
-    } 
+      const currentPlayerGold = snapshot.val().bank;
+
+      return { bank: currentPlayerGold};
   } catch (error) {
     return { gold: error};
   }

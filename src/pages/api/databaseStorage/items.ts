@@ -3,17 +3,20 @@ import { realtimeDb } from '@/firebase/admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 
+const itemLocalizedDatabase = {
+  '0001': {name: "Oak Log"},
+  '0002': {name: "Shrimp"}
+}
+
 /* Update player gold data */
 const handlePatch = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(req.body);
   
   try {
-    if (body.data == 0) {
       const snapshot = await realtimeDb.ref(`users/${body.uid}`).once('value');
-      const currentPlayerGold = snapshot.val().gold;
-      
-      return { gold: currentPlayerGold};
-    } 
+      const currentPlayerGold = snapshot.val().bank;
+
+      return { bank: currentPlayerGold};
   } catch (error) {
     return { gold: error};
   }
@@ -25,9 +28,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
 
   switch (method) {
-    case "PATCH":
-      const patchResponse = await handlePatch(req, res);
-      res.send(patchResponse)
+    case "GET":
+      //const patchResponse = await handlePatch(req, res);
+      res.send({});
       break;
     default:
       res.setHeader("Allow", ["GET"]);
