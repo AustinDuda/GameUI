@@ -1,8 +1,5 @@
 /* Imports */
 import styled from 'styled-components';
-import useApiPost from '@/hooks/useApiPost';
-import useApiGet from '@/hooks/useApiGet';
-import { PLAYERDATATYPES } from '@/configs/enums';
 import { SkillCard } from "@/components/skillCard";
 import { skillData } from '../../public/config/gameData';
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
