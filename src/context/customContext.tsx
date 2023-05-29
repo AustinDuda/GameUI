@@ -17,6 +17,7 @@ const initialPlayerGold: PlayerGoldContext = {
 /* Player Bank State */
 interface BankItemDataTypes {
     id: string;
+    name: string;
     quantity: number;
 }
 
@@ -26,8 +27,24 @@ interface PlayerBankContext {
 }
 
 const initialPlayerBank: PlayerBankContext = {
-    bank: [{id: '-1', quantity: -1}],
+    bank: [{id: '-1', name: '', quantity: -1}],
     setBank: () => {},
+};
+
+/* Player skills State */
+interface SkillsDataTypes {
+    name: string;
+    xp: number;
+}
+
+interface PlayerSkillsContext {
+    skills: Array<SkillsDataTypes>;
+    setSkills: Dispatch<SetStateAction<Array<SkillsDataTypes>>>
+}
+
+const initialPlayerSkills: PlayerSkillsContext = {
+    skills: [{name: '', xp: -1}],
+    setSkills: () => {},
 };
 
 
@@ -35,6 +52,7 @@ const initialPlayerBank: PlayerBankContext = {
 type ContextProps = {
     PlayerGoldContext: PlayerGoldContext;
     PlayerBankContext: PlayerBankContext;
+    PlayerSkillsContext: PlayerSkillsContext;
 };
 
 
@@ -42,6 +60,7 @@ type ContextProps = {
 const CustomContext = createContext<ContextProps>({
     PlayerGoldContext: initialPlayerGold,
     PlayerBankContext: initialPlayerBank,
+    PlayerSkillsContext: initialPlayerSkills
 });
 
 
@@ -55,10 +74,12 @@ interface ContextProviderProps {
 const CustomContextProvider = ({children}: ContextProviderProps) => {
     const { user } = useAuth();
     const [gold, setGold] = useState<number>(0);
-    const [bank, setBank] = useState<Array<BankItemDataTypes>>([{id: '-1', quantity: -1}]);
-
+    const [skills, setSkills] = useState<Array<SkillsDataTypes>>([{name: '', xp: -1}]);
+    const [bank, setBank] = useState<Array<BankItemDataTypes>>([{id: '-1', name: '', quantity: -1}]);
+    
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
     const PlayerBankContext: PlayerBankContext = { bank, setBank };
+    const PlayerSkillsContext: PlayerSkillsContext = { skills, setSkills };
 
     useEffect(() => {
         const patchData = async (value: number) => {
@@ -103,13 +124,35 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
             }
         }
 
+        const patchData3 = async () => {
+            if (!user) return;
+            const stringifiedData = JSON.stringify({uid: user.uid});
+
+            try {
+                const response = await fetch('/api/playerCommonData/skills', {
+                    method: 'PATCH',
+                    body: stringifiedData,
+                    headers: {
+                        'Content-type':  'application-json'
+                    }
+                });
+                
+                const responseData = await response.json();
+                if (responseData.skills.length) PlayerSkillsContext.setSkills(responseData.skills);
+
+            } catch (error) {
+                console.log('Error adding bank')
+            }
+        }
+
         patchData(0);
-        //patchData2();
+        patchData2();
+        patchData3();
     }, [])
 
     /* Renderer */
     return (
-        <CustomContext.Provider value={{ PlayerGoldContext, PlayerBankContext }}>
+        <CustomContext.Provider value={{ PlayerGoldContext, PlayerBankContext, PlayerSkillsContext }}>
             {children}
         </CustomContext.Provider>
     )
