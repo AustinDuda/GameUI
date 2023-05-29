@@ -1,6 +1,7 @@
 /* Imports */
 import styled from 'styled-components';
 import { SkillCard } from "@/components/skillCard";
+import { CustomContext } from '@/context/customContext';
 import { skillData } from '../../public/config/gameData';
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
@@ -39,6 +40,7 @@ const stats = [
 export const SkillsContainer = (props: SkillsContainerTypes) => {
     const [activeCard, setActiveCard] = useState('');
     const [playerSkillData, setPlayerSkillData] = useState(stats);
+    const { PlayerSkillsContext } = React.useContext(CustomContext);
 
     /* Renderer */
     return (
@@ -46,7 +48,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
             <h1>Skills</h1>
             
             <SkillsItemList>
-                {playerSkillData?.map((skill, index): ReactNode => {
+                {PlayerSkillsContext.skills?.map((skill, index): ReactNode => { 
                     return (
                         <SkillCard 
                             index={index}
@@ -62,6 +64,23 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
                         ></SkillCard>
                     )
                 })}
+
+                {/*playerSkillData?.map((skill, index): ReactNode => {
+                    return (
+                        <SkillCard 
+                            index={index}
+                            xp={skill.xp}
+                            key={skill.name}
+                            name={skill.name}
+                            activeCardSetter={setActiveCard}
+                            playerSkillDataGetter={playerSkillData}
+                            playerSkillDataSetter={setPlayerSkillData}
+                            snackbarItemsSetter={props.snackbarItemsSetter}
+                            skillData={skillData[(skill.name).toLowerCase()]}
+                            isActive={activeCard === skill.name ? true : false}
+                        ></SkillCard>
+                    )
+                })*/}
             </SkillsItemList>
         </div>
     )

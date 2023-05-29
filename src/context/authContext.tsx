@@ -1,8 +1,9 @@
+import { setCookie } from 'nookies';
 import { useRouter } from 'next/router';
 import { auth } from '@/firebase/config';
-
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onIdTokenChanged } from 'firebase/auth';
+
 
 const AuthContext = createContext<any>({});
 export const useAuth = () => useContext(AuthContext);
@@ -20,11 +21,20 @@ export const AuthContextProvider = ({ children}: ContextProviderProps) => {
   useEffect(() => {
     const refreshUserCreds = onAuthStateChanged(auth, (user) => {
       if (user) {
+        user.getIdToken().then((token) => {
+          setCookie(null, 'token', token, {
+            path: '/',
+            maxAge: 10 * 60 * 1000,
+            secure: true,
+            sameSite: 'strict',
+          });
+        });
+
         setUser({
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
-        })
+        });
       } else {
         setUser(null)
       }

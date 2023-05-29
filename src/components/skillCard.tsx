@@ -73,7 +73,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpRemainder, setXpRemainder] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
-    const { PlayerGoldContext } = useContext(CustomContext);
+
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -141,9 +141,9 @@ export const SkillCard = (props: ActionCardTypes) => {
 
     /* Calculates xp to recieve per action complete based on selection */
     const calculateRecievedXpPerAction = () => {
-        var result = props.skillData.actions.find(x => x.name === selectedAction)
+        var result = null;//props.skillData.actions.find(x => x.name === selectedAction)
 
-        return result ? result.xp : 10;
+        return result ? result/*.xp*/ : 10;
     }
 
     
@@ -168,10 +168,10 @@ export const SkillCard = (props: ActionCardTypes) => {
                 width={Math.floor((tick/timeToCompleteAction) * 100)}
             ></ProgressBar>
 
-            <Select 
+            {/*<Select 
                 selectActionSetter={setSelectedAction}
                 options={props.skillData.actions}
-            ></Select>
+            ></Select>*/}
             
             <ActiveButton onClick={() => onClickSetActives(props.name)}>Activate</ActiveButton>
         </Card>
