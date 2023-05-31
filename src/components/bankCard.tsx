@@ -58,7 +58,7 @@ const Card = styled.div<{isSelected: number, index: number, image: string}>`
 type BankCardTypes = {
     index: number;
     selectedBankSlotGetter: number;
-    item: {id: string, quantity: number};
+    item: {id: string, name: string, quantity: number};
     swapBankSlotSetter: React.Dispatch<SetStateAction<number>>;
     selectedBankSlotSetter: React.Dispatch<SetStateAction<number>>;
 }
@@ -67,9 +67,10 @@ type BankCardTypes = {
 /* Component */
 export const BankCard = (props: BankCardTypes) => {
     const [showInfo, setShowInfo] = useState(false);
-    const quantity = props.item.quantity > 1000 
-    ? Math.floor((props.item.quantity/100)*.1) + 'k' : props.item.quantity;
-    const bankSlotImage = props.item ? (props.item.id).replace(/\s+/g, '-') : 'blank';
+    const quantity = props.item.quantity > 1000
+    ? Math.floor((props.item.quantity/100)*.1) + 'k'
+    : props.item.quantity;
+    const bankSlotImage = props.item ? (props.item.name).replace(/\s+/g, '-').toLowerCase() : 'blank';
 
 
     /* Renderer */
@@ -87,7 +88,7 @@ export const BankCard = (props: BankCardTypes) => {
                 <p>{props.item ? quantity : ''}</p>
             </Card>
             {showInfo && props.selectedBankSlotGetter != props.index ? ( 
-                <MouseTrackerOverlay name={props.item.id}></MouseTrackerOverlay>
+                <MouseTrackerOverlay name={props.item.name}></MouseTrackerOverlay>
             ): null}
         </>
     )

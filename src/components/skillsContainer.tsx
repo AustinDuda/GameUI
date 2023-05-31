@@ -1,6 +1,7 @@
 /* Imports */
 import styled from 'styled-components';
 import { SkillCard } from "@/components/skillCard";
+import { CustomContext } from '@/context/customContext';
 import { skillData } from '../../public/config/gameData';
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
@@ -29,16 +30,10 @@ type SkillsContainerTypes = {
 };
 
 
-const stats = [
-    {name:'woodcutting', xp: 1000},
-    {name:'mining', xp: 0},
-    {name:'fishing', xp: 0},
-  ]
-
 /* Component */
 export const SkillsContainer = (props: SkillsContainerTypes) => {
     const [activeCard, setActiveCard] = useState('');
-    const [playerSkillData, setPlayerSkillData] = useState(stats);
+    const { PlayerSkillsContext } = React.useContext(CustomContext);
 
     /* Renderer */
     return (
@@ -46,7 +41,7 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
             <h1>Skills</h1>
             
             <SkillsItemList>
-                {playerSkillData?.map((skill, index): ReactNode => {
+                {PlayerSkillsContext.skills?.map((skill, index): ReactNode => { 
                     return (
                         <SkillCard 
                             index={index}
@@ -54,8 +49,6 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
                             key={skill.name}
                             name={skill.name}
                             activeCardSetter={setActiveCard}
-                            playerSkillDataGetter={playerSkillData}
-                            playerSkillDataSetter={setPlayerSkillData}
                             snackbarItemsSetter={props.snackbarItemsSetter}
                             skillData={skillData[(skill.name).toLowerCase()]}
                             isActive={activeCard === skill.name ? true : false}

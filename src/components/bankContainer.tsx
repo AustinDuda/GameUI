@@ -38,20 +38,10 @@ const BankCategoryHeader = styled.div`
     }
 `;
 
-const bank = [
-    {name: 'oak log', quantity: 99},
-    {name: 'copper ore', quantity: 76},
-    {name: 'sardine', quantity: 608},
-    {name: 'tin ore', quantity: 16},
-    {name: 'shrimp', quantity: 1600},
-    {name: 'golden key', quantity: 1}
-];
-
 
 /* Component */
 export const BankContainer = () => {
     const [swapBankSlot, setSwapBankSlot] = useState(-1);
-    const [playerBankData, setPlayerBankData] = useState(bank);
     const [selectedBankSlot, setSelectedBankSlot] = useState(-1);
     const { PlayerBankContext } = React.useContext(CustomContext);
 
@@ -69,7 +59,7 @@ export const BankContainer = () => {
 
     /* Swamps the position of items in the bank */
     const swapPositionsInAnArray = (index1: number, index2: number) => {
-           setPlayerBankData(prevState => {
+        PlayerBankContext.setBank(prevState => {
             let data = [...prevState];
         
             let temp = data[index1];
@@ -122,19 +112,6 @@ export const BankContainer = () => {
                         ></BankCard>
                     )
                 })}
-
-                {/*playerBankData?.map((item, index): ReactNode => {
-                    return (
-                        <BankCard
-                            key={index}
-                            index={index}
-                            item={item}
-                            swapBankSlotSetter={setSwapBankSlot}
-                            selectedBankSlotGetter={selectedBankSlot}
-                            selectedBankSlotSetter={setSelectedBankSlot}
-                        ></BankCard>
-                    )
-                })*/}
             </BankCardWrapper>
             {selectedBankSlot != -1 ? ( 
                 <DraggableCursor image={''}></DraggableCursor>

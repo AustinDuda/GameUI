@@ -1,8 +1,8 @@
 /* Imports */
-import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useAuth } from "@/context/authContext";
+import { useBankHandler } from '@/hooks/useBankHandler';
 import { CustomContext } from '@/context/customContext';
+import React, { useContext, useEffect, useState } from 'react';
 
 
 /* Setting styles */
@@ -24,12 +24,11 @@ const EventsWrapper = styled.div`
 
 /* Component */
 export const EventsContainer = () => {
-    const { user } = useAuth()
-    const [opened, setOpened] = useState(false);
+    const { updatePlayerBank } = useBankHandler();
     const [message, setMessage] = useState('');
+    const [opened, setOpened] = useState(false);
     const { PlayerGoldContext } = useContext(CustomContext);
 
-    
     /* */
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -38,49 +37,17 @@ export const EventsContainer = () => {
         }, 1000);
 
         if (opened) {
-            const patchData = async () => {
-                const stringifiedData = JSON.stringify({uid: user.uid, gold: 10});
-
-                try {
-                    const response = await fetch('/api/actions/openChest', {
-                        method: 'POST',
-                        body: stringifiedData,
-                        headers: {
-                            'Content-type':  'application-json'
-                        }
-                    });
-    
-                    const responseData = await response.json();
-
-                    if (responseData.gold) {
-                        setMessage('You\'ve successfully opened a chest!')
-                        PlayerGoldContext.setGold(responseData.gold);
-                    } else {
-                        setMessage('No key.')
-                    }
-                    
-                } catch (error) {
-                    console.log('Error adding gold')
-                }
-            }
-            
-            patchData();
+            updatePlayerBank('copperOre', 1);
+            PlayerGoldContext.setGold(prevGold => prevGold + 10);
         }
 
         return () => clearTimeout(timer);
     }, [opened])
 
-
-    /* */
-    const openChest = () => {
-        setOpened(true);
-    }
-
-
     /* Renderer */
     return (
         <EventsWrapper
-            onClick={() => { openChest() }}
+            onClick={() => { setOpened(true); }}
         >
             <h1>Events</h1>
             {opened ? <p>{ message }</p> : null}

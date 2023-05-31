@@ -3,7 +3,15 @@ import{ realtimeDb } from '@/firebase/admin';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
-/* Check if user exists */
+/* Variable assignment */
+const skillsCreationData = [
+    {name: 'woodcutting', xp: 0},
+    {name: 'mining', xp: 0},
+    {name: 'fishing', xp: 0}
+]
+
+
+/* Post */
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = req.body;
 
@@ -16,6 +24,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
             await userRef.set({
                 gold: 99,
                 bank: [],
+                skills: skillsCreationData
             });
             return { message: 'User created successfully' }
         } else {
@@ -27,7 +36,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 
-/* */
+/* Handler */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
