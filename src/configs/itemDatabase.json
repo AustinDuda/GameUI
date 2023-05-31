@@ -1,0 +1,18 @@
+[
+    {
+      "id": "simpleIronAxe",
+      "name": "Simple Iron Axe"
+    },
+    {
+      "id": "simpleIronPickaxe",
+      "name": "Simple Iron Pickaxe"
+    },
+    {
+      "id": "fishingNet",
+      "name": "Fishing Net"
+    },
+    {
+        "id": "copperOre",
+        "name": "Copper Ore"
+    }
+]

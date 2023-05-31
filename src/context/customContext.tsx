@@ -11,8 +11,8 @@ const initialSkillData = [
 ]
 
 const initialBankData = [
-    {id: '0001', name: 'Shrimp', quantity: 99},
-    {id: '0002', name: 'Copper Ore', quantity: 99}
+    {id: 'simpleIronPickaxe', name: 'Simple Iron Pickaxe', quantity: 1},
+    {id: 'simpleIronHatchet', name: 'Simple Iron Hatchet', quantity: 1},
 ]
 
 
@@ -113,6 +113,7 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
     useEffect(() => {
         localStorage.setItem('btPlayerBank', JSON.stringify(bank));
     }, [bank]);
+
 
     useEffect(() => {
         localStorage.setItem('btPlayerSkills', JSON.stringify(skills));

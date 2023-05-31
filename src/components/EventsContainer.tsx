@@ -1,7 +1,8 @@
 /* Imports */
-import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useBankHandler } from '@/hooks/useBankHandler';
 import { CustomContext } from '@/context/customContext';
+import React, { useContext, useEffect, useState } from 'react';
 
 
 /* Setting styles */
@@ -23,11 +24,11 @@ const EventsWrapper = styled.div`
 
 /* Component */
 export const EventsContainer = () => {
-    const [opened, setOpened] = useState(false);
+    const { updatePlayerBank } = useBankHandler();
     const [message, setMessage] = useState('');
+    const [opened, setOpened] = useState(false);
     const { PlayerGoldContext } = useContext(CustomContext);
-    const { PlayerBankContext } = useContext(CustomContext);
-    
+
     /* */
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -36,39 +37,17 @@ export const EventsContainer = () => {
         }, 1000);
 
         if (opened) {
+            updatePlayerBank('copperOre', 1);
             PlayerGoldContext.setGold(prevGold => prevGold + 10);
-            
-            PlayerBankContext.setBank(prevBank => {
-                const existingObject = prevBank.find(obj => obj.id === '0003');
-
-                if (existingObject) {
-                  return prevBank.map(obj => {
-                    if (obj.id === '0003') {
-                      return { ...obj, quantity: obj.quantity + 1 };
-                    }
-                    return obj;
-                  });
-                }
-              
-                return [...prevBank, { id: '0003', name: 'Golden Key', quantity: 1 }];
-              });
-
         }
 
         return () => clearTimeout(timer);
     }, [opened])
 
-
-    /* */
-    const openChest = () => {
-        setOpened(true);
-    }
-
-
     /* Renderer */
     return (
         <EventsWrapper
-            onClick={() => { openChest() }}
+            onClick={() => { setOpened(true); }}
         >
             <h1>Events</h1>
             {opened ? <p>{ message }</p> : null}

@@ -140,7 +140,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const calculateRecievedXpPerAction = () => {
         var result = null;//props.skillData.actions.find(x => x.name === selectedAction)
 
-        return result ? result/*.xp*/ : 10;
+        return result ? result/*.xp*/ : 999;
     }
 
     
