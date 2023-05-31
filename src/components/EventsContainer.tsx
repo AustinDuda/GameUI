@@ -1,7 +1,6 @@
 /* Imports */
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useAuth } from "@/context/authContext";
 import { CustomContext } from '@/context/customContext';
 
 
@@ -24,11 +23,10 @@ const EventsWrapper = styled.div`
 
 /* Component */
 export const EventsContainer = () => {
-    const { user } = useAuth()
     const [opened, setOpened] = useState(false);
     const [message, setMessage] = useState('');
     const { PlayerGoldContext } = useContext(CustomContext);
-
+    const { PlayerBankContext } = useContext(CustomContext);
     
     /* */
     useEffect(() => {
@@ -38,33 +36,23 @@ export const EventsContainer = () => {
         }, 1000);
 
         if (opened) {
-            const patchData = async () => {
-                const stringifiedData = JSON.stringify({uid: user.uid, gold: 10});
-
-                try {
-                    const response = await fetch('/api/actions/openChest', {
-                        method: 'POST',
-                        body: stringifiedData,
-                        headers: {
-                            'Content-type':  'application-json'
-                        }
-                    });
-    
-                    const responseData = await response.json();
-
-                    if (responseData.gold) {
-                        setMessage('You\'ve successfully opened a chest!')
-                        PlayerGoldContext.setGold(responseData.gold);
-                    } else {
-                        setMessage('No key.')
-                    }
-                    
-                } catch (error) {
-                    console.log('Error adding gold')
-                }
-            }
+            PlayerGoldContext.setGold(prevGold => prevGold + 10);
             
-            patchData();
+            PlayerBankContext.setBank(prevBank => {
+                const existingObject = prevBank.find(obj => obj.id === '0003');
+
+                if (existingObject) {
+                  return prevBank.map(obj => {
+                    if (obj.id === '0003') {
+                      return { ...obj, quantity: obj.quantity + 1 };
+                    }
+                    return obj;
+                  });
+                }
+              
+                return [...prevBank, { id: '0003', name: 'Golden Key', quantity: 1 }];
+              });
+
         }
 
         return () => clearTimeout(timer);

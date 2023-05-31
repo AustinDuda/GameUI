@@ -1,39 +1,24 @@
 /* imports */
-import { firestore, realtimeDb } from '@/firebase/admin';
+import { parseCookies } from 'nookies';
+import { firestore, realtimeDb, admin } from '@/firebase/admin';
 import type { NextApiRequest, NextApiResponse } from 'next'
-
-
-const chestLoot = {
-    goldenChest: {
-        gold: 10,
-        keyId: '00002'
-    }
-}
 
 
 /* Update player gold data */
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(req.body);
-  const goldToAdd = parseInt(body.gold);
 
   try {
-    let newGoldValue = 0;
-    const userRef = realtimeDb.ref(`users/${body.uid}/gold`);
+    const userRef = realtimeDb.ref(`users/${body.uid}/skills`);
 
-    if (typeof goldToAdd === 'number') {
-      await userRef.transaction((currentValue) => {
-        newGoldValue = (currentValue || 0) + goldToAdd;
-        return newGoldValue;
-      });
-
-      return { gold: newGoldValue};
-    }
+    console.log(userRef)
+    return { test: 1 };
   } catch (error) {
     console.log(error)
-    return { gold: null }
+    return { gold: null };
   }
-    
 }
+
 
 /* Handle methods */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
