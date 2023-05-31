@@ -2,6 +2,7 @@
 import { Select } from './select';
 import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
+import { useAuth } from "@/context/authContext";
 import { CustomContext } from '@/context/customContext';
 import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
 
@@ -57,10 +58,8 @@ type ActionCardTypes = {
   index: number;
   isActive: boolean;
   skillData: SkillDataTypes;
-  playerSkillDataGetter: Array<PlayerSkillDataTypes>;
   activeCardSetter: React.Dispatch<SetStateAction<string>>;
   snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>;
-  playerSkillDataSetter: React.Dispatch<SetStateAction<Array<PlayerSkillDataTypes>>>;
 };
 
 
@@ -73,6 +72,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpRemainder, setXpRemainder] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
+    const { PlayerSkillsContext } = React.useContext(CustomContext);
 
 
     /* onclick toggles or untoggles the active card */
@@ -111,15 +111,12 @@ export const SkillCard = (props: ActionCardTypes) => {
     /* Updates skill XP and resets data at parent when the action has finished */
     useEffect(() => {
         if (tick > timeToCompleteAction) {
-            const newSkillDataWithUpdatedXp =  props.playerSkillDataGetter.map((object, index) => {
+            const newSkillDataWithUpdatedXp =  PlayerSkillsContext.skills.map((object, index) => {
                 if (index === props.index) object.xp = object.xp + calculateRecievedXpPerAction();
                 return object;
             });
 
-            //postData(1, PLAYERDATATYPES.gold);
-            //postData({name: 'sardine', quantity: 1}, PLAYERDATATYPES.bank);
-            //props.snackbarItemsSetter((prevState => [...prevState, {message: `You recieved ${calculateRecievedXpPerAction()}xp in ${props.name}`}]))
-            //props.playerSkillDataSetter(newSkillDataWithUpdatedXp);
+            PlayerSkillsContext.setSkills(newSkillDataWithUpdatedXp);
             setTick(0);
         }
     }, [tick, props]);
@@ -143,7 +140,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const calculateRecievedXpPerAction = () => {
         var result = null;//props.skillData.actions.find(x => x.name === selectedAction)
 
-        return result ? result/*.xp*/ : 10;
+        return result ? result/*.xp*/ : 999;
     }
 
     

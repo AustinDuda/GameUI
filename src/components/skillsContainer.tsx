@@ -30,16 +30,9 @@ type SkillsContainerTypes = {
 };
 
 
-const stats = [
-    {name:'woodcutting', xp: 1000},
-    {name:'mining', xp: 0},
-    {name:'fishing', xp: 0},
-  ]
-
 /* Component */
 export const SkillsContainer = (props: SkillsContainerTypes) => {
     const [activeCard, setActiveCard] = useState('');
-    const [playerSkillData, setPlayerSkillData] = useState(stats);
     const { PlayerSkillsContext } = React.useContext(CustomContext);
 
     /* Renderer */
@@ -56,31 +49,12 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
                             key={skill.name}
                             name={skill.name}
                             activeCardSetter={setActiveCard}
-                            playerSkillDataGetter={playerSkillData}
-                            playerSkillDataSetter={setPlayerSkillData}
                             snackbarItemsSetter={props.snackbarItemsSetter}
                             skillData={skillData[(skill.name).toLowerCase()]}
                             isActive={activeCard === skill.name ? true : false}
                         ></SkillCard>
                     )
                 })}
-
-                {/*playerSkillData?.map((skill, index): ReactNode => {
-                    return (
-                        <SkillCard 
-                            index={index}
-                            xp={skill.xp}
-                            key={skill.name}
-                            name={skill.name}
-                            activeCardSetter={setActiveCard}
-                            playerSkillDataGetter={playerSkillData}
-                            playerSkillDataSetter={setPlayerSkillData}
-                            snackbarItemsSetter={props.snackbarItemsSetter}
-                            skillData={skillData[(skill.name).toLowerCase()]}
-                            isActive={activeCard === skill.name ? true : false}
-                        ></SkillCard>
-                    )
-                })*/}
             </SkillsItemList>
         </div>
     )
