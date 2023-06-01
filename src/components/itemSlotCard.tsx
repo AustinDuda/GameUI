@@ -14,7 +14,7 @@ const Card = styled.div<{index: number, image: string}>`
     user-select: none;
     position: relative;
     background: #202940;
-    background-size: 50%;
+    background-size: 75%;
     border-radius: 0.6rem;
     font-family: RobotoLight;
     justify-content: flex-end;
@@ -22,6 +22,7 @@ const Card = styled.div<{index: number, image: string}>`
     background-repeat: no-repeat;
     border: 0.1rem solid transparent;
     box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.1);
+    background-image: url('/images/slot-necklace-silhouette.png');
 
     &:hover {
         border-color: grey;
@@ -47,7 +48,8 @@ const Card = styled.div<{index: number, image: string}>`
 /* */
 type ItemSlotCardTypes = {
     index: number;
-    slot: string
+    slot: string;
+    type: string;
 }
 
 

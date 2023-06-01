@@ -51,6 +51,7 @@ export const EquipmentContainer = () => {
                         return (
                             <ItemSlotCard
                                 index={index}
+                                type="equipment"
                                 slot={equipmentSlot.slot}
                                 key={equipmentSlot.slot + index}
                             ></ItemSlotCard>
