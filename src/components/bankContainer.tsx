@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { CustomContext } from '@/context/customContext';
 import { DraggableCursor } from './draggableCursor';
 import React, { ReactNode, useEffect, useState } from 'react';
+import { EquipmentContainer } from './equipmentContainer';
 
 
 /* Setting styles */
@@ -36,6 +37,19 @@ const BankCategoryHeader = styled.div`
         font-family: RobotoBold;
         background: linear-gradient(60deg,#f5700c,#ff9800);
     }
+`;
+
+const BankWrapper = styled.div`
+    display: flex;
+`
+
+const SectionWrapper = styled.div`
+    
+`;
+
+const BankContentWrapper = styled.div`
+    width: 100%;
+    max-width: calc(100% - 36rem);
 `;
 
 
@@ -96,26 +110,33 @@ export const BankContainer = () => {
 
     /* Renderer */
     return (
-        <div>
+        <SectionWrapper>
             <h1>Bank</h1>
-            <BankCategoryHeader><h3>Tab one</h3><button>sort</button></BankCategoryHeader>
-            <BankCardWrapper>
-                {PlayerBankContext.bank?.map((item, index): ReactNode => { 
-                    return (
-                        <BankCard
-                            key={index}
-                            index={index}
-                            item={item}
-                            swapBankSlotSetter={setSwapBankSlot}
-                            selectedBankSlotGetter={selectedBankSlot}
-                            selectedBankSlotSetter={setSelectedBankSlot}
-                        ></BankCard>
-                    )
-                })}
-            </BankCardWrapper>
+
+            <BankWrapper>
+                <BankContentWrapper>
+                    <BankCategoryHeader><h3>Tab one</h3><button>sort</button></BankCategoryHeader>
+                    <BankCardWrapper>
+                        {PlayerBankContext.bank?.map((item, index): ReactNode => { 
+                            return (
+                                <BankCard
+                                    key={index}
+                                    index={index}
+                                    item={item}
+                                    swapBankSlotSetter={setSwapBankSlot}
+                                    selectedBankSlotGetter={selectedBankSlot}
+                                    selectedBankSlotSetter={setSelectedBankSlot}
+                                ></BankCard>
+                            )
+                        })}
+                    </BankCardWrapper>
+                </BankContentWrapper>
+                <EquipmentContainer></EquipmentContainer>
+            </BankWrapper>
+
             {selectedBankSlot != -1 ? ( 
                 <DraggableCursor image={''}></DraggableCursor>
             ): null}
-        </div>
+        </SectionWrapper>
     )
 }

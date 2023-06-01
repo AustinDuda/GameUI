@@ -1,5 +1,4 @@
 /* imports */
-import { useAuth } from "@/context/authContext";
 import { createContext, Dispatch, ReactNode, useState, SetStateAction, useEffect } from "react";
 
 
@@ -8,11 +7,29 @@ const initialSkillData = [
     {name: 'woodcutting', xp: 0},
     {name: 'fishing', xp: 0},
     {name: 'mining', xp: 999}
-]
+];
 
 const initialBankData = [
     {id: 'simpleIronPickaxe', name: 'Simple Iron Pickaxe', quantity: 1},
     {id: 'simpleIronHatchet', name: 'Simple Iron Hatchet', quantity: 1},
+];
+
+const initialEquipmentData = [
+    {slot: 'main-earring', id: '', name: ''},
+    {slot: 'head', id: '', name: ''},
+    {slot: 'off-earring', id: '', name: ''},
+    {slot: 'shoulder', id: '', name: ''},
+    {slot: 'necklace', id: '', name: ''},
+    {slot: 'back', id: '', name: ''},
+    {slot: 'hands', id: '', name: ''},
+    {slot: 'chest', id: '', name: ''},
+    {slot: 'quiver', id: '', name: ''},
+    {slot: 'main-ring', id: '', name: ''},
+    {slot: 'legs', id: '', name: ''},
+    {slot: 'off-ring', id: '', name: ''},
+    {slot: 'main-hand', id: '', name: ''},
+    {slot: 'feet', id: '', name: ''},
+    {slot: 'off-hand', id: '', name: ''},
 ]
 
 
@@ -40,7 +57,7 @@ interface PlayerBankContext {
 }
 
 const initialPlayerBank: PlayerBankContext = {
-    bank: [{id: '-1', name: '', quantity: -1}],
+    bank: [],
     setBank: () => {},
 };
 
@@ -56,8 +73,26 @@ interface PlayerSkillsContext {
 }
 
 const initialPlayerSkills: PlayerSkillsContext = {
-    skills: [{name: '', xp: -1}],
+    skills: [],
     setSkills: () => {},
+};
+
+
+/* Player Equipment State */
+interface EquipmentDataTypes {
+    id: string;
+    slot: string;
+    name: string;
+}
+
+interface PlayerEquipmentContext {
+    equipment: Array<EquipmentDataTypes>;
+    setEquipment: Dispatch<SetStateAction<Array<EquipmentDataTypes>>>
+}
+
+const initialPlayerEquipment: PlayerEquipmentContext = {
+    equipment: [],
+    setEquipment: () => {},
 };
 
 
@@ -66,6 +101,7 @@ type ContextProps = {
     PlayerGoldContext: PlayerGoldContext;
     PlayerBankContext: PlayerBankContext;
     PlayerSkillsContext: PlayerSkillsContext;
+    PlayerEquipmentContext: PlayerEquipmentContext;
 };
 
 
@@ -73,7 +109,8 @@ type ContextProps = {
 const CustomContext = createContext<ContextProps>({
     PlayerGoldContext: initialPlayerGold,
     PlayerBankContext: initialPlayerBank,
-    PlayerSkillsContext: initialPlayerSkills
+    PlayerSkillsContext: initialPlayerSkills,
+    PlayerEquipmentContext: initialPlayerEquipment
 });
 
 
@@ -88,20 +125,23 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
     const [gold, setGold] = useState<number>(0);
     const [bank, setBank] = useState<Array<BankItemDataTypes>>(initialBankData);
     const [skills, setSkills] = useState<Array<SkillsDataTypes>>(initialSkillData);
+    const [equipment, setEquipment] = useState<Array<EquipmentDataTypes>>(initialEquipmentData);
     
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
     const PlayerBankContext: PlayerBankContext = { bank, setBank };
     const PlayerSkillsContext: PlayerSkillsContext = { skills, setSkills };
-
+    const PlayerEquipmentContext: PlayerEquipmentContext = { equipment, setEquipment };
 
     useEffect(() => {
         const savedPlayerGold = localStorage.getItem('btPlayerGold');
         const savedPlayerBank = localStorage.getItem('btPlayerBank');
         const savedPlayerSkills = localStorage.getItem('btPlayerSkills');
+        const savedPlayerEquipment = localStorage.getItem('btPlayerEquipment');
 
         if (savedPlayerGold) setGold(parseInt(savedPlayerGold));
         if (savedPlayerBank) setBank(JSON.parse(savedPlayerBank));
         if (savedPlayerSkills) setSkills(JSON.parse(savedPlayerSkills));
+        if (savedPlayerEquipment) setEquipment(JSON.parse(savedPlayerEquipment));
     }, []);
 
 
@@ -120,9 +160,20 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
     }, [skills]);
 
 
+    useEffect(() => {
+        localStorage.setItem('btPlayerEquipment', JSON.stringify(equipment));
+    }, [equipment]);
+
+
     /* Renderer */
     return (
-        <CustomContext.Provider value={{ PlayerGoldContext, PlayerBankContext, PlayerSkillsContext }}>
+        <CustomContext.Provider 
+            value={{ 
+                PlayerGoldContext, 
+                PlayerBankContext, 
+                PlayerSkillsContext, 
+                PlayerEquipmentContext 
+            }}>
             {children}
         </CustomContext.Provider>
     )
