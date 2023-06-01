@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { CustomContext } from '@/context/customContext';
 import { DraggableCursor } from './draggableCursor';
 import React, { ReactNode, useEffect, useState } from 'react';
-import { EquipmentContainer } from './equipmentContainer';
+import { Inventory } from './inventory';
 
 
 /* Setting styles */
@@ -131,7 +131,7 @@ export const BankContainer = () => {
                         })}
                     </BankCardWrapper>
                 </BankContentWrapper>
-                <EquipmentContainer></EquipmentContainer>
+                <Inventory></Inventory>
             </BankWrapper>
 
             {selectedBankSlot != -1 ? ( 

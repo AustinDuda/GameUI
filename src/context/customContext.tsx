@@ -29,7 +29,13 @@ const initialEquipmentData = [
     {slot: 'ring', id: '', name: ''},
     {slot: 'main-hand', id: '', name: ''},
     {slot: 'feet', id: '', name: ''},
-    {slot: 'off-hand', id: '', name: ''},
+    {slot: 'off-hand', id: '', name: ''}
+];
+
+const initialToolbeltData = [
+    {slot: 'woodcutting', id: '', name: ''},
+    {slot: 'mining', id: '', name: ''},
+    {slot: 'fishing', id: '', name: ''}
 ]
 
 
@@ -96,11 +102,30 @@ const initialPlayerEquipment: PlayerEquipmentContext = {
 };
 
 
+/* Player Toolbelt State */
+interface ToolbeltDataTypes {
+    id: string;
+    slot: string;
+    name: string;
+}
+
+interface PlayerToolbeltContext {
+    toolbelt: Array<ToolbeltDataTypes>;
+    setToolbelt: Dispatch<SetStateAction<Array<ToolbeltDataTypes>>>
+}
+
+const initialPlayerToolbelt: PlayerToolbeltContext = {
+    toolbelt: [],
+    setToolbelt: () => {},
+};
+
+
 /* Setting state prop types */
 type ContextProps = {
     PlayerGoldContext: PlayerGoldContext;
     PlayerBankContext: PlayerBankContext;
     PlayerSkillsContext: PlayerSkillsContext;
+    PlayerToolbeltContext: PlayerToolbeltContext;
     PlayerEquipmentContext: PlayerEquipmentContext;
 };
 
@@ -110,7 +135,8 @@ const CustomContext = createContext<ContextProps>({
     PlayerGoldContext: initialPlayerGold,
     PlayerBankContext: initialPlayerBank,
     PlayerSkillsContext: initialPlayerSkills,
-    PlayerEquipmentContext: initialPlayerEquipment
+    PlayerToolbeltContext: initialPlayerToolbelt,
+    PlayerEquipmentContext: initialPlayerEquipment,
 });
 
 
@@ -125,22 +151,27 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
     const [gold, setGold] = useState<number>(0);
     const [bank, setBank] = useState<Array<BankItemDataTypes>>(initialBankData);
     const [skills, setSkills] = useState<Array<SkillsDataTypes>>(initialSkillData);
+    const [toolbelt, setToolbelt] = useState<Array<ToolbeltDataTypes>>(initialToolbeltData);
     const [equipment, setEquipment] = useState<Array<EquipmentDataTypes>>(initialEquipmentData);
+    
     
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
     const PlayerBankContext: PlayerBankContext = { bank, setBank };
     const PlayerSkillsContext: PlayerSkillsContext = { skills, setSkills };
+    const PlayerToolbeltContext: PlayerToolbeltContext = { toolbelt, setToolbelt};
     const PlayerEquipmentContext: PlayerEquipmentContext = { equipment, setEquipment };
 
     useEffect(() => {
         const savedPlayerGold = localStorage.getItem('btPlayerGold');
         const savedPlayerBank = localStorage.getItem('btPlayerBank');
         const savedPlayerSkills = localStorage.getItem('btPlayerSkills');
+        const savedPlayerToolbelt = localStorage.getItem('btPlayerToolbelt');
         const savedPlayerEquipment = localStorage.getItem('btPlayerEquipment');
 
         if (savedPlayerGold) setGold(parseInt(savedPlayerGold));
         if (savedPlayerBank) setBank(JSON.parse(savedPlayerBank));
         if (savedPlayerSkills) setSkills(JSON.parse(savedPlayerSkills));
+        if (savedPlayerToolbelt) setToolbelt(JSON.parse(savedPlayerToolbelt));
         if (savedPlayerEquipment) setEquipment(JSON.parse(savedPlayerEquipment));
     }, []);
 
@@ -161,6 +192,11 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
 
 
     useEffect(() => {
+        localStorage.setItem('btPlayerToolbelt', JSON.stringify(toolbelt));
+    }, [toolbelt]);
+
+
+    useEffect(() => {
         localStorage.setItem('btPlayerEquipment', JSON.stringify(equipment));
     }, [equipment]);
 
@@ -171,7 +207,8 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
             value={{ 
                 PlayerGoldContext, 
                 PlayerBankContext, 
-                PlayerSkillsContext, 
+                PlayerSkillsContext,
+                PlayerToolbeltContext,
                 PlayerEquipmentContext 
             }}>
             {children}
