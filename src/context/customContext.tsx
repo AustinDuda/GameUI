@@ -15,18 +15,18 @@ const initialBankData = [
 ];
 
 const initialEquipmentData = [
-    {slot: 'main-earring', id: '', name: ''},
+    {slot: 'earring', id: '', name: ''},
     {slot: 'head', id: '', name: ''},
-    {slot: 'off-earring', id: '', name: ''},
+    {slot: 'earring', id: '', name: ''},
     {slot: 'shoulder', id: '', name: ''},
     {slot: 'necklace', id: '', name: ''},
     {slot: 'back', id: '', name: ''},
     {slot: 'hands', id: '', name: ''},
     {slot: 'chest', id: '', name: ''},
     {slot: 'quiver', id: '', name: ''},
-    {slot: 'main-ring', id: '', name: ''},
+    {slot: 'ring', id: '', name: ''},
     {slot: 'legs', id: '', name: ''},
-    {slot: 'off-ring', id: '', name: ''},
+    {slot: 'ring', id: '', name: ''},
     {slot: 'main-hand', id: '', name: ''},
     {slot: 'feet', id: '', name: ''},
     {slot: 'off-hand', id: '', name: ''},

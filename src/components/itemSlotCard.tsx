@@ -5,7 +5,7 @@ import { MouseTrackerOverlay } from './mouseTrackerOverlay';
 
 
 /* Setting styles */
-const Card = styled.div<{index: number, image: string}>`
+const Card = styled.div<{silhouette: string, index: number, image: string}>`
     display: flex;
     padding: 0.8rem;
     cursor: pointer;
@@ -22,7 +22,7 @@ const Card = styled.div<{index: number, image: string}>`
     background-repeat: no-repeat;
     border: 0.1rem solid transparent;
     box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.1);
-    background-image: url('/images/slot-necklace-silhouette.png');
+    background-image: ${props => `url("/images/slot-${props.silhouette}-silhouette.png")`};
 
     &:hover {
         border-color: grey;
@@ -56,6 +56,7 @@ type ItemSlotCardTypes = {
 /* Component */
 export const ItemSlotCard = (props: ItemSlotCardTypes) => {
     const [showInfo, setShowInfo] = useState(false);
+    const silhouetteImage = props.slot;
     const bankSlotImage = props.index ? (props.index).toString().replace(/\s+/g, '-').toLowerCase() : 'blank';
 
     /* Renderer */
@@ -65,9 +66,10 @@ export const ItemSlotCard = (props: ItemSlotCardTypes) => {
                 index={props.index}
                 image={bankSlotImage}
                 className={props.slot}
+                silhouette={silhouetteImage}
                 onMouseEnter={() => { setShowInfo(true); }}
                 onMouseLeave={() => { setShowInfo(false);}}>
-                    <p>{props.index}</p>
+                {/*<p>{props.index}</p>*/}
             </Card>
 
             {showInfo ? ( 

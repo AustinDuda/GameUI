@@ -4,19 +4,6 @@ import React, { ReactNode, useContext, useEffect } from 'react';
 import { CustomContext } from '@/context/customContext';
 import { ItemSlotCard } from './itemSlotCard';
 
-const test = [{slot: 'head', id: '', name: ''},
-    {slot: 'chest', id: '', name: ''},
-    {slot: 'legs', id: '', name: ''},
-    {slot: 'shoulder', id: '', name: ''},
-    {slot: 'hands', id: '', name: ''},
-    {slot: 'feet', id: '', name: ''},
-    {slot: 'back', id: '', name: ''},
-    {slot: 'main-hand', id: '', name: ''},
-    {slot: 'off-hand', id: '', name: ''},
-    {slot: 'ring', id: '', name: ''},
-    {slot: 'necklace', id: '', name: ''},
-    {slot: 'earring', id: '', name: ''}]
-
 
 /* Setting styles */
 const EquipmentWrapper = styled.div`
