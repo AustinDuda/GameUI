@@ -61,6 +61,8 @@ export const ShopCard = (props: ShopCardItems) => {
     const buyItem = () => {
         if (PlayerGoldContext.gold >= props.item.price) {
             console.log(`You've bought ${props.item.id}`)
+        } else {
+            console.log('not enough gold')
         }
         
     }
