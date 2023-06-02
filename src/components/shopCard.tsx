@@ -1,6 +1,13 @@
 /* Imports */
 import styled from 'styled-components';
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import { CustomContext } from '@/context/customContext';
+import React, { useState, useEffect, useRef, ReactNode, useContext } from 'react';
+
+type shopDataTypes = {
+    id: string;
+    quantity: number;
+    price: number;
+}
 
 /* Setting styles */
 const Card = styled.div`
@@ -22,11 +29,18 @@ const Card = styled.div`
 
     h3 {
         margin: 0;
+    } 
+    
+    p {
+        margin: 0;
+        color: #ff9800;
+        margin-left: auto;
+        font-family: RobotoBold;
     }
 
     button {
         color: white;
-        margin-left: auto;
+        margin-left: 2.4rem;
         border-radius: 0.4rem;
         padding: 0.4rem 1.2rem;
         font-family: RobotoBold;
@@ -36,21 +50,27 @@ const Card = styled.div`
 
 /* Setting types */
 type ShopCardItems = {
-    item: string;
+    item: shopDataTypes;
 };
   
 
 /* Component */
 export const ShopCard = (props: ShopCardItems) => {
+    const { PlayerGoldContext } = useContext(CustomContext);
 
-    const [active, setActive] = useState(false);
+    const buyItem = () => {
+        if (PlayerGoldContext.gold >= props.item.price) {
+            console.log(`You've bought ${props.item.id}`)
+        }
+        
+    }
 
     /* Renderer */
     return (
-        <Card onClick={() => { setActive(!active) }} className={active ? 'active' : ''}>
-            <h3>{props.item}</h3>
-
-            <button>Buy</button>
+        <Card>
+            <h3>{props.item.id}</h3>
+            <p>Price: {props.item.price} ({props.item.quantity})</p>
+            <button onClick={() => { buyItem() }}>Buy</button>
         </Card>
     )
 }
