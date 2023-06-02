@@ -15,7 +15,7 @@ const Card = styled.div<{isSelected: number, index: number, image: string}>`
     user-select: none;
     position: relative;
     background: #202940;
-    background-size: 50%;
+    background-size: 65%;
     border-radius: 0.6rem;
     font-family: RobotoLight;
     justify-content: flex-end;
