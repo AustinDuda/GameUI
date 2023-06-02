@@ -8,17 +8,17 @@ const shopData = [
     {
         name: 'Shop One',
         items: [
-            {id: 'placeholder', quantity: 1, price: 10},
-            {id: 'placeholder', quantity: 99, price: 50},
-            {id: 'placeholder', quantity: 99, price: 100}
+            {id: 'placeholder', name: 'Quality Steel Axe', quantity: 1, price: 199},
+            {id: 'placeholder', name: 'Quality Steel Pickaxe', quantity: 1, price: 199},
+            {id: 'placeholder', name: 'Quality Steel Pickaxe', quantity: 99, price: 100}
         ]
     },
     {
         name: 'Shop Two',
         items: [
-            {id: 'placeholder', quantity: 999, price: 10},
-            {id: 'placeholder', quantity: 99, price: 199},
-            {id: 'placeholder', quantity: 1, price: 1500}
+            {id: 'placeholder', name: 'Tin Ore', quantity: 999, price: 5},
+            {id: 'placeholder', name: 'Copper Ore', quantity: 999, price: 5},
+            {id: 'placeholder', name: 'Iron Ore', quantity: 999, price: 15}
         ]
     },
 ]
@@ -26,6 +26,7 @@ const shopData = [
 
 type shopDataTypes = {
     id: string;
+    name: string;
     quantity: number;
     price: number;
 }

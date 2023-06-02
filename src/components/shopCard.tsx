@@ -2,9 +2,11 @@
 import styled from 'styled-components';
 import { CustomContext } from '@/context/customContext';
 import React, { useState, useEffect, useRef, ReactNode, useContext } from 'react';
+import { useBankHandler } from '@/hooks/useBankHandler';
 
 type shopDataTypes = {
     id: string;
+    name: string;
     quantity: number;
     price: number;
 }
@@ -33,9 +35,15 @@ const Card = styled.div`
     
     p {
         margin: 0;
-        color: #ff9800;
+        display: flex;
+        color: #d48c00;
         margin-left: auto;
+        align-items: center;
         font-family: RobotoBold;
+
+        img {
+            margin-left: 0.4rem;
+        }
     }
 
     button {
@@ -56,11 +64,13 @@ type ShopCardItems = {
 
 /* Component */
 export const ShopCard = (props: ShopCardItems) => {
+    const { updatePlayerBank } = useBankHandler();
     const { PlayerGoldContext } = useContext(CustomContext);
 
     const buyItem = () => {
         if (PlayerGoldContext.gold >= props.item.price) {
-            console.log(`You've bought ${props.item.id}`)
+            updatePlayerBank('copperOre', 1);
+            PlayerGoldContext.setGold(prevGold => prevGold - props.item.price);
         } else {
             console.log('not enough gold')
         }
@@ -70,8 +80,8 @@ export const ShopCard = (props: ShopCardItems) => {
     /* Renderer */
     return (
         <Card>
-            <h3>{props.item.id}</h3>
-            <p>Price: {props.item.price} ({props.item.quantity})</p>
+            <h3>{props.item.name}</h3>
+            <p>{props.item.price} <img src="/images/icon-gold-coin.png" width={24} height={24} /></p>
             <button onClick={() => { buyItem() }}>Buy</button>
         </Card>
     )
