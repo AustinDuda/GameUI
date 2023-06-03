@@ -4,6 +4,33 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 const fakeShopData = ['Iron Hatchet', 'Clay Pot', 'Feathers']
 
+const shopData = [
+    {
+        name: 'Shop One',
+        items: [
+            {id: 'placeholder', name: 'Quality Steel Axe', quantity: 1, price: 199},
+            {id: 'placeholder', name: 'Quality Steel Pickaxe', quantity: 1, price: 199},
+            {id: 'placeholder', name: 'Quality Steel Pickaxe', quantity: 99, price: 100}
+        ]
+    },
+    {
+        name: 'Shop Two',
+        items: [
+            {id: 'placeholder', name: 'Tin Ore', quantity: 999, price: 5},
+            {id: 'placeholder', name: 'Copper Ore', quantity: 999, price: 5},
+            {id: 'placeholder', name: 'Iron Ore', quantity: 999, price: 15}
+        ]
+    },
+]
+
+
+type shopDataTypes = {
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
+}
+
 
 /* Setting styles */
 const Card = styled.div`
@@ -29,17 +56,20 @@ export const ShopContainer = () => {
             <Hero>
                 <h1>Shop</h1>
             </Hero>
-            <ul>
-                {fakeShopData.map((item, index): ReactNode => {
-                    {console.log(item)}
-                    return (
-                        <ShopCard
-                            key={index}
-                            item={item}
-                        ></ShopCard>
-                    )
-                })}
-            </ul>
+
+            {shopData.map((shop): ReactNode => {
+                return (
+                    <div key={shop.name}>
+                        <h3>{shop.name}</h3>
+                        {shop.items.map((item: shopDataTypes, index: number): ReactNode => (
+                            <ShopCard
+                                key={index}
+                                item={item}
+                            ></ShopCard>
+                        ))}
+                    </div>
+                )
+            })}
         </div>
     )
 }
