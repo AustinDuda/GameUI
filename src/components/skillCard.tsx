@@ -72,7 +72,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpRemainder, setXpRemainder] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
-    const { PlayerSkillsContext } = React.useContext(CustomContext);
+    const { PlayerSkillsContext, SnackbarContext } = React.useContext(CustomContext);
 
 
     /* onclick toggles or untoggles the active card */
@@ -117,6 +117,7 @@ export const SkillCard = (props: ActionCardTypes) => {
             });
 
             PlayerSkillsContext.setSkills(newSkillDataWithUpdatedXp);
+            SnackbarContext.setSnackbar(prev => [...prev, {type: 'xp', message: `You've gained ${calculateRecievedXpPerAction()} xp`}])
             setTick(0);
         }
     }, [tick, props]);

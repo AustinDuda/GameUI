@@ -1,4 +1,5 @@
 /* imports */
+import { Snackbar } from "@/components/snackbar";
 import { createContext, Dispatch, ReactNode, useState, SetStateAction, useEffect } from "react";
 
 
@@ -36,7 +37,7 @@ const initialToolbeltData = [
     {slot: 'woodcutting', id: '', name: ''},
     {slot: 'mining', id: '', name: ''},
     {slot: 'fishing', id: '', name: ''}
-]
+];
 
 
 /* Player Gold state */
@@ -120,8 +121,27 @@ const initialPlayerToolbelt: PlayerToolbeltContext = {
 };
 
 
+/* Snackbar State */
+interface SnackbarDataTypes {
+    type: string;
+    message: string;
+}
+
+interface SnackbarContext {
+    snackbar: Array<SnackbarDataTypes>;
+    setSnackbar: Dispatch<SetStateAction<Array<SnackbarDataTypes>>>
+}
+
+const initialSnackbar: SnackbarContext = {
+    snackbar: [],
+    setSnackbar: () => {},
+};
+
+
+
 /* Setting state prop types */
 type ContextProps = {
+    SnackbarContext: SnackbarContext;
     PlayerGoldContext: PlayerGoldContext;
     PlayerBankContext: PlayerBankContext;
     PlayerSkillsContext: PlayerSkillsContext;
@@ -132,6 +152,7 @@ type ContextProps = {
 
 /* Creating context */
 const CustomContext = createContext<ContextProps>({
+    SnackbarContext: initialSnackbar,
     PlayerGoldContext: initialPlayerGold,
     PlayerBankContext: initialPlayerBank,
     PlayerSkillsContext: initialPlayerSkills,
@@ -149,14 +170,15 @@ interface ContextProviderProps {
 /* Component */
 const CustomContextProvider = ({children}: ContextProviderProps) => {
     const [gold, setGold] = useState<number>(0);
+    const [snackbar, setSnackbar] = useState<Array<SnackbarDataTypes>>([]);
     const [bank, setBank] = useState<Array<BankItemDataTypes>>(initialBankData);
     const [skills, setSkills] = useState<Array<SkillsDataTypes>>(initialSkillData);
     const [toolbelt, setToolbelt] = useState<Array<ToolbeltDataTypes>>(initialToolbeltData);
     const [equipment, setEquipment] = useState<Array<EquipmentDataTypes>>(initialEquipmentData);
     
-    
     const PlayerGoldContext: PlayerGoldContext = { gold, setGold };
     const PlayerBankContext: PlayerBankContext = { bank, setBank };
+    const SnackbarContext: SnackbarContext = { snackbar, setSnackbar };
     const PlayerSkillsContext: PlayerSkillsContext = { skills, setSkills };
     const PlayerToolbeltContext: PlayerToolbeltContext = { toolbelt, setToolbelt};
     const PlayerEquipmentContext: PlayerEquipmentContext = { equipment, setEquipment };
@@ -205,6 +227,7 @@ const CustomContextProvider = ({children}: ContextProviderProps) => {
     return (
         <CustomContext.Provider 
             value={{ 
+                SnackbarContext,
                 PlayerGoldContext, 
                 PlayerBankContext, 
                 PlayerSkillsContext,

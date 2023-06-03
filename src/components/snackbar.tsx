@@ -1,6 +1,8 @@
 /* Imports */
-import React, { ReactNode, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
+import { CustomContext } from '@/context/customContext';
+import React, { ReactNode, SetStateAction, useContext, useEffect } from 'react';
+
 
 /* Setting styles */
 const SnackbarWrapper = styled.div`
@@ -52,39 +54,40 @@ type SnackbarTypes = {
 
 
 /* Component */
-export const Snackbar = (props: SnackbarTypes) => {
-
+export const Snackbar = () => {
+    const { SnackbarContext } = useContext(CustomContext)
 
     /* */
     const removeLastSnackbarItem = () => {
-        props.snackbarItemsSetter((prevState) => 
+        /*props.snackbarItemsSetter((prevState) => 
             (prevState.slice(1)
-        ));
+        ));*/
     }
 
     /* */
     useEffect(() => {
-        if (props.snackbarItemsGetter.length < 1) return;
-        if (props.snackbarItemsGetter.length > 3) removeLastSnackbarItem();
+        console.log(SnackbarContext.snackbar)
+        /*if (props.snackbarItemsGetter.length < 1) return;
+        if (props.snackbarItemsGetter.length > 3) removeLastSnackbarItem();*/
 
-        const timer = setTimeout(() => {
+        /*const timer = setTimeout(() => {
             removeLastSnackbarItem();
         }, 1000);
 
-        return () => clearTimeout(timer);
-    }, [props]);
+        return () => clearTimeout(timer);*/
+    }, [SnackbarContext]);
 
     /* Renderer */
     return (
         <SnackbarWrapper>
-            {props.snackbarItemsGetter.map((item, index): ReactNode => {
+            {/*props.snackbarItemsGetter.map((item, index): ReactNode => {
                 return (
                     <SnackbarItem key={item.message + index}>
                         <img src='/images/icon-notification-xp.png' width={32} height={32} />
                         <p>{item.message}</p>
                     </SnackbarItem>
                 )
-            })}
+            })*/}
         </SnackbarWrapper>
     )
 }
