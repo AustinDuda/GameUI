@@ -7,31 +7,33 @@ import React, { ReactNode, SetStateAction, useContext, useEffect } from 'react';
 /* Setting styles */
 const SnackbarWrapper = styled.div`
     left: 50%;
-    height: 6rem;   
+    height: 12rem;
     bottom: 2.4rem;
     min-width: 28rem;
     position: absolute;
     transform: translateX(-50%);
 `;
 
-const SnackbarItem = styled.div`
-    left: 50%;
+const SnackbarItem = styled.div<{position: number}>`
+    left: 0;
     bottom: 0;
     width: 100%;
     display: flex;
     padding: 1.2rem;
-    position: absolute;
     align-items: center;
     white-space: nowrap;
     background: #1f283e;
     border-radius: 0.3rem;
+    margin-bottom: 1.2rem;
     animation: slideIn 0.5s;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateY(-50%);
+    transition: all 0.5s ease-in-out;
+    opacity: ${props => props.position > 1 ? 0 : 1};
     box-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
 
     @keyframes slideIn {
-        from { transform: translateX(-50%) translateY(50%); }
-        to   { transform: translateX(-50%) translateY(-50%); }
+        from { transform: translateY(50%); }
+        to   { transform: translateY(-50%); }
     }
 
     p {
@@ -57,37 +59,37 @@ type SnackbarTypes = {
 export const Snackbar = () => {
     const { SnackbarContext } = useContext(CustomContext)
 
-    /* */
+
     const removeLastSnackbarItem = () => {
-        /*props.snackbarItemsSetter((prevState) => 
-            (prevState.slice(1)
-        ));*/
+        SnackbarContext.setSnackbar(prev => prev.slice(1))
     }
 
-    /* */
-    useEffect(() => {
-        console.log(SnackbarContext.snackbar)
-        /*if (props.snackbarItemsGetter.length < 1) return;
-        if (props.snackbarItemsGetter.length > 3) removeLastSnackbarItem();*/
 
-        /*const timer = setTimeout(() => {
+    useEffect(() => {
+        if (SnackbarContext.snackbar.length < 1) return;
+
+        const timer = setTimeout(() => {
             removeLastSnackbarItem();
         }, 1000);
 
-        return () => clearTimeout(timer);*/
+        return () => {
+            clearTimeout(timer); 
+        } 
     }, [SnackbarContext]);
 
     /* Renderer */
     return (
         <SnackbarWrapper>
-            {/*props.snackbarItemsGetter.map((item, index): ReactNode => {
-                return (
-                    <SnackbarItem key={item.message + index}>
-                        <img src='/images/icon-notification-xp.png' width={32} height={32} />
-                        <p>{item.message}</p>
-                    </SnackbarItem>
-                )
-            })*/}
+                {SnackbarContext.snackbar.map((snack, index) => {
+                    return (
+                        <SnackbarItem
+                            position={index}
+                            key={snack.message + index}>
+                                <img src={`/images/icon-notification-${snack.type}.png`} width={32} height={32} />
+                                <p>{snack.message}</p>
+                        </SnackbarItem>
+                    )
+                })}
         </SnackbarWrapper>
     )
 }

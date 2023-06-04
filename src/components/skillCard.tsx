@@ -117,7 +117,10 @@ export const SkillCard = (props: ActionCardTypes) => {
             });
 
             PlayerSkillsContext.setSkills(newSkillDataWithUpdatedXp);
-            SnackbarContext.setSnackbar(prev => [...prev, {type: 'xp', message: `You've gained ${calculateRecievedXpPerAction()} xp`}])
+            SnackbarContext.setSnackbar(prev => [...prev, 
+                {type: 'xp', message: `You've gained ${calculateRecievedXpPerAction()} xp in ${props.name}`},
+                {type: 'gold', message: `You've gained 1 gold`}]
+            )
             setTick(0);
         }
     }, [tick, props]);
@@ -141,7 +144,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const calculateRecievedXpPerAction = () => {
         var result = null;//props.skillData.actions.find(x => x.name === selectedAction)
 
-        return result ? result/*.xp*/ : 999;
+        return result ? result/*.xp*/ : 10;
     }
 
     
