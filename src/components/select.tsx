@@ -1,5 +1,7 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { CustomContext } from '@/context/customContext';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
+
 
 const SelectWrapper = styled.div`
     display: flex;
@@ -52,6 +54,10 @@ const OptionsWarpper = styled.div`
     }
 `;
 
+const Option = styled.button<{disabled: boolean}>`
+    opacity: ${props => props.disabled ? 0.5 : 1};
+`;
+
 type ActionTypes = {
     xp: number,
     name: string,
@@ -60,6 +66,7 @@ type ActionTypes = {
 }
 
 type SelectTypes = {
+    currentLevel: number;
     options: Array<ActionTypes>;
     selectActionSetter: React.Dispatch<SetStateAction<string>>
 };
@@ -68,6 +75,8 @@ export const Select = (props: SelectTypes) => {
     const [selectOpen, setSelectOpen] = useState(false);
     const selectRef = React.useRef<HTMLDivElement>(null);
     const [selectedValue, setSelectedValue] = useState('');
+    const { PlayerSkillsContext } = useContext(CustomContext);
+    
 
     /* */
     useEffect(() => {
@@ -103,10 +112,11 @@ export const Select = (props: SelectTypes) => {
             <OptionsWarpper className={selectOpen === true ? 'open' : ''}>
                 {props.options.map((option, index) => {
                     return (
-                        <button 
+                        <Option
                             key={option.name + index}
                             onClick={() => { handleSelectOption(option.name) }}
-                        >{option.name}</button>
+                            disabled={props.currentLevel < option.levelReq ? true : false}
+                        >{option.name}</Option>
                     )
                 })}
             </OptionsWarpper>
