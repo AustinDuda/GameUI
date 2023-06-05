@@ -1,24 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { CustomContext } from "@/context/customContext";
-import { lootTable } from "../../public/config/gameData";
+import itemDatabase from "@/configs/itemDatabase.json";
+import { CustomContext } from "@/context/customContext"
 
 export const useBankHandler = () => {
     const { PlayerBankContext } = useContext(CustomContext);
 
-    const getItemFromLootTable = async (id: string, quantity: number) => {
-      const itemName = ''//itemDatabase.find(item => item.id === id)?.name || null;
-
-      let roll = Math.floor(Math.random() * 10000);
-      let picked = null;
-      for (let i = 0, len = lootTable.OakTree.length; i < len; ++i) {
-          const loot = lootTable.OakTree[i];
-          const {chance} = loot;
-          if (roll < chance) {
-              picked = loot;
-              break;
-          }
-          roll -= chance;
-      }
+    const updatePlayerBank = async (id: string, quantity: number) => {
+      const itemName = itemDatabase.find(item => item.id === id)?.name || null;
 
       try {
         PlayerBankContext.setBank(prevBank => {
@@ -41,5 +29,5 @@ export const useBankHandler = () => {
       }
     }
 
-    return {getItemFromLootTable}
+    return {updatePlayerBank}
 }
