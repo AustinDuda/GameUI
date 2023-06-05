@@ -66,6 +66,7 @@ export const Inventory = () => {
                 {inventoryTabs.map((tab, index) => {
                     return (
                     <Tab 
+                        key={index}
                         activeTab={activeTab == index ? 1 : 0.5} 
                         onClick={() => { setActiveTab(index) }}>
                         {tab}
