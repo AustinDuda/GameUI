@@ -48,8 +48,11 @@ type SnackbarItemTypes = {
 };
 
 type SkillDataTypes = {
-    actions: Array<any>,
-    items: Array<any>
+    actions: Array<any>
+}
+
+type SkillResourceTypes = {
+    resources: Array<any>
 }
 
 type ActionCardTypes = {
@@ -58,6 +61,7 @@ type ActionCardTypes = {
   index: number;
   isActive: boolean;
   skillData: SkillDataTypes;
+  resourceList: Array<any>;
   activeCardSetter: React.Dispatch<SetStateAction<string>>;
   snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>;
 };
@@ -125,7 +129,7 @@ export const SkillCard = (props: ActionCardTypes) => {
             )
             setTick(0);
         }
-    }, [tick, props]);
+    }, [tick]);
 
 
     /* Handles the tick feature */
@@ -144,9 +148,9 @@ export const SkillCard = (props: ActionCardTypes) => {
 
     /* Calculates xp to recieve per action complete based on selection */
     const calculateRecievedXpPerAction = () => {
-        var result = null;//props.skillData.actions.find(x => x.name === selectedAction)
+        var result = props.skillData.actions.find(x => x.name === selectedAction)
 
-        return result ? result/*.xp*/ : 10;
+        return result ? result.xp : 10;
     }
 
     
@@ -171,10 +175,11 @@ export const SkillCard = (props: ActionCardTypes) => {
                 width={Math.floor((tick/timeToCompleteAction) * 100)}
             ></ProgressBar>
 
-            {/*<Select 
+            <Select
+                currentLevel={level}
                 selectActionSetter={setSelectedAction}
                 options={props.skillData.actions}
-            ></Select>*/}
+            ></Select>
             
             <ActiveButton onClick={() => onClickSetActives(props.name)}>Activate</ActiveButton>
         </Card>
