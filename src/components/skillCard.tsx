@@ -118,8 +118,7 @@ export const SkillCard = (props: ActionCardTypes) => {
 
             PlayerSkillsContext.setSkills(newSkillDataWithUpdatedXp);
             SnackbarContext.setSnackbar(prev => [...prev, 
-                {type: 'xp', message: `You've gained ${calculateRecievedXpPerAction()} xp in ${props.name}`},
-                {type: 'gold', message: `You've gained 1 gold`}]
+                [{type: 'xp', message: `You've gained ${calculateRecievedXpPerAction()} xp in ${props.name}`}, {type: 'gold', message: `You've gained 1 gold`}]]
             )
             setTick(0);
         }

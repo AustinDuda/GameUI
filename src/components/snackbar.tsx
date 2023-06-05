@@ -14,17 +14,10 @@ const SnackbarWrapper = styled.div`
     transform: translateX(-50%);
 `;
 
-const SnackbarItem = styled.div<{position: number}>`
-    left: 0;
-    bottom: 0;
+const SnackbarGroup = styled.div<{position: number}>`
     width: 100%;
     display: flex;
-    padding: 1.2rem;
-    align-items: center;
-    white-space: nowrap;
-    background: #1f283e;
-    border-radius: 0.3rem;
-    margin-bottom: 1.2rem;
+    flex-direction: column;
     animation: slideIn 0.5s;
     transform: translateY(-50%);
     transition: all 0.5s ease-in-out;
@@ -35,6 +28,20 @@ const SnackbarItem = styled.div<{position: number}>`
         from { transform: translateY(50%); }
         to   { transform: translateY(-50%); }
     }
+`;
+
+const SnackbarItem = styled.div`
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    padding: 1.2rem;
+    align-items: center;
+    white-space: nowrap;
+    background: #1f283e;
+    border-radius: 0.3rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
 
     p {
         margin: 0;
@@ -44,15 +51,6 @@ const SnackbarItem = styled.div<{position: number}>`
         margin-right: 0.8rem;
     }
 `;
-
-type SnackbarItemTypes = {
-    message: string
-}
-
-type SnackbarTypes = {
-    snackbarItemsGetter: Array<SnackbarItemTypes>,
-    snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>
-}
 
 
 /* Component */
@@ -80,16 +78,19 @@ export const Snackbar = () => {
     /* Renderer */
     return (
         <SnackbarWrapper>
-                {SnackbarContext.snackbar.map((snack, index) => {
-                    return (
-                        <SnackbarItem
-                            position={index}
-                            key={snack.message + index}>
+            {SnackbarContext.snackbar.map((snackbarGroup, index): ReactNode => {
+                return (
+                    <SnackbarGroup key={index} position={index}>
+                        {snackbarGroup.map((snack, index): ReactNode => (
+                            <SnackbarItem
+                                key={snack.message + index}>
                                 <img src={`/images/icon-notification-${snack.type}.png`} width={32} height={32} />
                                 <p>{snack.message}</p>
-                        </SnackbarItem>
-                    )
-                })}
+                            </SnackbarItem>
+                        ))}
+                    </SnackbarGroup>
+                )
+            })}
         </SnackbarWrapper>
     )
 }

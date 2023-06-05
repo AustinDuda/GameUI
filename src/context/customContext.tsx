@@ -128,8 +128,8 @@ interface SnackbarDataTypes {
 }
 
 interface SnackbarContext {
-    snackbar: Array<SnackbarDataTypes>;
-    setSnackbar: Dispatch<SetStateAction<Array<SnackbarDataTypes>>>
+    snackbar: Array<Array<SnackbarDataTypes>>;
+    setSnackbar: Dispatch<SetStateAction<Array<Array<SnackbarDataTypes>>>>
 }
 
 const initialSnackbar: SnackbarContext = {
@@ -170,7 +170,7 @@ interface ContextProviderProps {
 /* Component */
 const CustomContextProvider = ({children}: ContextProviderProps) => {
     const [gold, setGold] = useState<number>(0);
-    const [snackbar, setSnackbar] = useState<Array<SnackbarDataTypes>>([]);
+    const [snackbar, setSnackbar] = useState<Array<Array<SnackbarDataTypes>>>([]);
     const [bank, setBank] = useState<Array<BankItemDataTypes>>(initialBankData);
     const [skills, setSkills] = useState<Array<SkillsDataTypes>>(initialSkillData);
     const [toolbelt, setToolbelt] = useState<Array<ToolbeltDataTypes>>(initialToolbeltData);
