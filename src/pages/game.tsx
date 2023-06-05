@@ -73,10 +73,7 @@ export default function Game() {
             ): null}
             
           </MainContentWrapper>
-          <Snackbar 
-            snackbarItemsGetter={activeSnackbarItems}
-            snackbarItemsSetter={setActiveSnackbarItems}
-          ></Snackbar>
+          <Snackbar></Snackbar>
         </div>
       ): null}
     </>

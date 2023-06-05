@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
 import { useAuth } from "@/context/authContext";
 import { CustomContext } from '@/context/customContext';
+import { lootTable } from '../../public/config/gameData';
 import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
 
 /* Setting styles */
@@ -48,8 +49,11 @@ type SnackbarItemTypes = {
 };
 
 type SkillDataTypes = {
-    actions: Array<any>,
-    items: Array<any>
+    actions: Array<any>
+}
+
+type SkillResourceTypes = {
+    resources: Array<any>
 }
 
 type ActionCardTypes = {
@@ -58,6 +62,7 @@ type ActionCardTypes = {
   index: number;
   isActive: boolean;
   skillData: SkillDataTypes;
+  resourceList: Array<any>;
   activeCardSetter: React.Dispatch<SetStateAction<string>>;
   snackbarItemsSetter: React.Dispatch<SetStateAction<Array<SnackbarItemTypes>>>;
 };
@@ -72,7 +77,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpRemainder, setXpRemainder] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
-    const { PlayerSkillsContext } = React.useContext(CustomContext);
+    const { PlayerSkillsContext, SnackbarContext } = React.useContext(CustomContext);
 
 
     /* onclick toggles or untoggles the active card */
@@ -117,9 +122,29 @@ export const SkillCard = (props: ActionCardTypes) => {
             });
 
             PlayerSkillsContext.setSkills(newSkillDataWithUpdatedXp);
+            SnackbarContext.setSnackbar(prev => 
+                [...prev, [{
+                    type: 'xp', 
+                    message: `You've gained ${calculateRecievedXpPerAction()} xp in ${props.name}`
+                }]]
+            )
+
+            let roll = Math.floor(Math.random() * 10000);
+            let picked = null;
+            for (let i = 0, len = lootTable.OakTree.length; i < len; ++i) {
+                const loot = lootTable.OakTree[i];
+                const {chance} = loot;
+                if (roll < chance) {
+                    picked = loot;
+                    break;
+                }
+                roll -= chance;
+            }
+
+            
             setTick(0);
         }
-    }, [tick, props]);
+    }, [tick]);
 
 
     /* Handles the tick feature */
@@ -138,9 +163,9 @@ export const SkillCard = (props: ActionCardTypes) => {
 
     /* Calculates xp to recieve per action complete based on selection */
     const calculateRecievedXpPerAction = () => {
-        var result = null;//props.skillData.actions.find(x => x.name === selectedAction)
+        var result = props.skillData.actions.find(x => x.name === selectedAction)
 
-        return result ? result/*.xp*/ : 999;
+        return result ? result.xp : 10;
     }
 
     
@@ -165,10 +190,11 @@ export const SkillCard = (props: ActionCardTypes) => {
                 width={Math.floor((tick/timeToCompleteAction) * 100)}
             ></ProgressBar>
 
-            {/*<Select 
+            <Select
+                currentLevel={level}
                 selectActionSetter={setSelectedAction}
                 options={props.skillData.actions}
-            ></Select>*/}
+            ></Select>
             
             <ActiveButton onClick={() => onClickSetActives(props.name)}>Activate</ActiveButton>
         </Card>

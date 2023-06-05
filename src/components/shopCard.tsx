@@ -1,6 +1,15 @@
 /* Imports */
 import styled from 'styled-components';
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import { CustomContext } from '@/context/customContext';
+import React, { useState, useEffect, useRef, ReactNode, useContext } from 'react';
+import { useBankHandler } from '@/hooks/useBankHandler';
+
+type shopDataTypes = {
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
+}
 
 /* Setting styles */
 const Card = styled.div`
@@ -22,11 +31,24 @@ const Card = styled.div`
 
     h3 {
         margin: 0;
+    } 
+    
+    p {
+        margin: 0;
+        display: flex;
+        color: #d48c00;
+        margin-left: auto;
+        align-items: center;
+        font-family: RobotoBold;
+
+        img {
+            margin-left: 0.4rem;
+        }
     }
 
     button {
         color: white;
-        margin-left: auto;
+        margin-left: 2.4rem;
         border-radius: 0.4rem;
         padding: 0.4rem 1.2rem;
         font-family: RobotoBold;
@@ -36,21 +58,31 @@ const Card = styled.div`
 
 /* Setting types */
 type ShopCardItems = {
-    item: string;
+    item: shopDataTypes;
 };
   
 
 /* Component */
 export const ShopCard = (props: ShopCardItems) => {
+    const { updatePlayerBank } = useBankHandler();
+    const { PlayerGoldContext } = useContext(CustomContext);
 
-    const [active, setActive] = useState(false);
+    const buyItem = () => {
+        if (PlayerGoldContext.gold >= props.item.price) {
+            updatePlayerBank('copperOre', 1);
+            PlayerGoldContext.setGold(prevGold => prevGold - props.item.price);
+        } else {
+            console.log('not enough gold')
+        }
+        
+    }
 
     /* Renderer */
     return (
-        <Card onClick={() => { setActive(!active) }} className={active ? 'active' : ''}>
-            <h3>{props.item}</h3>
-
-            <button>Buy</button>
+        <Card>
+            <h3>{props.item.name}</h3>
+            <p>{props.item.price} <img src="/images/icon-gold-coin.png" width={24} height={24} /></p>
+            <button onClick={() => { buyItem() }}>Buy</button>
         </Card>
     )
 }

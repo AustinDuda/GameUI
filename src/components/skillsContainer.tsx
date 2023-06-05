@@ -6,6 +6,29 @@ import { skillData } from '../../public/config/gameData';
 import React, { ReactNode, SetStateAction, useEffect, useState } from 'react';
 
 
+/* Variable assignment */
+const skillingData = {
+    woodcutting: {
+        resources: [ 
+            {name: 'Oak Tree', xp: '10', speed: '2.3'},
+            {name: 'Willow Tree', xp: '22', speed: '3.1'},
+        ],
+    },
+    mining: {
+        resources: [ 
+            {name: 'Tin Ore', xp: '10', speed: '2.3'},
+            {name: 'Copper Ore', xp: '22', speed: '3.1'},
+        ],
+    },
+    fishing: {
+        resources: [ 
+            {name: 'Shrimp', xp: '10', speed: '2.3'},
+            {name: 'Sardines', xp: '22', speed: '3.1'},
+        ],
+    }
+}
+
+
 /* Setting styles */
 const SkillsItemList = styled.div`
     display: grid;
@@ -41,13 +64,14 @@ export const SkillsContainer = (props: SkillsContainerTypes) => {
             <h1>Skills</h1>
             
             <SkillsItemList>
-                {PlayerSkillsContext.skills?.map((skill, index): ReactNode => { 
+                {PlayerSkillsContext.skills?.map((skill, index): ReactNode => {
                     return (
                         <SkillCard 
                             index={index}
                             xp={skill.xp}
                             key={skill.name}
                             name={skill.name}
+                            resourceList={[]}
                             activeCardSetter={setActiveCard}
                             snackbarItemsSetter={props.snackbarItemsSetter}
                             skillData={skillData[(skill.name).toLowerCase()]}
