@@ -68,12 +68,13 @@ export const Snackbar = () => {
 
         const timer = setTimeout(() => {
             removeLastSnackbarItem();
-        }, 1000);
+        }, 1000 - (SnackbarContext.snackbar.length * 50));
 
         return () => {
             clearTimeout(timer); 
         } 
     }, [SnackbarContext]);
+
 
     /* Renderer */
     return (
