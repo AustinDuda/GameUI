@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ProgressBar } from './progressBar';
 import { useAuth } from "@/context/authContext";
 import { CustomContext } from '@/context/customContext';
+import { lootTable } from '../../public/config/gameData';
 import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
 
 /* Setting styles */
@@ -127,6 +128,20 @@ export const SkillCard = (props: ActionCardTypes) => {
                     message: `You've gained ${calculateRecievedXpPerAction()} xp in ${props.name}`
                 }]]
             )
+
+            let roll = Math.floor(Math.random() * 10000);
+            let picked = null;
+            for (let i = 0, len = lootTable.OakTree.length; i < len; ++i) {
+                const loot = lootTable.OakTree[i];
+                const {chance} = loot;
+                if (roll < chance) {
+                    picked = loot;
+                    break;
+                }
+                roll -= chance;
+            }
+
+            
             setTick(0);
         }
     }, [tick]);
