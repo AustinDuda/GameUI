@@ -1,33 +1,17 @@
-import { useContext, useEffect, useState } from "react";
 import itemDatabase from "@/configs/itemDatabase.json";
-import { CustomContext } from "@/context/customContext"
+import { useContext, useEffect, useState } from "react";
+import { lootTable } from "../../public/config/gameData";
 
-export const useBankHandler = () => {
-    const { PlayerBankContext } = useContext(CustomContext);
+export const useLootHandler = () => {
+    
+    const getItemFromLootTable = (lootTableKey: string) => {
+        const getLootTableFromData = lootTable[lootTableKey as keyof typeof lootTable];
+        const roll = Math.floor(Math.random() * getLootTableFromData.rarity);
+        const loot = getLootTableFromData.table.find(({ chance }) => roll < chance);
+        const picked = loot ? loot.id : null;
 
-    const updatePlayerBank = async (id: string, quantity: number) => {
-      const itemName = itemDatabase.find(item => item.id === id)?.name || null;
-
-      try {
-        PlayerBankContext.setBank(prevBank => {
-          const existingItemInBank = prevBank.find(obj => obj.id === id);
-
-          if (existingItemInBank) {
-            return prevBank.map(obj => {
-              if (obj.id === id) {
-                return { ...obj, quantity: obj.quantity + quantity };
-              }
-              return obj;
-            });
-          }
-          
-          if (itemName == null) { return [...prevBank] }
-          return [...prevBank, { id: id, name: itemName, quantity: quantity }];
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+        return picked;
     }
 
-    return {updatePlayerBank}
+    return { getItemFromLootTable }
 }

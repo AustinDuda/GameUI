@@ -1,18 +1,62 @@
 [
-    {
-      "id": "simpleIronAxe",
-      "name": "Simple Iron Axe"
-    },
-    {
-      "id": "simpleIronPickaxe",
-      "name": "Simple Iron Pickaxe"
-    },
-    {
-      "id": "fishingNet",
-      "name": "Fishing Net"
-    },
-    {
-        "id": "copperOre",
-        "name": "Copper Ore"
-    }
-]
+  {
+    "id": "simpleIronHatchet",
+    "name": "Simple Iron Hatchet"
+  },
+  {
+    "id": "simpleIronPickaxe",
+    "name": "Simple Iron Pickaxe"
+  },
+  {
+    "id": "fishingNet",
+    "name": "Fishing Net"
+  },
+  {
+    "id": "fineSteelHatchet",
+    "name": "Fine Steel Hatchet"
+  },
+  {
+    "id": "fineSteelPickaxe",
+    "name": "Fine Steel Pickaxe"
+  },
+  {
+    "id": "ruggedFishingNet",
+    "name": "Rugged Fishing Net"
+  },
+  {
+    "id": "tinOre",
+    "name": "Tin Ore"
+  },
+  {
+    "id": "copperOre",
+    "name": "Copper Ore"
+  },
+  {
+    "id": "pineLog",
+    "name": "Pine Log"
+  },
+  {
+    "id": "oakLog",
+    "name": "Oak Log"
+  },
+  {
+    "id": "shrimp",
+    "name": "Shrimp"
+  },
+  {
+    "id": "sardine",
+    "name": "Sardine"
+  },
+  {
+    "id": "treeSpirit",
+    "name": "Tree Spirit"
+  },
+  {
+    "id": "rockSpirit",
+    "name": "Rock Spirit"
+  },
+  {
+    "id": "waterSpirit",
+    "name": "Water Spirit"
+  }
+ ]

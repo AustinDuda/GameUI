@@ -1,10 +1,12 @@
 /* Imports */
 import { Select } from './select';
 import styled from 'styled-components';
+import { useLootHandler } from '@/hooks/useLootHandler';
 import { ProgressBar } from './progressBar';
 import { useAuth } from "@/context/authContext";
 import { CustomContext } from '@/context/customContext';
 import { lootTable } from '../../public/config/gameData';
+import { useBankHandler } from '@/hooks/useBankHandler';
 import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
 
 /* Setting styles */
@@ -79,6 +81,9 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [selectedAction, setSelectedAction] = useState('');
     const { PlayerSkillsContext, SnackbarContext } = React.useContext(CustomContext);
 
+    const { updatePlayerBank } = useBankHandler();
+    const { getItemFromLootTable } = useLootHandler();
+
 
     /* onclick toggles or untoggles the active card */
     const onClickSetActives = (id: string): void => {
@@ -128,19 +133,10 @@ export const SkillCard = (props: ActionCardTypes) => {
                     message: `You've gained ${calculateRecievedXpPerAction()} xp in ${props.name}`
                 }]]
             )
-
-            let roll = Math.floor(Math.random() * 10000);
-            let picked = null;
-            for (let i = 0, len = lootTable.OakTree.length; i < len; ++i) {
-                const loot = lootTable.OakTree[i];
-                const {chance} = loot;
-                if (roll < chance) {
-                    picked = loot;
-                    break;
-                }
-                roll -= chance;
-            }
-
+            
+            console.log(selectedAction)
+            console.log(getItemFromLootTable('oakTree'))
+            updatePlayerBank('copperOre', 1);
             
             setTick(0);
         }
