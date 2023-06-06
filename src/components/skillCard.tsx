@@ -130,7 +130,8 @@ export const SkillCard = (props: ActionCardTypes) => {
                     message: `You've gained ${calculateRecievedXpPerAction()} xp in ${props.name}`
                 }]]
             )
-
+            
+            console.log(selectedAction)
             console.log(getItemFromLootTable('oakTree'))
 
             
