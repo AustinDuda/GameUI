@@ -59,16 +59,16 @@ const Option = styled.button<{disabled: boolean}>`
 `;
 
 type ActionTypes = {
-    xp: number,
-    name: string,
-    drops: string,
-    levelReq: number,
+    xp: number;
+    name: string;
+    levelReq: number;
+    lootTableKey: string;
 }
 
 type SelectTypes = {
     currentLevel: number;
     options: Array<ActionTypes>;
-    selectActionSetter: React.Dispatch<SetStateAction<string>>
+    selectActionSetter: React.Dispatch<SetStateAction<ActionTypes>>
 };
 
 export const Select = (props: SelectTypes) => {
@@ -95,10 +95,10 @@ export const Select = (props: SelectTypes) => {
     }
 
     /* */
-    const handleSelectOption = (name: string) => {
+    const handleSelectOption = (action: ActionTypes) => {
         setSelectOpen(false)
-        setSelectedValue(name);
-        props.selectActionSetter(name);
+        setSelectedValue(action.name);
+        props.selectActionSetter(action);
     }
 
     return (
@@ -114,7 +114,7 @@ export const Select = (props: SelectTypes) => {
                     return (
                         <Option
                             key={option.name + index}
-                            onClick={() => { handleSelectOption(option.name) }}
+                            onClick={() => { handleSelectOption(option) }}
                             disabled={props.currentLevel < option.levelReq ? true : false}
                         >{option.name}</Option>
                     )

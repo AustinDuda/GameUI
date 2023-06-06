@@ -1,13 +1,12 @@
 /* Imports */
 import { Select } from './select';
 import styled from 'styled-components';
-import { useLootHandler } from '@/hooks/useLootHandler';
 import { ProgressBar } from './progressBar';
-import { useAuth } from "@/context/authContext";
+import { useLootHandler } from '@/hooks/useLootHandler';
 import { CustomContext } from '@/context/customContext';
-import { lootTable } from '../../public/config/gameData';
 import { useBankHandler } from '@/hooks/useBankHandler';
-import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
+import React, { useState, useEffect, useRef, SetStateAction } from 'react';
+
 
 /* Setting styles */
 const Card = styled.div`
@@ -58,6 +57,13 @@ type SkillResourceTypes = {
     resources: Array<any>
 }
 
+type ActionTypes = {
+    xp: number;
+    name: string;
+    levelReq: number;
+    lootTableKey: string;
+}
+
 type ActionCardTypes = {
   xp: number;
   name: string;
@@ -78,7 +84,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const intervalRef = useRef<NodeJS.Timeout>();
     const [xpRemainder, setXpRemainder] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
-    const [selectedAction, setSelectedAction] = useState('');
+    const [selectedAction, setSelectedAction] = useState({name: '', xp: 10, levelReq: 0, lootTableKey: ''});
     const { PlayerSkillsContext, SnackbarContext } = React.useContext(CustomContext);
 
     const { updatePlayerBank } = useBankHandler();
@@ -159,9 +165,9 @@ export const SkillCard = (props: ActionCardTypes) => {
 
     /* Calculates xp to recieve per action complete based on selection */
     const calculateRecievedXpPerAction = () => {
-        var result = props.skillData.actions.find(x => x.name === selectedAction)
+        var result = selectedAction.xp//props.skillData.actions.find(x => x.name === selectedAction)
 
-        return result ? result.xp : 10;
+        return result ? result : 10;
     }
 
     

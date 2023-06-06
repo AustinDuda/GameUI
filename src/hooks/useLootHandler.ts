@@ -1,5 +1,3 @@
-import itemDatabase from "@/configs/itemDatabase.json";
-import { useContext, useEffect, useState } from "react";
 import { lootTable } from "../../public/config/gameData";
 
 export const useLootHandler = () => {
