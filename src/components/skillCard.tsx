@@ -1,6 +1,7 @@
 /* Imports */
 import { Select } from './select';
 import styled from 'styled-components';
+import { useLootHandler } from '@/hooks/useLootHandler';
 import { ProgressBar } from './progressBar';
 import { useAuth } from "@/context/authContext";
 import { CustomContext } from '@/context/customContext';
@@ -77,6 +78,7 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpRemainder, setXpRemainder] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
+    const { getItemFromLootTable } = useLootHandler();
     const { PlayerSkillsContext, SnackbarContext } = React.useContext(CustomContext);
 
 
@@ -129,17 +131,7 @@ export const SkillCard = (props: ActionCardTypes) => {
                 }]]
             )
 
-            let roll = Math.floor(Math.random() * 10000);
-            let picked = null;
-            for (let i = 0, len = lootTable.OakTree.length; i < len; ++i) {
-                const loot = lootTable.OakTree[i];
-                const {chance} = loot;
-                if (roll < chance) {
-                    picked = loot;
-                    break;
-                }
-                roll -= chance;
-            }
+            console.log(getItemFromLootTable('oakTree'))
 
             
             setTick(0);

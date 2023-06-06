@@ -36,5 +36,8 @@ export const skillData: SkillTypes = {
 
 
 export const lootTable = {
-    OakTree: [{id: 'OakLog', chance: 2500}, {id: 'TreeSpirit', chance: 100}]
+    oakTree: {
+        rarity: 10000,
+        table: [{id: 'OakLog', chance: 3500}, {id: 'TreeSpirit', chance: 100}]
+    }
 }
