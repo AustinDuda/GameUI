@@ -6,6 +6,7 @@ import { ProgressBar } from './progressBar';
 import { useAuth } from "@/context/authContext";
 import { CustomContext } from '@/context/customContext';
 import { lootTable } from '../../public/config/gameData';
+import { useBankHandler } from '@/hooks/useBankHandler';
 import React, { useState, useEffect, useRef, SetStateAction, useContext } from 'react';
 
 /* Setting styles */
@@ -78,8 +79,10 @@ export const SkillCard = (props: ActionCardTypes) => {
     const [xpRemainder, setXpRemainder] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(0);
     const [selectedAction, setSelectedAction] = useState('');
-    const { getItemFromLootTable } = useLootHandler();
     const { PlayerSkillsContext, SnackbarContext } = React.useContext(CustomContext);
+
+    const { updatePlayerBank } = useBankHandler();
+    const { getItemFromLootTable } = useLootHandler();
 
 
     /* onclick toggles or untoggles the active card */
@@ -133,7 +136,7 @@ export const SkillCard = (props: ActionCardTypes) => {
             
             console.log(selectedAction)
             console.log(getItemFromLootTable('oakTree'))
-
+            updatePlayerBank('copperOre', 1);
             
             setTick(0);
         }
